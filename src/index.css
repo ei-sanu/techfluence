@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Cinzel+Decorative:wght@400;700;900&family=MedievalSharp&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -109,11 +111,11 @@
 
 @layer components {
   .royal-text-gradient {
-    @apply bg-gradient-to-r from-[hsl(43,80%,55%)] via-[hsl(43,70%,70%)] to-[hsl(43,80%,55%)] bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-[hsl(43_80%_55%)] via-[hsl(43_70%_70%)] to-[hsl(43_80%_55%)] bg-clip-text text-transparent;
   }
 
   .royal-border {
-    @apply border border-[hsl(43,30%,25%)] shadow-[0_0_15px_hsl(43,80%,55%,0.2)];
+    @apply border border-[hsl(43_30%_25%)] shadow-[0_0_15px_hsl(43_80%_55%/0.2)];
   }
 
   .royal-glow {
@@ -142,6 +144,7 @@
     from {
       transform: rotate(0deg);
     }
+
     to {
       transform: rotate(360deg);
     }
@@ -151,15 +154,19 @@
     from {
       transform: rotate(360deg);
     }
+
     to {
       transform: rotate(0deg);
     }
   }
 
   @keyframes float {
-    0%, 100% {
+
+    0%,
+    100% {
       transform: translateY(0);
     }
+
     50% {
       transform: translateY(-10px);
     }
@@ -169,6 +176,7 @@
     0% {
       background-position: -200% 0;
     }
+
     100% {
       background-position: 200% 0;
     }
@@ -179,6 +187,7 @@
       opacity: 0;
       transform: translateY(20px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -216,6 +225,3 @@
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(43, 80%, 55%);
 }
-
-/* Font imports */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Cinzel+Decorative:wght@400;700;900&family=MedievalSharp&display=swap');
