@@ -14,10 +14,11 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+const CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || "";
 
+// Show a helpful message if Clerk key is missing
 if (!CLERK_PUBLISHABLE_KEY) {
-  throw new Error("Missing VITE_CLERK_PUBLISHABLE_KEY");
+  console.warn("VITE_CLERK_PUBLISHABLE_KEY is not set. Authentication will not work.");
 }
 
 const App = () => (
