@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import { Crown, Star, Sparkles } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Crown, Sparkles, Star } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 const sessions = {
   session1: [
@@ -20,37 +20,45 @@ const sessions = {
   ],
 };
 
-const SpeakerCard = ({ speaker, index }: { speaker: typeof sessions.session1[0]; index: number }) => {
+const SpeakerCard = ({ speaker, index, isVisible }: { speaker: typeof sessions.session1[0]; index: number; isVisible: boolean }) => {
   return (
-    <div 
-      className="group relative animate-fade-in"
-      style={{ animationDelay: `${index * 150}ms` }}
+    <div
+      className={`group relative transition-all duration-700 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+      style={{ transitionDelay: `${300 + index * 200}ms` }}
     >
-      <div className="bg-card royal-border rounded-xl overflow-hidden transition-all duration-500 hover:scale-105 hover:royal-glow">
+      <div className="bg-card royal-border rounded-xl overflow-hidden transition-all duration-500 hover:scale-105 hover:-translate-y-2 hover:royal-glow group-hover:border-primary/40">
         {/* Image Container */}
         <div className="relative aspect-square overflow-hidden">
           <img
             src={speaker.image}
             alt={speaker.name}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
           {/* Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
-          
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent transition-opacity duration-500 group-hover:opacity-80" />
+
           {/* Crown Badge */}
-          <div className="absolute top-4 right-4 w-10 h-10 bg-primary/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="absolute top-4 right-4 w-10 h-10 bg-primary/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110 group-hover:rotate-12">
             <Crown className="w-5 h-5 text-primary-foreground" />
           </div>
+
+          {/* Shine effect on hover */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 translate-x-[-100%] group-hover:translate-x-[100%]"
+            style={{ transition: "transform 0.7s ease-out, opacity 0.3s ease" }} />
         </div>
 
         {/* Content */}
         <div className="p-6 text-center">
           <div className="flex items-center justify-center gap-1 mb-2">
-            <Star className="w-4 h-4 text-primary fill-primary" />
-            <Star className="w-4 h-4 text-primary fill-primary" />
-            <Star className="w-4 h-4 text-primary fill-primary" />
+            {[0, 1, 2].map((starIndex) => (
+              <Star
+                key={starIndex}
+                className={`w-4 h-4 text-primary fill-primary transition-all duration-300 ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-0"}`}
+                style={{ transitionDelay: `${600 + index * 200 + starIndex * 100}ms` }}
+              />
+            ))}
           </div>
-          <h3 className="font-cinzel text-lg text-foreground mb-1">
+          <h3 className="font-cinzel text-lg text-foreground mb-1 transition-colors duration-300 group-hover:text-primary">
             {speaker.name}
           </h3>
           <p className="text-sm text-muted-foreground">
@@ -59,12 +67,12 @@ const SpeakerCard = ({ speaker, index }: { speaker: typeof sessions.session1[0];
         </div>
 
         {/* Decorative corner */}
-        <div className="absolute bottom-0 left-0 w-16 h-16 opacity-20">
+        <div className="absolute bottom-0 left-0 w-16 h-16 opacity-20 transition-opacity duration-300 group-hover:opacity-40">
           <svg viewBox="0 0 64 64">
             <path
               d="M0 64 L0 48 Q0 32 16 32 L32 32 Q48 32 48 16 L48 0"
               fill="none"
-              stroke="hsl(43, 80%, 55%)"
+              stroke="hsl(25, 95%, 55%)"
               strokeWidth="2"
             />
           </svg>
@@ -97,6 +105,9 @@ const SpeakersSection = () => {
 
   return (
     <section ref={sectionRef} className="py-20 md:py-32 relative" id="speakers">
+      {/* Subtle section divider glow */}
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className={`text-center mb-16 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
@@ -115,19 +126,19 @@ const SpeakersSection = () => {
         {/* Session Tabs */}
         <Tabs defaultValue="session1" className="w-full">
           <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 mb-12 bg-secondary/50 p-1 rounded-lg">
-            <TabsTrigger 
-              value="session1" 
+            <TabsTrigger
+              value="session1"
               className="font-cinzel text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
               Session 1
             </TabsTrigger>
-            <TabsTrigger 
+            <TabsTrigger
               value="session2"
               className="font-cinzel text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
               Session 2
             </TabsTrigger>
-            <TabsTrigger 
+            <TabsTrigger
               value="session3"
               className="font-cinzel text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
@@ -139,7 +150,7 @@ const SpeakersSection = () => {
             <TabsContent key={key} value={key}>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {speakers.map((speaker, index) => (
-                  <SpeakerCard key={speaker.name} speaker={speaker} index={index} />
+                  <SpeakerCard key={speaker.name} speaker={speaker} index={index} isVisible={isVisible} />
                 ))}
               </div>
             </TabsContent>

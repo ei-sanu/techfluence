@@ -14,9 +14,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        cinzel: ['Cinzel', 'serif'],
-        medieval: ['MedievalSharp', 'cursive'],
-        decorative: ['Cinzel Decorative', 'serif'],
+        cinzel: ['Playfair Display', 'serif'],
+        medieval: ['Outfit', 'sans-serif'],
+        decorative: ['Playfair Display', 'serif'],
+        sans: ['Inter', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

@@ -1,10 +1,5 @@
--- TechFluence Database Schema
--- For empty Supabase database with Clerk authentication
-
--- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- Profiles table (linked to Clerk auth via clerk_user_id)
 CREATE TABLE public.profiles (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     clerk_user_id TEXT UNIQUE NOT NULL,
@@ -14,7 +9,6 @@ CREATE TABLE public.profiles (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Registrations table
 CREATE TABLE public.registrations (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     profile_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
@@ -30,10 +24,11 @@ CREATE TABLE public.registrations (
     city TEXT NOT NULL,
     pincode TEXT NOT NULL,
     technical_skills TEXT,
+    team_name TEXT,
+    check_in_code TEXT UNIQUE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Team members table (for hackathon registrations)
 CREATE TABLE public.team_members (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     registration_id UUID REFERENCES public.registrations(id) ON DELETE CASCADE NOT NULL,
@@ -43,22 +38,15 @@ CREATE TABLE public.team_members (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Enable Row Level Security
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.registrations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.team_members ENABLE ROW LEVEL SECURITY;
 
--- RLS Policies (permissive - Clerk handles auth at app level)
-CREATE POLICY "Enable all for profiles" ON public.profiles
-    FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Enable all for profiles" ON public.profiles FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Enable all for registrations" ON public.registrations FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Enable all for team_members" ON public.team_members FOR ALL USING (true) WITH CHECK (true);
 
-CREATE POLICY "Enable all for registrations" ON public.registrations
-    FOR ALL USING (true) WITH CHECK (true);
-
-CREATE POLICY "Enable all for team_members" ON public.team_members
-    FOR ALL USING (true) WITH CHECK (true);
-
--- Indexes for better performance
 CREATE INDEX idx_profiles_clerk_user_id ON public.profiles(clerk_user_id);
 CREATE INDEX idx_registrations_profile_id ON public.registrations(profile_id);
+CREATE INDEX idx_registrations_check_in_code ON public.registrations(check_in_code);
 CREATE INDEX idx_team_members_registration_id ON public.team_members(registration_id);

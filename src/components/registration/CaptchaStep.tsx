@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { ChevronLeft, RefreshCw, Shield, Loader2 } from "lucide-react";
+import { ChevronLeft, Loader2, RefreshCw, Shield } from "lucide-react";
+import { useState } from "react";
 
 interface CaptchaStepProps {
   onSubmit: (verified: boolean) => void;
@@ -40,14 +39,14 @@ const CaptchaStep = ({ onSubmit, onPrev, isSubmitting }: CaptchaStepProps) => {
   return (
     <div className="space-y-6">
       <div className="parchment-bg royal-border rounded-xl p-6 md:p-8">
-        <h2 className="font-decorative text-2xl text-primary mb-6 flex items-center gap-2">
+        <h2 className="font-decorative text-2xl text-primary mb-6 flex items-center gap-2 font-bold">
           <Shield className="w-6 h-6" />
           Verification
         </h2>
 
         <div className="text-center">
-          <p className="text-muted-foreground mb-6 font-cinzel">
-            Complete this simple verification to submit your royal decree.
+          <p className="text-muted-foreground mb-6 font-sans font-medium">
+            Complete this simple verification to submit your registration.
           </p>
 
           {/* Captcha Display */}
@@ -71,7 +70,7 @@ const CaptchaStep = ({ onSubmit, onPrev, isSubmitting }: CaptchaStepProps) => {
                   setError("");
                 }}
                 placeholder="Answer"
-                className="bg-input border-border font-cinzel text-center text-xl"
+                className="bg-input border-border font-sans text-center text-xl font-semibold"
               />
             </div>
             <Button
@@ -86,32 +85,32 @@ const CaptchaStep = ({ onSubmit, onPrev, isSubmitting }: CaptchaStepProps) => {
           </div>
 
           {error && (
-            <p className="text-destructive text-sm mb-4 font-cinzel">{error}</p>
+            <p className="text-destructive text-sm mb-4 font-sans font-medium">{error}</p>
           )}
         </div>
 
         {/* Terms */}
         <div className="mt-6 p-4 bg-secondary/30 rounded-lg">
-          <p className="text-xs text-muted-foreground text-center">
-            By submitting this form, you agree to participate in TechFluence and 
+          <p className="text-xs text-muted-foreground text-center font-sans">
+            By submitting this form, you agree to participate in TechFluence and
             consent to the collection of your information for event purposes.
           </p>
         </div>
       </div>
 
       <div className="flex justify-between">
-        <Button 
-          type="button" 
-          variant="outline" 
-          onClick={onPrev} 
-          className="font-cinzel gap-2"
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onPrev}
+          className="font-sans font-semibold gap-2"
           disabled={isSubmitting}
         >
           <ChevronLeft className="w-4 h-4" /> Back
         </Button>
-        <Button 
-          onClick={handleSubmit} 
-          className="font-cinzel gap-2 px-8"
+        <Button
+          onClick={handleSubmit}
+          className="font-sans font-semibold gap-2 px-8"
           disabled={!userAnswer || isSubmitting}
         >
           {isSubmitting ? (

@@ -1,12 +1,18 @@
 import Navbar from "@/components/Navbar";
+import NotAuthenticated from "@/components/NotAuthenticated";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { RedirectToSignIn, SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
-import { Calendar, GraduationCap, MapPin, Scroll, Users } from "lucide-react";
+import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
+import { Calendar, Code, Download, GraduationCap, Loader2, MapPin, Plus, Scroll, ShieldCheck, Users } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import * as XLSX from "xlsx";
+
+// Admin email(s) that can download data - add your admin emails here
+const ADMIN_EMAILS = ["someshranjanbiswal13678@gmail.com", "biswalranjansomesh@gmail.com"];
 
 interface Registration {
   id: string;
@@ -22,6 +28,8 @@ interface Registration {
   city: string;
   pincode: string;
   technical_skills: string | null;
+  team_name: string | null;
+  check_in_code: string | null;
   created_at: string;
 }
 
@@ -34,9 +42,131 @@ interface TeamMember {
 
 const Activity = () => {
   const { user } = useUser();
+  const navigate = useNavigate();
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [teamMembers, setTeamMembers] = useState<Record<string, TeamMember[]>>({});
   const [loading, setLoading] = useState(true);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const isAdmin = user?.primaryEmailAddress?.emailAddress &&
+    ADMIN_EMAILS.includes(user.primaryEmailAddress.emailAddress);
+
+  const downloadRegistrations = async () => {
+    if (!isAdmin) {
+      toast({
+        title: "Access Denied",
+        description: "You don't have permission to download registrations.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsDownloading(true);
+
+    try {
+      // Fetch all registrations
+      const { data: allRegistrations, error: regError } = await supabase
+        .from("registrations")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (regError) throw regError;
+
+      if (!allRegistrations || allRegistrations.length === 0) {
+        toast({
+          title: "No Data",
+          description: "No registrations found in the database.",
+          variant: "destructive",
+        });
+        setIsDownloading(false);
+        return;
+      }
+
+      // Fetch all team members
+      const { data: allTeamMembers, error: teamError } = await supabase
+        .from("team_members")
+        .select("*");
+
+      if (teamError) throw teamError;
+
+      // Create a map of team members by registration_id
+      const teamMembersByReg: Record<string, any[]> = {};
+      allTeamMembers?.forEach((member) => {
+        if (!teamMembersByReg[member.registration_id]) {
+          teamMembersByReg[member.registration_id] = [];
+        }
+        teamMembersByReg[member.registration_id].push(member);
+      });
+
+      // Format data for Excel
+      const excelData = allRegistrations.map((reg) => {
+        const teamData = teamMembersByReg[reg.id] || [];
+        const leader = teamData.find((m) => m.member_type === "leader");
+        const member1 = teamData.find((m) => m.member_type === "member1");
+        const member2 = teamData.find((m) => m.member_type === "member2");
+        const member3 = teamData.find((m) => m.member_type === "member3");
+
+        return {
+          "Full Name": reg.full_name,
+          "Registration Number": reg.registration_number,
+          "University": reg.university_name,
+          "Email": reg.email,
+          "Contact Number": reg.contact_number,
+          "Course": reg.course,
+          "Year of Study": reg.year_of_study,
+          "Event Type": reg.event_type,
+          "Address": reg.address,
+          "City": reg.city,
+          "Pincode": reg.pincode,
+          "Technical Skills": reg.technical_skills || "",
+          "Team Name": reg.team_name || "",
+          "Check-in Code": reg.check_in_code || "",
+          "Registered On": new Date(reg.created_at).toLocaleString("en-IN"),
+          "Team Leader Name": leader?.name || "",
+          "Team Leader Reg No": leader?.registration_number || "",
+          "Member 1 Name": member1?.name || "",
+          "Member 1 Reg No": member1?.registration_number || "",
+          "Member 2 Name": member2?.name || "",
+          "Member 2 Reg No": member2?.registration_number || "",
+          "Member 3 Name": member3?.name || "",
+          "Member 3 Reg No": member3?.registration_number || "",
+        };
+      });
+
+      // Create workbook and worksheet
+      const worksheet = XLSX.utils.json_to_sheet(excelData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Registrations");
+
+      // Auto-size columns
+      const maxWidth = 30;
+      const colWidths = Object.keys(excelData[0] || {}).map((key) => ({
+        wch: Math.min(maxWidth, Math.max(key.length, 15)),
+      }));
+      worksheet["!cols"] = colWidths;
+
+      // Generate filename with date
+      const date = new Date().toISOString().split("T")[0];
+      const filename = `TechFluence_Registrations_${date}.xlsx`;
+
+      // Download file
+      XLSX.writeFile(workbook, filename);
+
+      toast({
+        title: "Download Complete",
+        description: `${allRegistrations.length} registrations exported successfully.`,
+      });
+    } catch (error) {
+      console.error("Download error:", error);
+      toast({
+        title: "Download Failed",
+        description: "Failed to download registrations. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchRegistrations = async () => {
@@ -128,7 +258,10 @@ const Activity = () => {
   return (
     <>
       <SignedOut>
-        <RedirectToSignIn />
+        <NotAuthenticated
+          title="Sign In to View Activity"
+          description="You need to be authenticated to view your registrations and activity. Sign in or create an account to access your dashboard!"
+        />
       </SignedOut>
       <SignedIn>
         <div className="min-h-screen bg-background">
@@ -137,7 +270,7 @@ const Activity = () => {
             <div className="container mx-auto max-w-4xl">
               <div className="text-center mb-12">
                 <Scroll className="w-16 h-16 text-primary mx-auto mb-4" />
-                <h1 className="font-decorative text-4xl royal-text-gradient mb-2">Your Royal Decrees</h1>
+                <h1 className="font-decorative text-4xl royal-text-gradient mb-2">Your Registrations</h1>
                 <p className="text-muted-foreground font-cinzel">Registration History</p>
               </div>
 
@@ -148,7 +281,7 @@ const Activity = () => {
               ) : registrations.length === 0 ? (
                 <div className="parchment-bg royal-border rounded-xl p-8 text-center">
                   <p className="text-muted-foreground mb-6">
-                    You have not registered for any TechFluence events yet.
+                    You have not registered for any TECH FLUENCE 6.0 events yet.
                   </p>
                   <Link to="/register">
                     <Button className="font-cinzel">Register Now</Button>
@@ -172,6 +305,22 @@ const Activity = () => {
                         </div>
                       </CardHeader>
                       <CardContent className="space-y-4">
+                        {/* Check-in Code Display */}
+                        {reg.check_in_code && (
+                          <div className="bg-primary/10 royal-border rounded-lg p-4 flex items-center justify-between">
+                            <div>
+                              <p className="text-xs text-muted-foreground font-sans mb-1">Check-in Code</p>
+                              <p className="text-2xl font-bold text-primary tracking-widest font-mono">{reg.check_in_code}</p>
+                            </div>
+                            {reg.team_name && (
+                              <div className="text-right">
+                                <p className="text-xs text-muted-foreground font-sans mb-1">Team Name</p>
+                                <p className="text-lg font-semibold text-foreground font-sans">{reg.team_name}</p>
+                              </div>
+                            )}
+                          </div>
+                        )}
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="flex items-center gap-2 text-sm">
                             <GraduationCap className="w-4 h-4 text-primary" />
@@ -219,17 +368,72 @@ const Activity = () => {
                               </div>
                             </div>
                           )}
+
+                        {/* Upgrade option for partial registrations */}
+                        {reg.event_type !== "both" && (
+                          <div className="pt-4 border-t border-border">
+                            <div className="bg-primary/10 rounded-lg p-4 border border-primary/30">
+                              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                                <div className="text-center sm:text-left">
+                                  <p className="font-sans text-sm text-foreground">
+                                    {reg.event_type === "event" ? (
+                                      <>
+                                        <Code className="w-4 h-4 inline mr-1 text-purple-500" />
+                                        Also interested in the <strong>Hackathon</strong>?
+                                      </>
+                                    ) : (
+                                      <>
+                                        <Calendar className="w-4 h-4 inline mr-1 text-blue-500" />
+                                        Also interested in the <strong>Event</strong>?
+                                      </>
+                                    )}
+                                  </p>
+                                </div>
+                                <Button
+                                  onClick={() => navigate(`/register?upgrade=${reg.event_type === "event" ? "hackathon" : "event"}`)}
+                                  size="sm"
+                                  className="font-sans font-semibold gap-2"
+                                >
+                                  <Plus className="w-4 h-4" />
+                                  Add {reg.event_type === "event" ? "Hackathon" : "Event"}
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </CardContent>
                     </Card>
                   ))}
+                </div>
+              )}
 
-                  <div className="text-center pt-4">
-                    <Link to="/register">
-                      <Button variant="outline" className="font-cinzel">
-                        Register for Another Event
-                      </Button>
-                    </Link>
+              {/* Admin Panel */}
+              {isAdmin && (
+                <div className="mt-12 parchment-bg royal-border rounded-xl p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <ShieldCheck className="w-6 h-6 text-primary" />
+                    <h2 className="font-cinzel text-xl text-primary">Admin Panel</h2>
                   </div>
+                  <p className="text-muted-foreground mb-4">
+                    As an admin, you can download all registrations as an Excel file.
+                  </p>
+                  <Button
+                    onClick={downloadRegistrations}
+                    disabled={isDownloading}
+                    className="font-cinzel"
+                  >
+                    {isDownloading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Downloading...
+                      </>
+                    ) : (
+                      <>
+                        <Download className="w-4 h-4 mr-2" />
+                        Download All Registrations
+                      </>
+                    )}
+                  </Button>
                 </div>
               )}
             </div>
