@@ -140,6 +140,6 @@ This project is licensed under the **MIT License**.
 
 ### 🚀 *TECH FLUENCE 6.0* 🚀
 
-*Built with 💛 and excellence*
+*Built with 💛 by somesh*
 
 </div>
