@@ -85,7 +85,7 @@ const SuccessAnimation = ({ checkInCode, teamName }: SuccessAnimationProps) => {
       navigator.clipboard.writeText(checkInCode);
       toast({
         title: "Copied!",
-        description: "Check-in code copied to clipboard.",
+        description: "Team Code copied to clipboard.",
       });
     }
   };
@@ -138,7 +138,7 @@ const SuccessAnimation = ({ checkInCode, teamName }: SuccessAnimationProps) => {
               Your royal decree has been sealed and recorded. Welcome to TechFluence!
             </p>
 
-            {/* Check-in Code Display */}
+            {/* Team Code Display */}
             {checkInCode && (
               <div className="bg-secondary/30 royal-border rounded-xl p-4 mb-5 max-w-xs mx-auto">
                 {teamName && (
@@ -147,7 +147,7 @@ const SuccessAnimation = ({ checkInCode, teamName }: SuccessAnimationProps) => {
                     <p className="text-base font-bold text-primary font-sans">{teamName}</p>
                   </div>
                 )}
-                <p className="text-xs text-muted-foreground font-sans mb-1">Your Check-in Code</p>
+                <p className="text-xs text-muted-foreground font-sans mb-1">Your Team Code</p>
                 <div className="flex items-center justify-center gap-2">
                   <span className="text-3xl font-bold text-primary tracking-widest font-mono">
                     {checkInCode}

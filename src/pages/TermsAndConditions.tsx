@@ -31,7 +31,7 @@ const TermsAndConditions = () => {
                                 <p>2.2. Each participant can only register once for the event.</p>
                                 <p>2.3. You must provide accurate and complete information during registration.</p>
                                 <p>2.4. Registration is non-transferable without prior approval from the organizers.</p>
-                                <p>2.5. A unique check-in code will be provided upon successful registration, which must be presented at the event venue.</p>
+                                <p>2.5. A unique Team Code will be provided upon successful registration, which must be presented at the event venue.</p>
                             </div>
                         </section>
 

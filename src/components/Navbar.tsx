@@ -1,14 +1,22 @@
 import { Button } from "@/components/ui/button";
-import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
-import { Crown, Settings } from "lucide-react";
+import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/clerk-react";
+import { Crown, Settings, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
+
+// Admin emails that can access admin panel
+const ADMIN_EMAILS = ["someshranjanbiswal13678@gmail.com", "biswalranjansomesh@gmail.com"];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [rotationDegree, setRotationDegree] = useState(0);
   const location = useLocation();
+  const { user } = useUser();
+
+  const isAdmin =
+    user?.primaryEmailAddress?.emailAddress &&
+    ADMIN_EMAILS.includes(user.primaryEmailAddress.emailAddress);
 
   const navLinks = [
     { path: "/", label: "Home" },
@@ -90,6 +98,19 @@ const Navbar = () => {
               </Link>
             </SignedOut>
             <SignedIn>
+              {isAdmin && (
+                <Link to="/admin">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className={`font-cinzel gap-2 border-primary/50 hover:bg-primary/10 hover:border-primary transition-all duration-300 ${isActive("/admin") ? "bg-primary/10 border-primary" : ""
+                      }`}
+                  >
+                    <ShieldCheck className="w-4 h-4" />
+                    Admin
+                  </Button>
+                </Link>
+              )}
               <UserButton
                 afterSignOutUrl="/"
                 appearance={{
@@ -160,6 +181,30 @@ const Navbar = () => {
                   {link.label}
                 </Link>
               ))}
+
+              {/* Admin Link - Mobile */}
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setRotationDegree((prev) => prev - 180);
+                  }}
+                  className={`font-cinzel text-sm tracking-wider py-3 px-4 rounded-lg transition-all duration-300 transform flex items-center gap-2 ${isOpen
+                    ? "translate-x-0 opacity-100"
+                    : "-translate-x-4 opacity-0"
+                    } ${isActive("/admin")
+                      ? "text-primary bg-primary/10 border-l-2 border-primary"
+                      : "text-foreground/80 hover:text-primary hover:bg-primary/5"
+                    }`}
+                  style={{
+                    transitionDelay: isOpen ? `${navLinks.length * 75}ms` : "0ms",
+                  }}
+                >
+                  <ShieldCheck className="w-4 h-4" />
+                  Admin Panel
+                </Link>
+              )}
 
               {/* Mobile Auth Buttons */}
               <SignedOut>

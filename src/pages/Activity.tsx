@@ -120,7 +120,7 @@ const Activity = () => {
           "Pincode": reg.pincode,
           "Technical Skills": reg.technical_skills || "",
           "Team Name": reg.team_name || "",
-          "Check-in Code": reg.check_in_code || "",
+          "Team Code": reg.check_in_code || "",
           "Registered On": new Date(reg.created_at).toLocaleString("en-IN"),
           "Team Leader Name": leader?.name || "",
           "Team Leader Reg No": leader?.registration_number || "",
@@ -305,11 +305,11 @@ const Activity = () => {
                         </div>
                       </CardHeader>
                       <CardContent className="space-y-4">
-                        {/* Check-in Code Display */}
+                        {/* Team Code Display */}
                         {reg.check_in_code && (
                           <div className="bg-primary/10 royal-border rounded-lg p-4 flex items-center justify-between">
                             <div>
-                              <p className="text-xs text-muted-foreground font-sans mb-1">Check-in Code</p>
+                              <p className="text-xs text-muted-foreground font-sans mb-1">Team Code</p>
                               <p className="text-2xl font-bold text-primary tracking-widest font-mono">{reg.check_in_code}</p>
                             </div>
                             {reg.team_name && (

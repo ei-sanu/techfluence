@@ -168,7 +168,7 @@ const RegistrationForm = () => {
 
   const totalSteps = formData.event?.eventType === "event" ? 4 : 5;
 
-  // Helper function to generate unique 5-digit check-in code
+  // Helper function to generate unique 5-digit Team Code
   const generateUniqueCheckInCode = async (): Promise<string> => {
     let code: string;
     let isUnique = false;
@@ -293,7 +293,7 @@ const RegistrationForm = () => {
     setIsSubmitting(true);
 
     try {
-      // Generate unique check-in code
+      // Generate unique Team Code
       const generatedCode = await generateUniqueCheckInCode();
       setCheckInCode(generatedCode);
 
