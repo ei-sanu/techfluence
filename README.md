@@ -21,7 +21,7 @@
 
 **TECH FLUENCE 6.0** is an immersive tech event designed to connect students with tech founders, influencers, and industry experts. Our platform offers a seamless experience for event registration, hackathon participation, and networking.
 
-Whether you're here to attend keynote sessions or compete in our hackathon, TECH FLUENCE 6.0 is your gateway to innovatio.
+Whether you're here to attend keynote sessions or compete in our hackathon, TECH FLUENCE 6.0 is your gateway to innovation.
 
 ---
 
