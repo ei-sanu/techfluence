@@ -110,7 +110,7 @@ const AboutSection = () => {
       <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}
         <div className={`text-center mb-16 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
-          <h2 className="font-decorative text-3xl md:text-5xl royal-text-gradient mb-4">
+          <h2 className="font-decorative text-3xl md:text-5xl tech-text-gradient mb-4">
             About TECH FLUENCE 6.0
           </h2>
           <div className="flex items-center justify-center gap-4 mb-6">
@@ -266,7 +266,7 @@ const AboutSection = () => {
                 }`}
               style={{ transitionDelay: `${2200 + index * 200}ms` }}
             >
-              <div className="h-full bg-card royal-border rounded-xl p-6 hover:bg-secondary/50 transition-all duration-500 hover:scale-105 hover:-translate-y-2 hover:royal-glow group-hover:border-primary/50">
+              <div className="h-full bg-card tech-border rounded-xl p-6 hover:bg-secondary/50 transition-all duration-500 hover:scale-105 hover:-translate-y-2 hover:tech-glow group-hover:border-primary/50">
                 <div className="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
                   <feature.icon className="w-7 h-7 text-primary transition-transform duration-500 group-hover:scale-110" />
                 </div>

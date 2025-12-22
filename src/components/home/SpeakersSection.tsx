@@ -4,19 +4,19 @@ import { useEffect, useRef, useState } from "react";
 
 const sessions = {
   session1: [
-    { name: "Lord Alexander Sterling", role: "Founder, TechKingdom", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop" },
-    { name: "Lady Victoria Blackwood", role: "CEO, InnovateCrown", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop" },
-    { name: "Duke Sebastian Moore", role: "CTO, RoyalTech", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop" },
+    { name: "Alexander Sterling", role: "Founder, TechVentures", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop" },
+    { name: "Victoria Blackwood", role: "CEO, InnovateTech", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop" },
+    { name: "Sebastian Moore", role: "CTO, FutureTech", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop" },
   ],
   session2: [
-    { name: "Countess Elena Rosewood", role: "VP Engineering, CastleAI", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop" },
-    { name: "Baron William Thornton", role: "Founder, DragonScale Labs", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop" },
-    { name: "Duchess Sophia Martinez", role: "CEO, QueensGate Ventures", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop" },
+    { name: "Elena Rosewood", role: "VP Engineering, NexusAI", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop" },
+    { name: "William Thornton", role: "Founder, ScaleLabs", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop" },
+    { name: "Sophia Martinez", role: "CEO, Quantum Ventures", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop" },
   ],
   session3: [
-    { name: "Earl James Whitmore", role: "CIO, ThroneTech", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop" },
-    { name: "Marquess Isabella Chen", role: "Founder, Phoenix Rising", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop" },
-    { name: "Viscount Robert Hayes", role: "Partner, Crown Capital", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop" },
+    { name: "James Whitmore", role: "CIO, CloudNexus", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop" },
+    { name: "Isabella Chen", role: "Founder, Phoenix Labs", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop" },
+    { name: "Robert Hayes", role: "Partner, Tech Capital", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop" },
   ],
 };
 
@@ -26,7 +26,7 @@ const SpeakerCard = ({ speaker, index, isVisible }: { speaker: typeof sessions.s
       className={`group relative transition-all duration-700 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
       style={{ transitionDelay: `${300 + index * 200}ms` }}
     >
-      <div className="bg-card royal-border rounded-xl overflow-hidden transition-all duration-500 hover:scale-105 hover:-translate-y-2 hover:royal-glow group-hover:border-primary/40">
+      <div className="bg-card tech-border rounded-xl overflow-hidden transition-all duration-500 hover:scale-105 hover:-translate-y-2 hover:tech-glow group-hover:border-primary/40">
         {/* Image Container */}
         <div className="relative aspect-square overflow-hidden">
           <img
@@ -113,13 +113,13 @@ const SpeakersSection = () => {
         <div className={`text-center mb-16 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
           <div className="flex items-center justify-center gap-2 mb-4">
             <Sparkles className="w-6 h-6 text-primary" />
-            <h2 className="font-decorative text-3xl md:text-5xl royal-text-gradient">
+            <h2 className="font-decorative text-3xl md:text-5xl tech-text-gradient">
               Inspiring Voices
             </h2>
             <Sparkles className="w-6 h-6 text-primary" />
           </div>
           <p className="font-cinzel text-muted-foreground tracking-wider">
-            The Royal Council of Tech Visionaries
+            The Council of Tech Visionaries
           </p>
         </div>
 

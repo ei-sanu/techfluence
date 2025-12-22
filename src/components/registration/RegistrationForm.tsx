@@ -3,7 +3,7 @@ import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useUser } from "@clerk/clerk-react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, Calendar, CheckCircle, Code, Crown, Loader2, Plus } from "lucide-react";
+import { ArrowLeft, ArrowRight, Calendar, CheckCircle, Code, Crown, Loader2, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -32,14 +32,16 @@ const eventSchema = z.object({
 
 const teamSchema = z.object({
   teamName: z.string().min(2, "Team name must be at least 2 characters").max(50, "Team name must be less than 50 characters"),
+  teamSize: z.preprocess((val) => Number(val), z.number().min(1).max(4)),
   teamLeaderName: z.string().min(2, "Team leader name is required"),
   teamLeaderRegNo: z.string().min(1, "Registration number is required"),
-  member1Name: z.string().min(2, "Member 1 name is required"),
-  member1RegNo: z.string().min(1, "Registration number is required"),
-  member2Name: z.string().min(2, "Member 2 name is required"),
-  member2RegNo: z.string().min(1, "Registration number is required"),
-  member3Name: z.string().min(2, "Member 3 name is required"),
-  member3RegNo: z.string().min(1, "Registration number is required"),
+  // member fields are optional; actual requiredness enforced by UI based on teamSize
+  member1Name: z.string().optional(),
+  member1RegNo: z.string().optional(),
+  member2Name: z.string().optional(),
+  member2RegNo: z.string().optional(),
+  member3Name: z.string().optional(),
+  member3RegNo: z.string().optional(),
 });
 
 const addressSchema = z.object({
@@ -56,7 +58,11 @@ export type FormData = {
   address: z.infer<typeof addressSchema>;
 };
 
-const RegistrationForm = () => {
+interface RegistrationFormProps {
+  onBack?: () => void;
+}
+
+const RegistrationForm = ({ onBack }: RegistrationFormProps) => {
   const { user } = useUser();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -145,6 +151,7 @@ const RegistrationForm = () => {
     resolver: zodResolver(teamSchema),
     defaultValues: {
       teamName: "",
+      teamSize: 1,
       teamLeaderName: "",
       teamLeaderRegNo: "",
       member1Name: "",
@@ -229,16 +236,21 @@ const RegistrationForm = () => {
       }
     }
 
-    // If moving from team details step, check all team members
+    // If moving from team details step, check team members according to selected team size
     if (step === 3 && data.team) {
-      const teamRegNumbers = [
-        data.team.teamLeaderRegNo,
-        data.team.member1RegNo,
-        data.team.member2RegNo,
-        data.team.member3RegNo,
-      ];
+      const size = Number(data.team.teamSize) || 1;
+      const teamRegNumbers: string[] = [];
 
-      // Check for duplicates within the team
+      // leader always included
+      if (data.team.teamLeaderRegNo) teamRegNumbers.push(data.team.teamLeaderRegNo);
+
+      // include member reg nos up to size-1
+      for (let i = 1; i <= Math.max(0, size - 1); i++) {
+        const regField = data.team[`member${i}RegNo`];
+        if (regField) teamRegNumbers.push(regField);
+      }
+
+      // Check for duplicates within the provided team registration numbers
       const uniqueRegNumbers = new Set(teamRegNumbers);
       if (uniqueRegNumbers.size !== teamRegNumbers.length) {
         toast({
@@ -249,7 +261,7 @@ const RegistrationForm = () => {
         return;
       }
 
-      // Check each team member against existing registrations
+      // Check each provided registration number against existing registrations
       for (const regNo of teamRegNumbers) {
         const isDuplicate = await checkDuplicateRegistrationNumber(regNo);
         if (isDuplicate) {
@@ -339,6 +351,7 @@ const RegistrationForm = () => {
           pincode: formData.address?.pincode,
           technical_skills: formData.address?.technicalSkills,
           team_name: formData.team?.teamName || null,
+          team_size: formData.team?.teamSize || 1,
           check_in_code: generatedCode,
         })
         .select("id")
@@ -346,25 +359,35 @@ const RegistrationForm = () => {
 
       if (regError) throw regError;
 
-      // If hackathon or both, add team members
+      // If hackathon or both, add team members according to selected team size
       if (formData.event?.eventType !== "event" && formData.team) {
-        const teamMembers = [
-          { member_type: "leader", name: formData.team.teamLeaderName, registration_number: formData.team.teamLeaderRegNo },
-          { member_type: "member1", name: formData.team.member1Name, registration_number: formData.team.member1RegNo },
-          { member_type: "member2", name: formData.team.member2Name, registration_number: formData.team.member2RegNo },
-          { member_type: "member3", name: formData.team.member3Name, registration_number: formData.team.member3RegNo },
-        ];
+        const size = Number(formData.team.teamSize) || 1;
+        const membersToInsert: any[] = [];
 
-        const { error: teamError } = await supabase
-          .from("team_members")
-          .insert(
-            teamMembers.map((member) => ({
-              registration_id: registration.id,
-              ...member,
-            }))
-          );
+        // leader
+        membersToInsert.push({ member_type: "leader", name: formData.team.teamLeaderName, registration_number: formData.team.teamLeaderRegNo });
 
-        if (teamError) throw teamError;
+        // add other members if provided (up to size - 1)
+        for (let i = 1; i <= Math.max(0, size - 1); i++) {
+          const name = formData.team[`member${i}Name`];
+          const reg = formData.team[`member${i}RegNo`];
+          if (name && reg) {
+            membersToInsert.push({ member_type: `member${i}`, name, registration_number: reg });
+          }
+        }
+
+        if (membersToInsert.length > 0) {
+          const { error: teamError } = await supabase
+            .from("team_members")
+            .insert(
+              membersToInsert.map((member) => ({
+                registration_id: registration.id,
+                ...member,
+              }))
+            );
+
+          if (teamError) throw teamError;
+        }
       }
 
       setShowSuccess(true);
@@ -427,15 +450,17 @@ const RegistrationForm = () => {
 
     setIsSubmitting(true);
     try {
-      // Check for duplicate registration numbers in team
-      const teamRegNumbers = [
-        teamData.teamLeaderRegNo,
-        teamData.member1RegNo,
-        teamData.member2RegNo,
-        teamData.member3RegNo,
-      ];
+      // Check for duplicate registration numbers in team according to teamSize
+      const size = Number(teamData.teamSize) || 1;
+      const teamRegNumbers: string[] = [];
 
-      // Check for duplicates within the team
+      if (teamData.teamLeaderRegNo) teamRegNumbers.push(teamData.teamLeaderRegNo);
+      for (let i = 1; i <= Math.max(0, size - 1); i++) {
+        const reg = teamData[`member${i}RegNo`];
+        if (reg) teamRegNumbers.push(reg);
+      }
+
+      // Check for duplicates within the provided numbers
       const uniqueRegNumbers = new Set(teamRegNumbers);
       if (uniqueRegNumbers.size !== teamRegNumbers.length) {
         toast({
@@ -447,7 +472,7 @@ const RegistrationForm = () => {
         return;
       }
 
-      // Check each team member against existing registrations
+      // Check each provided team member against existing registrations
       for (const regNo of teamRegNumbers) {
         const isDuplicate = await checkDuplicateRegistrationNumber(regNo);
         if (isDuplicate) {
@@ -462,28 +487,31 @@ const RegistrationForm = () => {
       }
 
       // Add team members
-      const teamMembers = [
-        { member_type: "leader", name: teamData.teamLeaderName, registration_number: teamData.teamLeaderRegNo },
-        { member_type: "member1", name: teamData.member1Name, registration_number: teamData.member1RegNo },
-        { member_type: "member2", name: teamData.member2Name, registration_number: teamData.member2RegNo },
-        { member_type: "member3", name: teamData.member3Name, registration_number: teamData.member3RegNo },
-      ];
+      const teamMembers: any[] = [];
+      teamMembers.push({ member_type: "leader", name: teamData.teamLeaderName, registration_number: teamData.teamLeaderRegNo });
+      for (let i = 1; i <= Math.max(0, size - 1); i++) {
+        const name = teamData[`member${i}Name`];
+        const reg = teamData[`member${i}RegNo`];
+        if (name && reg) teamMembers.push({ member_type: `member${i}`, name, registration_number: reg });
+      }
 
-      const { error: teamError } = await supabase
-        .from("team_members")
-        .insert(
-          teamMembers.map((member) => ({
-            registration_id: existingRegistration.id,
-            ...member,
-          }))
-        );
+      if (teamMembers.length > 0) {
+        const { error: teamError } = await supabase
+          .from("team_members")
+          .insert(
+            teamMembers.map((member) => ({
+              registration_id: existingRegistration.id,
+              ...member,
+            }))
+          );
 
-      if (teamError) throw teamError;
+        if (teamError) throw teamError;
+      }
 
       // Update registration to "both" with team_name
       const { error: updateError } = await supabase
         .from("registrations")
-        .update({ event_type: "both", team_name: teamData.teamName })
+        .update({ event_type: "both", team_name: teamData.teamName, team_size: teamData.teamSize || 1 })
         .eq("id", existingRegistration.id);
 
       if (updateError) throw updateError;
@@ -514,7 +542,7 @@ const RegistrationForm = () => {
   if (isCheckingRegistration) {
     return (
       <div className="w-full max-w-2xl mx-auto">
-        <div className="parchment-bg royal-border rounded-xl p-8 text-center">
+        <div className="parchment-bg tech-border rounded-xl p-8 text-center">
           <div className="animate-spin w-12 h-12 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4" />
           <p className="font-cinzel text-muted-foreground">Checking registration status...</p>
         </div>
@@ -531,7 +559,7 @@ const RegistrationForm = () => {
     if (isRegisteredForEvent && currentStep === 3) {
       return (
         <div className="w-full max-w-2xl mx-auto">
-          <div className="parchment-bg royal-border rounded-xl p-6 mb-6 text-center">
+          <div className="parchment-bg tech-border rounded-xl p-6 mb-6 text-center">
             <Plus className="w-10 h-10 text-primary mx-auto mb-3" />
             <h2 className="font-decorative text-2xl text-primary mb-2">Add Hackathon Registration</h2>
             <p className="text-muted-foreground font-sans">
@@ -545,7 +573,7 @@ const RegistrationForm = () => {
           />
           {isSubmitting && (
             <div className="fixed inset-0 bg-background/80 flex items-center justify-center z-50">
-              <div className="parchment-bg royal-border rounded-xl p-8 text-center">
+              <div className="parchment-bg tech-border rounded-xl p-8 text-center">
                 <Loader2 className="w-12 h-12 text-primary animate-spin mx-auto mb-4" />
                 <p className="font-sans text-foreground">Upgrading your registration...</p>
               </div>
@@ -557,13 +585,13 @@ const RegistrationForm = () => {
 
     return (
       <div className="w-full max-w-2xl mx-auto">
-        <div className="parchment-bg royal-border rounded-xl p-8 md:p-12 text-center">
+        <div className="parchment-bg tech-border rounded-xl p-8 md:p-12 text-center">
           <div className="relative inline-block mb-6">
             <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse" />
             <CheckCircle className="w-16 h-16 text-primary relative" />
           </div>
 
-          <h2 className="font-decorative text-2xl md:text-3xl royal-text-gradient mb-4">
+          <h2 className="font-decorative text-2xl md:text-3xl tech-text-gradient mb-4">
             Upgrade Your Registration
           </h2>
 
@@ -651,7 +679,7 @@ const RegistrationForm = () => {
 
     return (
       <div className="w-full max-w-2xl mx-auto">
-        <div className="parchment-bg royal-border rounded-xl p-8 md:p-12 text-center">
+        <div className="parchment-bg tech-border rounded-xl p-8 md:p-12 text-center">
           <div className="relative inline-block mb-6">
             <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse" />
             <CheckCircle className="w-20 h-20 text-primary relative" />
@@ -659,7 +687,7 @@ const RegistrationForm = () => {
 
           <Crown className="w-12 h-12 text-primary mx-auto mb-4" />
 
-          <h2 className="font-decorative text-3xl md:text-4xl royal-text-gradient mb-4">
+          <h2 className="font-decorative text-3xl md:text-4xl tech-text-gradient mb-4">
             {existingRegistration?.event_type === "both" ? "Fully Registered!" : "Already Registered!"}
           </h2>
 
@@ -718,6 +746,17 @@ const RegistrationForm = () => {
 
   return (
     <div className="w-full max-w-2xl mx-auto">
+      {onBack && (
+        <Button
+          variant="ghost"
+          onClick={onBack}
+          className="mb-6 gap-2"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back to Options
+        </Button>
+      )}
+
       <StepIndicator currentStep={currentStep} totalSteps={totalSteps} needsTeam={needsTeamDetails} />
 
       <div className="mt-8">

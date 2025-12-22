@@ -9,6 +9,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Activity from "./pages/Activity";
 import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
+import Contact from "./pages/Contact";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -41,6 +42,7 @@ const App = () => (
               <Route path="/register" element={<Register />} />
               <Route path="/activity" element={<Activity />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="/contact" element={<Contact />} />
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="*" element={<NotFound />} />

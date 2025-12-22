@@ -3,6 +3,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
+import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
@@ -10,6 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
@@ -54,6 +63,8 @@ interface Registration {
     technical_skills: string | null;
     team_name: string | null;
     check_in_code: string | null;
+    team_size?: number;
+    checked_in?: boolean;
     created_at: string;
 }
 
@@ -62,6 +73,8 @@ interface TeamMember {
     member_type: string;
     name: string;
     registration_number: string;
+    present?: boolean;
+    registration_id?: string;
 }
 
 interface SearchResult {
@@ -77,6 +90,13 @@ const Admin = () => {
     const [allTeamMembers, setAllTeamMembers] = useState<Record<string, TeamMember[]>>({});
     const [loading, setLoading] = useState(true);
     const [isDownloading, setIsDownloading] = useState(false);
+    const [checkedInCount, setCheckedInCount] = useState(0);
+    const [checkedInBreakdown, setCheckedInBreakdown] = useState<Record<number, number>>({ 1: 0, 2: 0, 3: 0, 4: 0 });
+    const [checkedInTeams, setCheckedInTeams] = useState<any[]>([]);
+    const [showCheckedInModal, setShowCheckedInModal] = useState(false);
+    const [checkedInFilterSize, setCheckedInFilterSize] = useState<number | null>(null);
+    const [showDetailsModal, setShowDetailsModal] = useState(false);
+    const [detailsResult, setDetailsResult] = useState<SearchResult | null>(null);
 
     // Search states
     const [teamCodeSearch, setTeamCodeSearch] = useState("");
@@ -85,6 +105,13 @@ const Admin = () => {
     const [regNumberResult, setRegNumberResult] = useState<SearchResult | null>(null);
     const [searchingTeamCode, setSearchingTeamCode] = useState(false);
     const [searchingRegNumber, setSearchingRegNumber] = useState(false);
+    // Check-in modal states
+    const [showCheckinModal, setShowCheckinModal] = useState(false);
+    const [checkinPassword, setCheckinPassword] = useState("");
+    const [passVerified, setPassVerified] = useState(false);
+    const [checkinTeamCode, setCheckinTeamCode] = useState("");
+    const [checkinResult, setCheckinResult] = useState<SearchResult | null>(null);
+    const [updatingCheckin, setUpdatingCheckin] = useState(false);
 
     // Clear search functions
     const clearTeamCodeSearch = () => {
@@ -95,6 +122,18 @@ const Admin = () => {
     const clearRegNumberSearch = () => {
         setRegNumberSearch("");
         setRegNumberResult(null);
+    };
+
+    const openCheckinModal = () => {
+        setCheckinPassword("");
+        setPassVerified(false);
+        setCheckinTeamCode("");
+        setCheckinResult(null);
+        setShowCheckinModal(true);
+    };
+
+    const closeCheckinModal = () => {
+        setShowCheckinModal(false);
     };
 
     const isAdmin =
@@ -140,6 +179,35 @@ const Admin = () => {
             });
 
             setAllTeamMembers(teamMembersByReg);
+
+            // fetch checkin stats
+            try {
+                const { data: rcData, error: rcErr } = await supabase.from("registration_checkins").select("*");
+                if (rcErr) {
+                    console.warn("registration_checkins read error:", rcErr);
+                }
+
+                const checked = (rcData || []).filter((r: any) => r.checked_in);
+                setCheckedInCount(checked.length);
+
+                // breakdown
+                const breakdown: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0 };
+                const teamsList: any[] = [];
+
+                for (const rc of checked) {
+                    const teamSize = rc.team_size || 1;
+                    if (teamSize >= 1 && teamSize <= 4) breakdown[teamSize] = (breakdown[teamSize] || 0) + 1;
+
+                    // fetch registration details for this rc
+                    const reg = (registrations || []).find((r) => r.id === rc.registration_id);
+                    teamsList.push({ rc, registration: reg });
+                }
+
+                setCheckedInBreakdown(breakdown);
+                setCheckedInTeams(teamsList);
+            } catch (e) {
+                console.warn("fetch checkin stats failed:", e);
+            }
         } catch (error) {
             console.error("Error fetching registrations:", error);
             toast({
@@ -149,6 +217,69 @@ const Admin = () => {
             });
         } finally {
             setLoading(false);
+        }
+    };
+
+    // Open a read-only details modal for a registration id
+    const openDetailsForReg = async (registrationId?: string) => {
+        if (!registrationId) {
+            toast({ title: "Error", description: "Missing registration id", variant: "destructive" });
+            return;
+        }
+
+        try {
+            // fetch registration
+            const { data: registration, error: regErr } = await supabase
+                .from("registrations")
+                .select("*")
+                .eq("id", registrationId)
+                .maybeSingle();
+
+            if (regErr || !registration) {
+                toast({ title: "Not Found", description: "Registration not found.", variant: "destructive" });
+                return;
+            }
+
+            // fetch team members
+            const { data: members, error: membersErr } = await supabase
+                .from("team_members")
+                .select("*")
+                .eq("registration_id", registrationId);
+
+            if (membersErr) {
+                console.warn("team_members fetch error:", membersErr);
+            }
+
+            const memberIds = (members || []).map((m: any) => m.id);
+
+            // fetch checkin entries for these members
+            const { data: memberCheckins, error: tmcErr } = await supabase
+                .from("team_member_checkins")
+                .select("*")
+                .in("team_member_id", memberIds || []);
+
+            if (tmcErr) {
+                console.warn("team_member_checkins fetch error:", tmcErr);
+            }
+
+            // fetch registration_checkin row
+            const { data: rcRow } = await supabase
+                .from("registration_checkins")
+                .select("*")
+                .eq("registration_id", registrationId)
+                .maybeSingle();
+
+            // merge present flag into members
+            const membersWithPresent = (members || []).map((m: any) => {
+                const mc = (memberCheckins || []).find((c: any) => c.team_member_id === m.id);
+                return { ...m, present: mc ? !!mc.present : !!m.present };
+            });
+
+            setDetailsResult({ registration, teamMembers: membersWithPresent, teamLeader: membersWithPresent.find((m: any) => m.member_type === 'leader') });
+            setShowDetailsModal(true);
+        } catch (err) {
+            console.error("openDetailsForReg error:", err);
+            toast({ title: "Error", description: "Failed to load team details.", variant: "destructive" });
         }
     };
 
@@ -209,6 +340,159 @@ const Admin = () => {
             });
         } finally {
             setSearchingTeamCode(false);
+        }
+    };
+
+    // Check-in flow: fetch by code for admin check-in
+    const fetchForCheckin = async (code: string) => {
+        if (!code.trim()) return;
+        setCheckinResult(null);
+        try {
+            const { data: registration, error } = await supabase
+                .from("registrations")
+                .select("*")
+                .eq("check_in_code", code.trim().toUpperCase())
+                .single();
+
+            if (error || !registration) {
+                toast({ title: "Not Found", description: "No registration found with this team code.", variant: "destructive" });
+                return;
+            }
+
+            // If already checked in, inform admin
+            if (registration.checked_in) {
+                toast({ title: "Already Checked In", description: `Team \"${registration.team_name || "Individual"}\" has already been checked in.`, variant: "default" });
+            }
+
+            const { data: teamMembers } = await supabase
+                .from("team_members")
+                .select("*")
+                .eq("registration_id", registration.id);
+
+            const leader = teamMembers?.find((m) => m.member_type === "leader");
+
+            setCheckinResult({ registration, teamMembers: teamMembers || [], teamLeader: leader });
+        } catch (err) {
+            console.error("Checkin fetch error:", err);
+            toast({ title: "Error", description: "Failed to fetch team.", variant: "destructive" });
+        }
+    };
+
+    const verifyPassAndProceed = (pw: string) => {
+        if (pw === "2511") {
+            setPassVerified(true);
+            toast({ title: "Pass Verified", description: "You can now enter a team code to check in." });
+        } else {
+            toast({ title: "Invalid Pass", description: "Incorrect passcode.", variant: "destructive" });
+        }
+    };
+
+    const toggleMemberPresence = (id: string, present: boolean) => {
+        if (!checkinResult) return;
+        const updated = (checkinResult.teamMembers || []).map((m) => (m.id === id ? { ...m, present } : m));
+        setCheckinResult({ ...checkinResult, teamMembers: updated });
+    };
+
+    const submitCheckin = async () => {
+        if (!checkinResult || !checkinResult.registration) return;
+        const reg = checkinResult.registration;
+        setUpdatingCheckin(true);
+        try {
+            // Ensure there's a registration_checkins row for this registration (insert or update)
+            let rcId: string | null = null;
+
+            const { data: existingRC, error: existingRcErr } = await supabase
+                .from("registration_checkins")
+                .select("*")
+                .eq("registration_id", reg.id)
+                .maybeSingle();
+
+            if (existingRcErr) {
+                console.warn("Could not read registration_checkins:", existingRcErr);
+            }
+
+            const nowIso = new Date().toISOString();
+
+            if (existingRC && existingRC.id) {
+                rcId = existingRC.id;
+                await supabase
+                    .from("registration_checkins")
+                    .update({ checked_in: true, checked_in_at: nowIso, updated_at: nowIso })
+                    .eq("id", rcId);
+            } else {
+                const { data: insertedRC, error: insertRcErr } = await supabase
+                    .from("registration_checkins")
+                    .insert([
+                        {
+                            registration_id: reg.id,
+                            check_in_code: reg.check_in_code,
+                            checked_in: true,
+                            checked_in_at: nowIso,
+                            team_size: reg.team_size || 1,
+                            created_at: nowIso,
+                            updated_at: nowIso,
+                        },
+                    ])
+                    .select()
+                    .maybeSingle();
+
+                if (insertRcErr) throw insertRcErr;
+                rcId = insertedRC?.id || null;
+            }
+
+            // Upsert team_member_checkins for each member
+            for (const m of checkinResult.teamMembers) {
+                try {
+                    const { data: existingTMc } = await supabase
+                        .from("team_member_checkins")
+                        .select("*")
+                        .eq("team_member_id", m.id)
+                        .maybeSingle();
+
+                    if (existingTMc && existingTMc.id) {
+                        await supabase
+                            .from("team_member_checkins")
+                            .update({ present: !!m.present, present_at: m.present ? nowIso : null, registration_checkin_id: rcId, updated_at: nowIso })
+                            .eq("id", existingTMc.id);
+                    } else {
+                        await supabase.from("team_member_checkins").insert([
+                            {
+                                team_member_id: m.id,
+                                registration_checkin_id: rcId,
+                                present: !!m.present,
+                                present_at: m.present ? nowIso : null,
+                                created_at: nowIso,
+                                updated_at: nowIso,
+                            },
+                        ]);
+                    }
+                } catch (innerErr) {
+                    console.warn("team_member_checkins upsert error:", innerErr);
+                }
+            }
+
+            // Also update legacy columns for compatibility (if present)
+            try {
+                await supabase.from("team_members").update({ present: true }).in("id", checkinResult.teamMembers.filter(m => m.present).map(m => m.id));
+            } catch (e) {
+                // ignore
+            }
+
+            try {
+                await supabase.from("registrations").update({ checked_in: true }).eq("id", reg.id);
+            } catch (e) {
+                // ignore
+            }
+
+            toast({ title: "Checked In", description: `Team \"${reg.team_name || "Individual"}\" checked in.` });
+            // refresh data
+            fetchAllRegistrations();
+            setShowCheckinModal(false);
+        } catch (err) {
+            console.error("Submit checkin error:", err);
+            toast({ title: "Error", description: "Failed to update check-in.", variant: "destructive" });
+        } finally {
+            setUpdatingCheckin(false);
         }
     };
 
@@ -443,6 +727,97 @@ const Admin = () => {
         }
     };
 
+    const downloadCheckedIn = async () => {
+        setIsDownloading(true);
+        try {
+            // fetch checked-in registration_checkins
+            const { data: rcData, error: rcError } = await supabase
+                .from("registration_checkins")
+                .select("*")
+                .eq("checked_in", true);
+
+            if (rcError) throw rcError;
+
+            if (!rcData || rcData.length === 0) {
+                toast({ title: "No Checked-In Teams", description: "No teams have been checked in yet.", variant: "destructive" });
+                setIsDownloading(false);
+                return;
+            }
+
+            const registrationIds = rcData.map((r) => r.registration_id).filter(Boolean);
+
+            // fetch registrations for those ids
+            const { data: regs } = await supabase.from("registrations").select("*").in("id", registrationIds);
+
+            // fetch present member checkins for these registration_checkin ids
+            const rcIds = rcData.map((r) => r.id);
+            const { data: tmCheckins } = await supabase
+                .from("team_member_checkins")
+                .select("*")
+                .in("registration_checkin_id", rcIds)
+                .eq("present", true);
+
+            const memberIds = (tmCheckins || []).map((t) => t.team_member_id).filter(Boolean);
+
+            const { data: presentMembers } = await supabase
+                .from("team_members")
+                .select("*")
+                .in("id", memberIds);
+
+            // create map for rcData by registration_id
+            const rcByReg: Record<string, any> = {};
+            for (const rc of rcData) rcByReg[rc.registration_id] = rc;
+
+            // assemble rows: one row per checked-in registration, listing present members and team size
+            const date = new Date().toISOString().split("T")[0];
+
+            const rows = (regs || []).map((reg) => {
+                const rc = rcByReg[reg.id] || {};
+                const membersForReg = (presentMembers || []).filter((m) => m.registration_id === reg.id);
+                const leader = membersForReg.find((m) => m.member_type === "leader");
+                const others = membersForReg.filter((m) => m.member_type !== "leader");
+                const teamSize = rc.team_size || reg.team_size || 1;
+
+                return {
+                    "Team Code": reg.check_in_code || "",
+                    "Team Name": reg.team_name || "",
+                    "Team Size": teamSize === 1 ? 'Solo' : teamSize === 2 ? 'Duo' : teamSize === 3 ? 'Trio' : 'Quadra',
+                    "Event Type": reg.event_type,
+                    "Leader Name": leader?.name || "",
+                    "Leader Reg No": leader?.registration_number || "",
+                    "Leader Email": reg.email,
+                    "Leader Phone": reg.contact_number,
+                    "Leader University": reg.university_name,
+                    "Member 1 Name": others[0]?.name || "",
+                    "Member 1 Reg No": others[0]?.registration_number || "",
+                    "Member 2 Name": others[1]?.name || "",
+                    "Member 2 Reg No": others[1]?.registration_number || "",
+                    "Member 3 Name": others[2]?.name || "",
+                    "Member 3 Reg No": others[2]?.registration_number || "",
+                    "Checked In At": rc.checked_in_at ? new Date(rc.checked_in_at).toLocaleString() : "",
+                };
+            });
+
+            if (rows.length === 0) {
+                toast({ title: "No Data", description: "No present participants found for checked-in teams.", variant: "destructive" });
+                setIsDownloading(false);
+                return;
+            }
+
+            const worksheet = XLSX.utils.json_to_sheet(rows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Checked-In Teams");
+            XLSX.writeFile(workbook, `techfluence_checked_in_${date}.xlsx`);
+
+            toast({ title: "Downloaded!", description: `${rows.length} checked-in teams exported.` });
+        } catch (error) {
+            console.error("Checked-in download error:", error);
+            toast({ title: "Error", description: "Failed to download checked-in teams.", variant: "destructive" });
+        } finally {
+            setIsDownloading(false);
+        }
+    };
+
     const getMemberTypeLabel = (type: string) => {
         switch (type) {
             case "leader":
@@ -520,55 +895,74 @@ const Admin = () => {
                             {/* Header */}
                             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
                                 <div>
-                                    <h1 className="font-decorative text-3xl md:text-4xl royal-text-gradient mb-2">
+                                    <h1 className="font-decorative text-3xl md:text-4xl tech-text-gradient mb-2">
                                         Admin Panel
                                     </h1>
                                     <p className="text-muted-foreground font-cinzel">
                                         Manage registrations and search participants
                                     </p>
                                 </div>
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <Button
-                                            disabled={isDownloading || loading}
-                                            className="gap-2"
-                                        >
-                                            {isDownloading ? (
-                                                <Loader2 className="w-4 h-4 animate-spin" />
-                                            ) : (
-                                                <Download className="w-4 h-4" />
-                                            )}
-                                            Download
-                                            <ChevronDown className="w-4 h-4" />
-                                        </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end" className="w-56">
-                                        <DropdownMenuItem
-                                            onClick={() => downloadRegistrations("full")}
-                                            className="gap-2 cursor-pointer"
-                                        >
-                                            <FileSpreadsheet className="w-4 h-4" />
-                                            <div>
-                                                <p className="font-medium">Entire Registration Sheet</p>
-                                                <p className="text-xs text-muted-foreground">
-                                                    All {allRegistrations.length} registrations
-                                                </p>
-                                            </div>
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem
-                                            onClick={() => downloadRegistrations("teams")}
-                                            className="gap-2 cursor-pointer"
-                                        >
-                                            <Users className="w-4 h-4" />
-                                            <div>
-                                                <p className="font-medium">Team Details Only</p>
-                                                <p className="text-xs text-muted-foreground">
-                                                    Team name, code, leader & members
-                                                </p>
-                                            </div>
-                                        </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
+                                <div className="flex items-center gap-2">
+                                    <Button onClick={openCheckinModal} variant="ghost" className="gap-2">
+                                        <ShieldCheck className="w-4 h-4" />
+                                        Check-In
+                                    </Button>
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Button
+                                                disabled={isDownloading || loading}
+                                                className="gap-2"
+                                            >
+                                                {isDownloading ? (
+                                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                                ) : (
+                                                    <Download className="w-4 h-4" />
+                                                )}
+                                                Download
+                                                <ChevronDown className="w-4 h-4" />
+                                            </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent align="end" className="w-56">
+                                            <DropdownMenuItem
+                                                onClick={() => downloadRegistrations("full")}
+                                                className="gap-2 cursor-pointer"
+                                            >
+                                                <FileSpreadsheet className="w-4 h-4" />
+                                                <div>
+                                                    <p className="font-medium">Entire Registration Sheet</p>
+                                                    <p className="text-xs text-muted-foreground">
+                                                        All {allRegistrations.length} registrations
+                                                    </p>
+                                                </div>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem
+                                                onClick={() => downloadRegistrations("teams")}
+                                                className="gap-2 cursor-pointer"
+                                            >
+                                                <Users className="w-4 h-4" />
+                                                <div>
+                                                    <p className="font-medium">Team Details Only</p>
+                                                    <p className="text-xs text-muted-foreground">
+                                                        Team name, code, leader & members
+                                                    </p>
+                                                </div>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem
+                                                onClick={async () => {
+                                                    // call the new checked-in download
+                                                    await downloadCheckedIn();
+                                                }}
+                                                className="gap-2 cursor-pointer"
+                                            >
+                                                <FileSpreadsheet className="w-4 h-4" />
+                                                <div>
+                                                    <p className="font-medium">Checked-In Teams</p>
+                                                    <p className="text-xs text-muted-foreground">Only teams/participants who were checked in</p>
+                                                </div>
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+                                </div>
                             </div>
 
                             {/* Stats Cards */}
@@ -627,6 +1021,26 @@ const Admin = () => {
                                                 <p className="text-2xl font-bold">
                                                     {allRegistrations.filter((r) => r.event_type === "both").length}
                                                 </p>
+                                            </div>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                                <Card>
+                                    <CardContent className="pt-6">
+                                        <div className="flex items-center gap-4">
+                                            <div className="p-3 bg-emerald-500/10 rounded-lg">
+                                                <ShieldCheck className="w-6 h-6 text-emerald-500" />
+                                            </div>
+                                            <div>
+                                                <p className="text-sm text-muted-foreground">Checked-In Teams</p>
+                                                <p className="text-2xl font-bold">{checkedInCount}</p>
+                                                <div className="mt-2 flex gap-2">
+                                                    <Button size="sm" onClick={() => setShowCheckedInModal(true)}>View</Button>
+                                                    <Button size="sm" variant="outline" onClick={() => {
+                                                        setCheckedInFilterSize(null);
+                                                        setShowCheckedInModal(true);
+                                                    }}>Breakdown</Button>
+                                                </div>
                                             </div>
                                         </div>
                                     </CardContent>
@@ -727,6 +1141,99 @@ const Admin = () => {
                                     </CardContent>
                                 </Card>
 
+                                {/* Checked-in Breakdown / Teams Modal */}
+                                <Dialog open={showCheckedInModal} onOpenChange={(v) => setShowCheckedInModal(v)}>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle>Checked-In Teams</DialogTitle>
+                                            <DialogDescription>Breakdown by team size and team details.</DialogDescription>
+                                        </DialogHeader>
+
+                                        <div className="mt-4 space-y-4">
+                                            <div className="flex gap-2">
+                                                <Button onClick={() => setCheckedInFilterSize(1)}>Solo ({checkedInBreakdown[1] || 0})</Button>
+                                                <Button onClick={() => setCheckedInFilterSize(2)}>Duo ({checkedInBreakdown[2] || 0})</Button>
+                                                <Button onClick={() => setCheckedInFilterSize(3)}>Trio ({checkedInBreakdown[3] || 0})</Button>
+                                                <Button onClick={() => setCheckedInFilterSize(4)}>Quadra ({checkedInBreakdown[4] || 0})</Button>
+                                                <Button variant="outline" onClick={() => setCheckedInFilterSize(null)}>All ({checkedInCount})</Button>
+                                            </div>
+
+                                            <div>
+                                                <p className="text-sm text-muted-foreground">Teams</p>
+                                                <div className="space-y-2 mt-2 max-h-72 overflow-auto">
+                                                    {(checkedInTeams || []).filter(t => !checkedInFilterSize || (t.rc.team_size || 1) === checkedInFilterSize).map((t, idx) => (
+                                                        <div key={t.registration?.id || idx} className="p-3 bg-muted/30 rounded">
+                                                            <div className="flex items-center justify-between">
+                                                                <div>
+                                                                    <p className="font-semibold">{t.registration?.team_name || t.registration?.full_name}</p>
+                                                                    <p className="text-xs text-muted-foreground">Code: <span className="font-mono">{t.rc?.check_in_code}</span> — Size: {(() => { const s = t.rc?.team_size || t.registration?.team_size || 1; return s === 1 ? 'Solo' : s === 2 ? 'Duo' : s === 3 ? 'Trio' : 'Quadra'; })()}</p>
+                                                                </div>
+                                                                <div className="flex gap-2">
+                                                                    <Button size="sm" onClick={() => openDetailsForReg(t.registration?.id)}>Details</Button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <DialogFooter>
+                                            <div className="flex gap-2 w-full">
+                                                <Button variant="outline" onClick={() => setShowCheckedInModal(false)} className="flex-1">Close</Button>
+                                            </div>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
+
+                                {/* Read-only Details Modal */}
+                                <Dialog open={showDetailsModal} onOpenChange={(v) => setShowDetailsModal(v)}>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle>Team Details</DialogTitle>
+                                            <DialogDescription>View presence for each participant</DialogDescription>
+                                        </DialogHeader>
+
+                                        <div className="mt-4 space-y-4">
+                                            {detailsResult ? (
+                                                <div className="space-y-3">
+                                                    <div className="flex items-center justify-between">
+                                                        <div>
+                                                            <p className="font-semibold">{detailsResult.registration.team_name || detailsResult.registration.full_name}</p>
+                                                            <p className="text-xs text-muted-foreground">Code: <span className="font-mono">{detailsResult.registration.check_in_code}</span></p>
+                                                        </div>
+                                                        <div className="text-sm text-muted-foreground">Size: {(detailsResult.registration.team_size || 1) === 1 ? 'Solo' : (detailsResult.registration.team_size || 1) === 2 ? 'Duo' : (detailsResult.registration.team_size || 1) === 3 ? 'Trio' : 'Quadra'}</div>
+                                                    </div>
+
+                                                    <Separator />
+
+                                                    <div className="space-y-2">
+                                                        {(detailsResult.teamMembers || []).map((m) => (
+                                                            <div key={m.id} className="flex items-center justify-between bg-muted/20 p-2 rounded">
+                                                                <div>
+                                                                    <p className="font-medium">{m.name}</p>
+                                                                    <p className="text-xs text-muted-foreground">{m.registration_number}</p>
+                                                                </div>
+                                                                <div className={`text-sm font-medium ${m.present ? 'text-emerald-500' : 'text-red-500'}`}>
+                                                                    {m.present ? 'Present' : 'Absent'}
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div className="text-center py-6">No details</div>
+                                            )}
+                                        </div>
+
+                                        <DialogFooter>
+                                            <div className="flex gap-2 w-full">
+                                                <Button variant="outline" onClick={() => setShowDetailsModal(false)} className="flex-1">Close</Button>
+                                            </div>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
+
                                 {/* Search by Registration Number */}
                                 <Card>
                                     <CardHeader>
@@ -811,6 +1318,94 @@ const Admin = () => {
                                     </CardContent>
                                 </Card>
                             </div>
+
+                            {/* Check-In Dialog */}
+                            <Dialog open={showCheckinModal} onOpenChange={(open) => setShowCheckinModal(open)}>
+                                <DialogContent>
+                                    <DialogHeader>
+                                        <DialogTitle>Admin Check-In</DialogTitle>
+                                        <DialogDescription>Enter admin pass to begin check-in.</DialogDescription>
+                                    </DialogHeader>
+
+                                    <div className="mt-4 space-y-4">
+                                        {!passVerified ? (
+                                            <div className="space-y-2">
+                                                <p className="text-sm text-muted-foreground">Enter admin pass</p>
+                                                <div className="flex gap-2">
+                                                    <Input
+                                                        type="password"
+                                                        placeholder="Admin Pass"
+                                                        value={checkinPassword}
+                                                        onChange={(e) => setCheckinPassword(e.target.value)}
+                                                        onKeyDown={(e) => e.key === "Enter" && verifyPassAndProceed(checkinPassword)}
+                                                    />
+                                                    <Button onClick={() => verifyPassAndProceed(checkinPassword)}>Verify</Button>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className="space-y-2">
+                                                <p className="text-sm text-muted-foreground">Enter Team Code to fetch registration</p>
+                                                <div className="flex gap-2">
+                                                    <Input
+                                                        placeholder="Team Code (e.g., AB123)"
+                                                        value={checkinTeamCode}
+                                                        onChange={(e) => setCheckinTeamCode(e.target.value.toUpperCase())}
+                                                        onKeyDown={(e) => e.key === "Enter" && fetchForCheckin(checkinTeamCode)}
+                                                        className="font-mono uppercase"
+                                                    />
+                                                    <Button onClick={() => fetchForCheckin(checkinTeamCode)} disabled={!checkinTeamCode.trim()}>
+                                                        Fetch
+                                                    </Button>
+                                                </div>
+
+                                                {checkinResult && (
+                                                    <div className="mt-3 space-y-3">
+                                                        <div className="flex items-center justify-between">
+                                                            <div>
+                                                                <p className="font-semibold">{checkinResult.registration.team_name || checkinResult.registration.full_name}</p>
+                                                                <p className="text-xs text-muted-foreground">Code: <span className="font-mono">{checkinResult.registration.check_in_code}</span></p>
+                                                            </div>
+                                                            <div className="text-sm text-muted-foreground">{checkinResult.registration.university_name}</div>
+                                                        </div>
+
+                                                        <Separator />
+
+                                                        <div className="space-y-2">
+                                                            <p className="text-sm text-muted-foreground">Members</p>
+                                                            <div className="space-y-1">
+                                                                {(checkinResult.teamMembers || []).map((m) => (
+                                                                    <div key={m.id} className="flex items-center justify-between bg-muted/20 p-2 rounded">
+                                                                        <div>
+                                                                            <p className="font-medium">{m.name}</p>
+                                                                            <p className="text-xs text-muted-foreground">{m.registration_number}</p>
+                                                                        </div>
+                                                                        <div className="flex items-center gap-2">
+                                                                            <span className="text-xs text-muted-foreground">Present</span>
+                                                                            <Switch
+                                                                                checked={!!m.present}
+                                                                                onCheckedChange={(val) => toggleMemberPresence(m.id, !!val)}
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <DialogFooter>
+                                        <div className="flex gap-2 w-full">
+                                            <Button variant="outline" onClick={() => setShowCheckinModal(false)} className="flex-1">Cancel</Button>
+                                            <Button onClick={submitCheckin} disabled={!passVerified || !checkinResult || updatingCheckin} className="flex-1">
+                                                {updatingCheckin ? <Loader2 className="w-4 h-4 animate-spin" /> : "Submit Check-In"}
+                                            </Button>
+                                        </div>
+                                    </DialogFooter>
+                                </DialogContent>
+                            </Dialog>
 
                             {/* All Registrations Table */}
                             <Card>

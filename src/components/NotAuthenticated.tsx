@@ -12,7 +12,7 @@ const NotAuthenticated = ({
     description = "You need to sign in to access this page. Join TECH FLUENCE 6.0 and unlock exclusive features!"
 }: NotAuthenticatedProps) => {
     return (
-        <div className="min-h-screen bg-background flex items-center justify-center px-4">
+        <div className="min-h-screen flex items-center justify-center px-4">
             <div className="max-w-md w-full text-center">
                 {/* Animated Lock Icon */}
                 <div className="relative inline-block mb-8">
@@ -25,7 +25,7 @@ const NotAuthenticated = ({
                 {/* Crown Logo */}
                 <div className="flex items-center justify-center gap-2 mb-6">
                     <Crown className="w-8 h-8 text-primary" />
-                    <span className="font-decorative text-2xl royal-text-gradient">
+                    <span className="font-decorative text-2xl tech-text-gradient">
                         TECH FLUENCE 6.0
                     </span>
                 </div>
@@ -65,7 +65,7 @@ const NotAuthenticated = ({
                 {/* Decorative Border */}
                 <div className="mt-12 pt-8 border-t border-border">
                     <p className="text-xs text-muted-foreground font-cinzel">
-                        Your royal journey awaits beyond these gates
+                        Your tech journey awaits beyond these gates
                     </p>
                 </div>
             </div>

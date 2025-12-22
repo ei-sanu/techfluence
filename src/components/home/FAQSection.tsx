@@ -65,7 +65,7 @@ const FAQSection = () => {
         <div className={`text-center mb-16 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
           <div className="flex items-center justify-center gap-3 mb-4">
             <Scroll className={`w-8 h-8 text-primary transition-all duration-700 ${isVisible ? "opacity-100 rotate-0" : "opacity-0 -rotate-45"}`} />
-            <h2 className="font-decorative text-3xl md:text-5xl royal-text-gradient">
+            <h2 className="font-decorative text-3xl md:text-5xl tech-text-gradient">
               FAQs
             </h2>
             <Scroll className={`w-8 h-8 text-primary transform scale-x-[-1] transition-all duration-700 ${isVisible ? "opacity-100 rotate-0" : "opacity-0 rotate-45"}`} />
@@ -82,7 +82,7 @@ const FAQSection = () => {
               <AccordionItem
                 key={index}
                 value={`item-${index}`}
-                className={`parchment-bg royal-border rounded-xl px-6 border-none transition-all duration-500 hover:royal-glow hover:scale-[1.02] ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
+                className={`parchment-bg tech-border rounded-xl px-6 border-none transition-all duration-500 hover:tech-glow hover:scale-[1.02] ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
                 style={{ transitionDelay: `${300 + index * 100}ms` }}
               >
                 <AccordionTrigger className="font-cinzel text-left text-foreground hover:text-primary hover:no-underline py-5 [&[data-state=open]>svg]:rotate-180 transition-colors duration-300">

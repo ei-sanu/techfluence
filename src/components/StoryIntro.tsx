@@ -6,7 +6,7 @@ interface StoryIntroProps {
     onComplete: () => void;
 }
 
-// Human Figure SVG Component - Royal Minister/Scholar (Bose Sir)
+// Human Figure SVG Component - Tech Leader/Scholar (Bose Sir)
 const HumanFigure = ({
     className = "",
     animate = false,
@@ -80,7 +80,7 @@ const HumanFigure = ({
                 fill="none"
             />
 
-            {/* Royal emblem on chest */}
+            {/* Tech emblem on chest */}
             <circle cx="50" cy="70" r="8" fill="none" stroke="url(#goldGradient)" strokeWidth="1.5" />
             <path d="M46 70 L50 65 L54 70 L50 75 Z" fill="url(#goldGradient)" />
 
@@ -242,7 +242,7 @@ const StoryIntro = ({ onComplete }: StoryIntroProps) => {
         {
             id: 2,
             duration: 4000,
-            title: "The Royal Proclamation",
+            title: "The Tech Proclamation",
             subtitle: "Bose Sir, Keeper of Knowledge",
         },
         {
@@ -361,7 +361,7 @@ const StoryIntro = ({ onComplete }: StoryIntroProps) => {
                             <div className="absolute right-8 md:right-16 top-0 bottom-0 w-16 md:w-24 bg-gradient-to-l from-stone-900 to-stone-800 opacity-60" />
                         </div>
 
-                        {/* Royal Guards at pillars */}
+                        {/* Tech Guardians at pillars */}
                         <div className="absolute left-[12%] md:left-[15%] top-1/2 -translate-y-1/2 opacity-80">
                             <HumanFigure size="md" />
                         </div>
@@ -401,7 +401,7 @@ const StoryIntro = ({ onComplete }: StoryIntroProps) => {
                                 </div>
                             </div>
                             <h1
-                                className={`font-decorative text-3xl md:text-5xl lg:text-6xl royal-text-gradient mb-4 transition-all duration-1000 ${textVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                                className={`font-decorative text-3xl md:text-5xl lg:text-6xl tech-text-gradient mb-4 transition-all duration-1000 ${textVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                                     }`}
                             >
                                 {scenes[0].title}
@@ -464,7 +464,7 @@ const StoryIntro = ({ onComplete }: StoryIntroProps) => {
 
                             {/* Text */}
                             <h2
-                                className={`font-decorative text-2xl md:text-4xl lg:text-5xl royal-text-gradient mb-3 transition-all duration-1000 ${textVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                                className={`font-decorative text-2xl md:text-4xl lg:text-5xl tech-text-gradient mb-3 transition-all duration-1000 ${textVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                                     }`}
                             >
                                 {scenes[1].title}
@@ -512,7 +512,7 @@ const StoryIntro = ({ onComplete }: StoryIntroProps) => {
                                     {/* SDMA Banner */}
                                     <div className="absolute top-3 left-1/2 -translate-x-1/2 text-center">
                                         <div className="bg-primary/20 border border-primary/40 rounded-lg px-4 py-2">
-                                            <p className="font-decorative text-xl md:text-2xl royal-text-gradient">SDMA</p>
+                                            <p className="font-decorative text-xl md:text-2xl tech-text-gradient">SDMA</p>
                                             <p className="font-cinzel text-xs text-muted-foreground">Lovely Professional University</p>
                                         </div>
                                     </div>
@@ -554,7 +554,7 @@ const StoryIntro = ({ onComplete }: StoryIntroProps) => {
                             {/* Text Overlay */}
                             <div className="text-center mt-6">
                                 <h2
-                                    className={`font-decorative text-2xl md:text-4xl lg:text-5xl royal-text-gradient mb-3 transition-all duration-1000 ${textVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                                    className={`font-decorative text-2xl md:text-4xl lg:text-5xl tech-text-gradient mb-3 transition-all duration-1000 ${textVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                                         }`}
                                 >
                                     {scenes[2].title}
@@ -624,7 +624,7 @@ const StoryIntro = ({ onComplete }: StoryIntroProps) => {
                                 </div>
                             </div>
                             <h1
-                                className={`font-decorative text-4xl md:text-6xl lg:text-8xl royal-text-gradient mb-4 transition-all duration-1000 ${textVisible ? "opacity-100 scale-100" : "opacity-0 scale-90"
+                                className={`font-decorative text-4xl md:text-6xl lg:text-8xl tech-text-gradient mb-4 transition-all duration-1000 ${textVisible ? "opacity-100 scale-100" : "opacity-0 scale-90"
                                     }`}
                             >
                                 {scenes[3].title}

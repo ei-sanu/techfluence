@@ -4,58 +4,58 @@
 @tailwind components;
 @tailwind utilities;
 
-/* TechFluence Royal Theme - Ancient dynasty meets modern tech */
+/* TechFluence Theme - Innovation meets modern tech */
 
 @layer base {
   :root {
-    /* Light theme - Vibrant and visible with warm orange accents */
-    --background: 35 30% 97%;
-    --foreground: 20 25% 10%;
+    /* Light theme - Rich and vibrant with warm orange accents */
+    --background: 38 35% 96%;
+    --foreground: 20 35% 8%;
 
-    --card: 35 35% 95%;
-    --card-foreground: 20 25% 10%;
+    --card: 38 45% 97%;
+    --card-foreground: 20 35% 8%;
 
-    --popover: 35 30% 96%;
-    --popover-foreground: 20 25% 10%;
+    --popover: 38 40% 98%;
+    --popover-foreground: 20 35% 8%;
 
-    --primary: 25 95% 50%;
+    --primary: 24 100% 48%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 30 25% 90%;
-    --secondary-foreground: 20 25% 10%;
+    --secondary: 32 30% 88%;
+    --secondary-foreground: 20 35% 12%;
 
-    --muted: 30 20% 92%;
-    --muted-foreground: 20 15% 35%;
+    --muted: 32 25% 90%;
+    --muted-foreground: 20 20% 38%;
 
-    --accent: 25 90% 45%;
+    --accent: 24 95% 42%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 75% 50%;
+    --destructive: 0 80% 48%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 25 40% 75%;
-    --input: 35 30% 92%;
-    --ring: 25 95% 50%;
+    --border: 28 45% 72%;
+    --input: 38 40% 94%;
+    --ring: 24 100% 48%;
 
     --radius: 0.5rem;
 
-    /* Custom royal colors - Light Orange theme */
-    --royal-gold: 25 95% 50%;
-    --royal-gold-light: 25 85% 65%;
-    --royal-gold-dark: 25 100% 38%;
-    --royal-bronze: 20 65% 40%;
-    --royal-copper: 15 75% 35%;
-    --parchment: 35 50% 94%;
-    --parchment-dark: 30 35% 25%;
+    /* Custom tech colors - Light Orange theme - Enhanced */
+    --tech-orange: 24 100% 48%;
+    --tech-orange-light: 28 90% 60%;
+    --tech-orange-dark: 22 100% 35%;
+    --tech-bronze: 18 70% 35%;
+    --tech-copper: 12 80% 30%;
+    --parchment: 38 55% 92%;
+    --parchment-dark: 25 40% 20%;
 
-    --sidebar-background: 35 30% 96%;
-    --sidebar-foreground: 20 25% 10%;
-    --sidebar-primary: 25 95% 50%;
+    --sidebar-background: 38 35% 95%;
+    --sidebar-foreground: 20 35% 8%;
+    --sidebar-primary: 24 100% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 30 25% 90%;
-    --sidebar-accent-foreground: 20 25% 10%;
-    --sidebar-border: 25 40% 75%;
-    --sidebar-ring: 25 95% 50%;
+    --sidebar-accent: 32 30% 88%;
+    --sidebar-accent-foreground: 20 35% 12%;
+    --sidebar-border: 28 45% 72%;
+    --sidebar-ring: 24 100% 48%;
   }
 
   .dark {
@@ -116,7 +116,7 @@
     background:
       /* Subtle noise texture overlay */
       url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"),
-      /* Royal pattern overlay - light orange */
+      /* Tech pattern overlay - light orange */
       url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff8c42' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
       /* Base gradient */
       linear-gradient(180deg,
@@ -128,60 +128,68 @@
     background-attachment: fixed;
   }
 
-  /* Light mode background */
+  /* Light mode background - Enhanced warmth and pattern visibility */
   html:not(.dark) body {
     background:
       /* Subtle noise texture overlay */
-      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.015'/%3E%3C/svg%3E"),
-      /* Royal pattern overlay - light orange */
-      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d97706' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
-      /* Base gradient - warm cream */
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E"),
+      /* Tech pattern overlay - orange enhanced visibility */
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ea580c' fill-opacity='0.12'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+      /* Base gradient - rich warm cream with subtle orange tint */
       linear-gradient(180deg,
-        hsl(40, 40%, 97%) 0%,
-        hsl(35, 45%, 95%) 25%,
-        hsl(40, 40%, 97%) 50%,
-        hsl(35, 45%, 95%) 75%,
-        hsl(40, 40%, 97%) 100%);
+        hsl(38, 50%, 96%) 0%,
+        hsl(35, 55%, 93%) 25%,
+        hsl(40, 45%, 95%) 50%,
+        hsl(35, 55%, 93%) 75%,
+        hsl(38, 50%, 96%) 100%);
     background-attachment: fixed;
   }
 }
 
 @layer components {
-  .royal-text-gradient {
-    @apply bg-gradient-to-r from-[hsl(25_95%_45%)] via-[hsl(25_90%_55%)] to-[hsl(25_95%_45%)] bg-clip-text text-transparent;
+  .tech-text-gradient {
+    @apply bg-gradient-to-r from-[hsl(22_100%_38%)] via-[hsl(24_95%_45%)] to-[hsl(22_100%_38%)] bg-clip-text text-transparent;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.08));
   }
 
-  .dark .royal-text-gradient {
+  .dark .tech-text-gradient {
     @apply bg-gradient-to-r from-[hsl(25_95%_50%)] via-[hsl(25_90%_60%)] to-[hsl(25_95%_50%)] bg-clip-text text-transparent;
+    filter: none;
   }
 
-  .royal-border {
-    @apply border border-[hsl(25_40%_70%)] shadow-[0_0_15px_hsl(25_95%_50%/0.15)];
+  .tech-border {
+    @apply border border-[hsl(28_50%_65%)];
+    box-shadow: 0 4px 20px hsl(25 80% 45% / 0.12), 0 1px 4px hsl(25 80% 45% / 0.08);
   }
 
-  .dark .royal-border {
-    @apply border border-[hsl(25_30%_40%)] shadow-[0_0_15px_hsl(25_95%_55%/0.2)];
+  .dark .tech-border {
+    @apply border border-[hsl(25_30%_40%)];
+    box-shadow: 0 0 15px hsl(25 95% 55% / 0.2);
   }
 
-  .royal-glow {
-    box-shadow: 0 0 30px hsl(25, 95%, 50%, 0.2), 0 0 60px hsl(25, 95%, 50%, 0.08);
+  .tech-glow {
+    box-shadow: 0 0 25px hsl(24, 100%, 48%, 0.25), 0 4px 15px hsl(24, 100%, 48%, 0.15), 0 0 50px hsl(24, 100%, 48%, 0.1);
   }
 
-  .dark .royal-glow {
+  .dark .tech-glow {
     box-shadow: 0 0 30px hsl(25, 95%, 55%, 0.3), 0 0 60px hsl(25, 95%, 55%, 0.1);
   }
 
   .parchment-bg {
     background: linear-gradient(135deg,
-        hsl(40, 45%, 96%) 0%,
-        hsl(35, 50%, 93%) 50%,
-        hsl(40, 45%, 96%) 100%);
-    border: 1px solid hsl(25, 40%, 80%);
+        hsl(40, 55%, 98%) 0%,
+        hsl(36, 60%, 95%) 50%,
+        hsl(40, 55%, 98%) 100%);
+    border: 1px solid hsl(28, 50%, 72%);
+    box-shadow: 0 4px 20px hsla(25, 70%, 45%, 0.08),
+      0 1px 4px hsla(25, 70%, 45%, 0.06),
+      inset 0 1px 0 hsla(40, 80%, 100%, 0.8);
   }
 
   .dark .parchment-bg {
     background: linear-gradient(135deg, hsl(20, 18%, 12%) 0%, hsl(20, 22%, 15%) 50%, hsl(20, 18%, 12%) 100%);
     border: 1px solid hsl(25, 30%, 25%);
+    box-shadow: none;
   }
 
   /* Interlocking gear animations - synchronized for realistic meshing */
@@ -556,6 +564,21 @@
     animation: spin-slow 8s linear infinite;
   }
 
+  /* Reverse spin animation for gears */
+  @keyframes spin-reverse {
+    from {
+      transform: rotate(360deg);
+    }
+
+    to {
+      transform: rotate(0deg);
+    }
+  }
+
+  .animate-spin-reverse {
+    animation: spin-reverse 2s linear infinite;
+  }
+
   /* Story Intro Animations */
   @keyframes story-scene-enter {
     from {
@@ -745,22 +768,24 @@
   }
 }
 
-/* Custom scrollbar - Light mode */
+/* Custom scrollbar - Light mode - Enhanced */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: hsl(35, 30%, 94%);
+  background: hsl(38, 35%, 94%);
+  border-left: 1px solid hsl(28, 40%, 88%);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(25, 50%, 65%);
-  border-radius: 4px;
+  background: linear-gradient(180deg, hsl(24, 70%, 55%) 0%, hsl(22, 80%, 48%) 100%);
+  border-radius: 5px;
+  border: 2px solid hsl(38, 35%, 94%);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(25, 95%, 50%);
+  background: linear-gradient(180deg, hsl(24, 90%, 50%) 0%, hsl(22, 100%, 45%) 100%);
 }
 
 /* Custom scrollbar - Dark mode */
@@ -776,54 +801,190 @@
   background: hsl(25, 95%, 55%);
 }
 
-/* Light mode specific enhancements */
+/* Light mode specific enhancements - Comprehensive */
 html:not(.dark) {
   /* Enhanced text shadows for better readability */
-  --text-shadow-subtle: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --text-shadow-subtle: 0 1px 2px rgba(0, 0, 0, 0.06);
 
-  /* Card shadows for depth */
-  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-  --card-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  /* Card shadows for depth - Orange tinted */
+  --card-shadow: 0 4px 12px -2px rgba(234, 88, 12, 0.1), 0 2px 6px -1px rgba(0, 0, 0, 0.06);
+  --card-shadow-hover: 0 12px 24px -4px rgba(234, 88, 12, 0.15), 0 6px 12px -2px rgba(0, 0, 0, 0.08);
+}
+
+/* Light mode navbar enhancement */
+html:not(.dark) nav {
+  background-color: hsla(38, 45%, 97%, 0.95) !important;
+  box-shadow: 0 1px 3px rgba(234, 88, 12, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 /* Light mode button enhancements */
 html:not(.dark) .btn-primary,
 html:not(.dark) button[class*="bg-primary"] {
-  box-shadow: 0 2px 4px rgba(217, 119, 6, 0.25);
+  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.3), 0 1px 3px rgba(234, 88, 12, 0.15);
 }
 
 html:not(.dark) .btn-primary:hover,
 html:not(.dark) button[class*="bg-primary"]:hover {
-  box-shadow: 0 4px 8px rgba(217, 119, 6, 0.35);
+  box-shadow: 0 6px 16px rgba(234, 88, 12, 0.4), 0 2px 6px rgba(234, 88, 12, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Light mode ghost button enhancements */
+html:not(.dark) button[class*="ghost"]:hover {
+  background-color: hsla(24, 100%, 48%, 0.1);
+}
+
+/* Light mode outline button enhancements */
+html:not(.dark) button[class*="outline"] {
+  border-color: hsl(24, 70%, 60%);
+}
+
+html:not(.dark) button[class*="outline"]:hover {
+  background-color: hsla(24, 100%, 48%, 0.08);
+  border-color: hsl(24, 100%, 48%);
 }
 
 /* Light mode card enhancements */
-html:not(.dark) [class*="parchment-bg"] {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+html:not(.dark) [class*="bg-card"] {
+  box-shadow: 0 4px 12px -2px rgba(234, 88, 12, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+  border-color: hsl(28, 45%, 78%);
 }
 
-html:not(.dark) [class*="parchment-bg"]:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+html:not(.dark) [class*="bg-card"]:hover {
+  box-shadow: 0 8px 24px -4px rgba(234, 88, 12, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
 }
 
 /* Light mode text contrast enhancements */
 html:not(.dark) h1,
 html:not(.dark) h2,
 html:not(.dark) h3 {
-  color: hsl(20, 30%, 12%);
+  color: hsl(18, 35%, 10%);
+}
+
+html:not(.dark) h4,
+html:not(.dark) h5,
+html:not(.dark) h6 {
+  color: hsl(18, 30%, 15%);
+}
+
+/* Light mode paragraph and text */
+html:not(.dark) p {
+  color: hsl(20, 20%, 25%);
+}
+
+html:not(.dark) .text-muted-foreground {
+  color: hsl(20, 18%, 40%) !important;
 }
 
 /* Light mode input/form enhancements */
 html:not(.dark) input,
 html:not(.dark) textarea,
 html:not(.dark) select {
-  background-color: hsl(40, 40%, 99%);
-  border-color: hsl(25, 35%, 78%);
+  background-color: hsl(40, 50%, 99%);
+  border-color: hsl(28, 45%, 75%);
+  color: hsl(20, 30%, 12%);
+}
+
+html:not(.dark) input::placeholder,
+html:not(.dark) textarea::placeholder {
+  color: hsl(20, 15%, 55%);
 }
 
 html:not(.dark) input:focus,
 html:not(.dark) textarea:focus,
 html:not(.dark) select:focus {
-  border-color: hsl(25, 95%, 50%);
-  box-shadow: 0 0 0 3px hsla(25, 95%, 50%, 0.15);
+  border-color: hsl(24, 100%, 48%);
+  box-shadow: 0 0 0 3px hsla(24, 100%, 48%, 0.18), 0 2px 4px rgba(234, 88, 12, 0.1);
+}
+
+/* Light mode border enhancements */
+html:not(.dark) [class*="border-border"] {
+  border-color: hsl(28, 40%, 80%);
+}
+
+html:not(.dark) [class*="border-primary"] {
+  border-color: hsl(24, 100%, 48%);
+}
+
+/* Light mode icon enhancements */
+html:not(.dark) .text-primary {
+  color: hsl(22, 100%, 42%) !important;
+  filter: drop-shadow(0 1px 2px rgba(234, 88, 12, 0.15));
+}
+
+/* Light mode tabs enhancement */
+html:not(.dark) [role="tablist"] {
+  background-color: hsla(32, 40%, 88%, 0.7);
+  border: 1px solid hsl(28, 40%, 78%);
+}
+
+html:not(.dark) [role="tab"][data-state="active"] {
+  background-color: hsl(24, 100%, 48%);
+  color: white;
+  box-shadow: 0 2px 6px rgba(234, 88, 12, 0.25);
+}
+
+/* Light mode accordion enhancement */
+html:not(.dark) [data-state="open"] {
+  background-color: hsla(38, 50%, 97%, 0.8);
+}
+
+/* Light mode badge enhancements */
+html:not(.dark) [class*="bg-primary/10"],
+html:not(.dark) [class*="bg-primary/20"] {
+  background-color: hsla(24, 100%, 48%, 0.12) !important;
+  border: 1px solid hsla(24, 100%, 48%, 0.2);
+}
+
+/* Light mode decorative elements */
+html:not(.dark) .bg-gradient-to-r.from-transparent.via-primary\/20.to-transparent {
+  background: linear-gradient(90deg, transparent, hsla(24, 100%, 48%, 0.3), transparent);
+}
+
+html:not(.dark) .bg-gradient-to-r.from-transparent.via-primary\/30.to-transparent {
+  background: linear-gradient(90deg, transparent, hsla(24, 100%, 48%, 0.4), transparent);
+}
+
+/* Light mode shadows for specific elements */
+html:not(.dark) .rounded-full[class*="bg-primary"] {
+  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.35);
+}
+
+/* Light mode crown and icon glow */
+html:not(.dark) .animate-float,
+html:not(.dark) .animate-float-slow {
+  filter: drop-shadow(0 4px 8px rgba(234, 88, 12, 0.2));
+}
+
+/* Light mode section dividers - more visible */
+html:not(.dark) .h-px[class*="via-primary"] {
+  background: linear-gradient(90deg, transparent 0%, hsl(24, 100%, 48%, 0.4) 50%, transparent 100%) !important;
+}
+
+/* Light mode dialog/modal enhancement */
+html:not(.dark) [role="dialog"] {
+  background-color: hsl(40, 55%, 99%);
+  border: 1px solid hsl(28, 45%, 80%);
+  box-shadow: 0 20px 50px -12px rgba(234, 88, 12, 0.2), 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Light mode success states */
+html:not(.dark) .text-green-600 {
+  color: hsl(142, 70%, 35%) !important;
+}
+
+html:not(.dark) .bg-green-500\/10,
+html:not(.dark) .bg-green-500\/20 {
+  background-color: hsla(142, 70%, 45%, 0.12) !important;
+}
+
+/* Light mode footer */
+html:not(.dark) footer {
+  background-color: hsla(38, 40%, 95%, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+/* Light mode link hover enhancement */
+html:not(.dark) a:hover {
+  color: hsl(22, 100%, 40%);
 }

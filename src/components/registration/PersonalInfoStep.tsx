@@ -78,7 +78,7 @@ const PersonalInfoStep = ({ form, onNext }: PersonalInfoStepProps) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-        <div className="parchment-bg royal-border rounded-xl p-6 md:p-8">
+        <div className="parchment-bg tech-border rounded-xl p-6 md:p-8">
           <h2 className="font-decorative text-2xl text-primary mb-6 flex items-center gap-2 font-bold">
             <User className="w-6 h-6" />
             Personal Information

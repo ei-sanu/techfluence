@@ -41,7 +41,7 @@ const EventSelectionStep = ({ form, onNext, onPrev }: EventSelectionStepProps) =
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onNext)} className="space-y-6">
-        <div className="parchment-bg royal-border rounded-xl p-6 md:p-8">
+        <div className="parchment-bg tech-border rounded-xl p-6 md:p-8">
           <h2 className="font-decorative text-2xl text-primary mb-6 font-bold">Choose Your Path</h2>
 
           <FormField
@@ -59,7 +59,7 @@ const EventSelectionStep = ({ form, onNext, onPrev }: EventSelectionStepProps) =
                       <label
                         key={event.value}
                         className={`flex items-start gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all duration-300 ${field.value === event.value
-                          ? "border-primary bg-primary/10 royal-glow"
+                          ? "border-primary bg-primary/10 tech-glow"
                           : "border-border hover:border-primary/50"
                           }`}
                       >

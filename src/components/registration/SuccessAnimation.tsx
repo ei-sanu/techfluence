@@ -111,7 +111,7 @@ const SuccessAnimation = ({ checkInCode, teamName }: SuccessAnimationProps) => {
           <div className={`transition-all duration-700 ${stage >= 2 ? "opacity-100 scale-100" : "opacity-0 scale-50"}`}>
             <div className="relative inline-block">
               {/* Seal Circle */}
-              <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-primary via-primary to-accent flex items-center justify-center royal-glow animate-scale-in">
+              <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-primary via-primary to-accent flex items-center justify-center tech-glow animate-scale-in">
                 <div className="w-20 h-20 rounded-full bg-background flex items-center justify-center">
                   <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
                     {stage >= 3 ? (
@@ -131,16 +131,16 @@ const SuccessAnimation = ({ checkInCode, teamName }: SuccessAnimationProps) => {
 
           {/* Success Message */}
           <div className={`mt-6 transition-all duration-500 ${stage >= 3 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-            <h2 className="font-decorative text-2xl md:text-3xl royal-text-gradient mb-3">
+            <h2 className="font-decorative text-2xl md:text-3xl tech-text-gradient mb-3">
               Registration Complete!
             </h2>
             <p className="text-muted-foreground font-sans text-sm mb-4 max-w-sm mx-auto">
-              Your royal decree has been sealed and recorded. Welcome to TechFluence!
+              Your registration has been confirmed and recorded. Welcome to TechFluence!
             </p>
 
             {/* Team Code Display */}
             {checkInCode && (
-              <div className="bg-secondary/30 royal-border rounded-xl p-4 mb-5 max-w-xs mx-auto">
+              <div className="bg-secondary/30 tech-border rounded-xl p-4 mb-5 max-w-xs mx-auto">
                 {teamName && (
                   <div className="mb-3">
                     <p className="text-xs text-muted-foreground font-sans mb-1">Team Name</p>

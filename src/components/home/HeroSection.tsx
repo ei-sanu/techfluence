@@ -1,9 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { Crown, Scroll, Sparkles } from "lucide-react";
+import { BookOpen, Crown, Lightbulb, Scroll, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const HeroSection = () => {
+interface HeroSectionProps {
+  onTriggerStory?: () => void;
+}
+
+const HeroSection = ({ onTriggerStory }: HeroSectionProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [lampOn, setLampOn] = useState(false);
   const [stringPulled, setStringPulled] = useState(false);
@@ -44,19 +48,32 @@ const HeroSection = () => {
     }, 500);
   };
 
+  // Keyboard shortcut: Cmd+O (Mac) or Ctrl+O (Windows/Linux) to toggle lamp
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'o') {
+        e.preventDefault();
+        handleStringPull();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lampOn]);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Background Effects */}
       <div className="absolute inset-0">
-        {/* Lamp light effect when on - subtle white glow */}
+        {/* Lamp light effect when on - subtle warm glow */}
         <div
           className={`absolute inset-0 transition-all duration-1000 ease-in-out ${lampOn
-            ? "bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.08)_0%,transparent_60%)]"
+            ? "bg-[radial-gradient(ellipse_at_center,rgba(251,191,36,0.12)_0%,transparent_60%)] dark:bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.08)_0%,transparent_60%)]"
             : ""}`}
         />
 
-        {/* Subtle vignette effect */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,hsl(20_10%_8%/0.3)_100%)]" />
+        {/* Subtle vignette effect - adjusted for light mode */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,hsl(38_30%_92%/0.4)_100%)] dark:bg-[radial-gradient(ellipse_at_center,transparent_0%,hsl(20_10%_8%/0.3)_100%)]" />
 
         {/* Enhanced animated particles */}
         <div className="absolute inset-0 overflow-hidden">
@@ -67,12 +84,13 @@ const HeroSection = () => {
               style={{
                 width: `${2 + Math.random() * 3}px`,
                 height: `${2 + Math.random() * 3}px`,
-                background: `hsl(25, 95%, ${50 + Math.random() * 20}%)`,
+                background: `hsl(24, 100%, ${40 + Math.random() * 15}%)`,
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
                 animationDelay: `${Math.random() * 4}s`,
                 animationDuration: `${2 + Math.random() * 3}s`,
-                opacity: lampOn ? 0.6 + Math.random() * 0.4 : 0.4 + Math.random() * 0.4,
+                opacity: lampOn ? 0.7 + Math.random() * 0.3 : 0.5 + Math.random() * 0.4,
+                boxShadow: '0 0 4px hsl(24, 100%, 50%)',
               }}
             />
           ))}
@@ -88,7 +106,7 @@ const HeroSection = () => {
                 style={{
                   width: `${20 + Math.random() * 40}px`,
                   height: `${20 + Math.random() * 40}px`,
-                  background: `radial-gradient(circle, hsl(45, 100%, 70%, 0.3) 0%, transparent 70%)`,
+                  background: `radial-gradient(circle, hsl(35, 100%, 60%, 0.4) 0%, transparent 70%)`,
                   left: `${10 + Math.random() * 80}%`,
                   top: `${20 + Math.random() * 60}%`,
                   animationDelay: `${Math.random() * 2}s`,
@@ -100,14 +118,14 @@ const HeroSection = () => {
         )}
 
         {/* Decorative corners */}
-        <div className={`absolute top-20 left-4 md:left-10 transition-all duration-1000 ${isVisible ? "opacity-20 translate-x-0" : "opacity-0 -translate-x-10"}`}>
+        <div className={`absolute top-20 left-4 md:left-10 transition-all duration-1000 ${isVisible ? "opacity-30 dark:opacity-20 translate-x-0" : "opacity-0 -translate-x-10"}`}>
           <svg width="100" height="100" viewBox="0 0 100 100">
-            <path d="M0 100 L0 20 Q0 0 20 0 L100 0" fill="none" stroke="hsl(25, 95%, 55%)" strokeWidth="2" />
+            <path d="M0 100 L0 20 Q0 0 20 0 L100 0" fill="none" stroke="hsl(24, 100%, 48%)" strokeWidth="2" />
           </svg>
         </div>
-        <div className={`absolute top-20 right-4 md:right-10 rotate-90 transition-all duration-1000 ${isVisible ? "opacity-20 translate-x-0" : "opacity-0 translate-x-10"}`}>
+        <div className={`absolute top-20 right-4 md:right-10 rotate-90 transition-all duration-1000 ${isVisible ? "opacity-30 dark:opacity-20 translate-x-0" : "opacity-0 translate-x-10"}`}>
           <svg width="100" height="100" viewBox="0 0 100 100">
-            <path d="M0 100 L0 20 Q0 0 20 0 L100 0" fill="none" stroke="hsl(25, 95%, 55%)" strokeWidth="2" />
+            <path d="M0 100 L0 20 Q0 0 20 0 L100 0" fill="none" stroke="hsl(24, 100%, 48%)" strokeWidth="2" />
           </svg>
         </div>
       </div>
@@ -148,12 +166,11 @@ const HeroSection = () => {
                   style={{ transitionDelay: "500ms" }}
                 />
               </div>
-
               {/* Pull String */}
               <div
                 className={`absolute -right-10 md:-right-12 top-0 transition-all duration-700 ease-out cursor-pointer group ${elementsVisible.crown ? "opacity-100" : "opacity-0"}`}
                 onClick={handleStringPull}
-                title="Pull to turn on the lamp!"
+                title="Pull to toggle lamp! (⌘O / Ctrl+O)"
               >
                 {/* String line */}
                 <svg
@@ -198,13 +215,62 @@ const HeroSection = () => {
           </div>
 
           {/* Main Title */}
-          <h1 className={`font-decorative text-4xl md:text-6xl lg:text-8xl mb-4 transition-all duration-1000 royal-text-gradient ${elementsVisible.title ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"} ${lampOn ? "drop-shadow-[0_0_25px_rgba(255,255,255,0.3)]" : ""}`}>
+          <h1 className={`font-decorative text-4xl md:text-6xl lg:text-8xl mb-4 transition-all duration-1000 tech-text-gradient ${elementsVisible.title ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"} ${lampOn ? "drop-shadow-[0_0_25px_rgba(255,255,255,0.3)]" : ""}`}>
             TECH FLUENCE 6.0
           </h1>
 
           <p className={`font-cinzel text-lg md:text-xl mb-2 tracking-widest text-muted-foreground transition-all duration-700 ${elementsVisible.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"} ${lampOn ? "drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]" : ""}`}>
             Innovation Meets Excellence
           </p>
+
+          {/* Keyboard Shortcuts Section */}
+          <div className={`hidden md:flex items-center justify-center gap-8 mt-4 mb-2 transition-all duration-700 ${elementsVisible.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+            {/* Flash/Lamp Toggle Shortcut */}
+            <div
+              className="flex items-center gap-3 px-4 py-2 rounded-lg bg-slate-900/40 dark:bg-slate-800/40 border border-slate-700/30 hover:border-primary/30 transition-all cursor-pointer group"
+              onClick={handleStringPull}
+              title="Toggle the lamp effect"
+            >
+              <Lightbulb className={`w-4 h-4 transition-colors ${lampOn ? 'text-amber-400' : 'text-primary/60 group-hover:text-primary'}`} />
+              <div className="flex items-center gap-1">
+                <kbd className="px-2 py-1 text-[10px] font-mono bg-slate-800/80 dark:bg-slate-700/80 text-white rounded border border-slate-600/50 shadow-sm">
+                  ⌘
+                </kbd>
+                <span className="text-[10px] text-muted-foreground">/</span>
+                <kbd className="px-1.5 py-1 text-[9px] font-mono bg-slate-800/80 dark:bg-slate-700/80 text-white rounded border border-slate-600/50 shadow-sm">
+                  Ctrl
+                </kbd>
+                <span className="text-[10px] text-muted-foreground">+</span>
+                <kbd className="px-2 py-1 text-[10px] font-mono bg-slate-800/80 dark:bg-slate-700/80 text-white rounded border border-slate-600/50 shadow-sm">
+                  O
+                </kbd>
+              </div>
+              <span className="text-[10px] text-primary/70 font-mono tracking-wider">FLASH</span>
+            </div>
+
+            {/* Story Mode Shortcut */}
+            <div
+              className="flex items-center gap-3 px-4 py-2 rounded-lg bg-slate-900/40 dark:bg-slate-800/40 border border-slate-700/30 hover:border-primary/30 transition-all cursor-pointer group"
+              onClick={onTriggerStory}
+              title="Replay the story intro"
+            >
+              <BookOpen className="w-4 h-4 text-primary/60 group-hover:text-primary transition-colors" />
+              <div className="flex items-center gap-1">
+                <kbd className="px-2 py-1 text-[10px] font-mono bg-slate-800/80 dark:bg-slate-700/80 text-white rounded border border-slate-600/50 shadow-sm">
+                  ⌘
+                </kbd>
+                <span className="text-[10px] text-muted-foreground">/</span>
+                <kbd className="px-1.5 py-1 text-[9px] font-mono bg-slate-800/80 dark:bg-slate-700/80 text-white rounded border border-slate-600/50 shadow-sm">
+                  Ctrl
+                </kbd>
+                <span className="text-[10px] text-muted-foreground">+</span>
+                <kbd className="px-2 py-1 text-[10px] font-mono bg-slate-800/80 dark:bg-slate-700/80 text-white rounded border border-slate-600/50 shadow-sm">
+                  S
+                </kbd>
+              </div>
+              <span className="text-[10px] text-primary/70 font-mono tracking-wider">STORY</span>
+            </div>
+          </div>
 
           {/* Subtitle with scroll decoration */}
           <div className={`flex items-center justify-center gap-4 my-8 transition-all duration-700 ${elementsVisible.subtitle ? "opacity-100 scale-100" : "opacity-0 scale-90"}`}>
@@ -223,7 +289,7 @@ const HeroSection = () => {
             <Link to="/register">
               <Button
                 size="lg"
-                className={`font-cinzel text-lg px-8 py-6 transition-all duration-500 hover:scale-105 bg-primary text-primary-foreground hover:bg-primary/90 royal-glow animate-pulse-glow ${lampOn ? "shadow-lg shadow-white/20" : ""}`}
+                className={`font-cinzel text-lg px-8 py-6 transition-all duration-500 hover:scale-105 bg-primary text-primary-foreground hover:bg-primary/90 tech-glow animate-pulse-glow ${lampOn ? "shadow-lg shadow-white/20" : ""}`}
               >
                 Register for the Event
               </Button>
@@ -241,7 +307,7 @@ const HeroSection = () => {
 
           {/* Event Date Banner */}
           <div className={`mt-16 inline-block transition-all duration-700 ${elementsVisible.banner ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"}`}>
-            <div className={`parchment-bg royal-border rounded-lg px-8 py-4 transition-all duration-500 hover:royal-glow ${lampOn ? "shadow-lg shadow-white/10" : ""}`}>
+            <div className={`parchment-bg tech-border rounded-lg px-8 py-4 transition-all duration-500 hover:tech-glow ${lampOn ? "shadow-lg shadow-white/10" : ""}`}>
               <p className="font-medieval text-sm text-muted-foreground mb-1">Mark Your Calendar</p>
               <p className="font-cinzel text-xl text-primary">Coming Soon 2025</p>
             </div>

@@ -89,18 +89,18 @@ const Gear = ({
     >
       <defs>
         <linearGradient id={`gear-gradient-${id}`} x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="hsl(25, 90%, 60%)" />
-          <stop offset="30%" stopColor="hsl(25, 95%, 70%)" />
-          <stop offset="50%" stopColor="hsl(25, 85%, 55%)" />
-          <stop offset="70%" stopColor="hsl(25, 95%, 65%)" />
-          <stop offset="100%" stopColor="hsl(25, 90%, 45%)" />
+          <stop offset="0%" stopColor="hsl(24, 95%, 50%)" />
+          <stop offset="30%" stopColor="hsl(26, 100%, 58%)" />
+          <stop offset="50%" stopColor="hsl(24, 90%, 48%)" />
+          <stop offset="70%" stopColor="hsl(26, 95%, 55%)" />
+          <stop offset="100%" stopColor="hsl(22, 90%, 42%)" />
         </linearGradient>
         <linearGradient id={`gear-inner-${id}`} x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="hsl(30, 50%, 25%)" />
-          <stop offset="100%" stopColor="hsl(25, 40%, 18%)" />
+          <stop offset="0%" stopColor="hsl(22, 55%, 30%)" />
+          <stop offset="100%" stopColor="hsl(20, 45%, 22%)" />
         </linearGradient>
         <filter id={`gear-shadow-${id}`}>
-          <feDropShadow dx="2" dy="2" stdDeviation="3" floodOpacity="0.5" />
+          <feDropShadow dx="2" dy="3" stdDeviation="4" floodColor="hsl(22, 80%, 25%)" floodOpacity="0.4" />
         </filter>
       </defs>
 
@@ -109,8 +109,8 @@ const Gear = ({
         d={createGearPath()}
         fill={`url(#gear-gradient-${id})`}
         filter={`url(#gear-shadow-${id})`}
-        stroke="hsl(25, 75%, 40%)"
-        strokeWidth="1"
+        stroke="hsl(22, 80%, 38%)"
+        strokeWidth="1.5"
       />
 
       {/* Inner decorative ring */}
@@ -204,19 +204,24 @@ const GearLoader = ({ isLoading = true, onComplete, minDuration = 2000 }: GearLo
   return (
     <div
       className={`fixed inset-0 z-50 flex flex-col items-center justify-center transition-opacity duration-600 ${fadeOut ? "opacity-0" : "opacity-100"
-        }`}
+        } bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 dark:from-transparent dark:via-transparent dark:to-transparent`}
       style={{
         background: `
-          radial-gradient(ellipse at center, hsl(20, 12%, 12%) 0%, hsl(20, 10%, 6%) 100%)
+          radial-gradient(ellipse at center, hsl(38, 45%, 96%) 0%, hsl(35, 50%, 90%) 100%)
         `,
       }}
     >
+      {/* Dark mode background override */}
+      <div className="absolute inset-0 hidden dark:block" style={{
+        background: `radial-gradient(ellipse at center, hsl(20, 12%, 12%) 0%, hsl(20, 10%, 6%) 100%)`
+      }} />
+
       {/* Ambient glow effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-20"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-30 dark:opacity-20"
           style={{
-            background: "radial-gradient(circle, hsl(25, 95%, 55%) 0%, transparent 70%)",
+            background: "radial-gradient(circle, hsl(24, 100%, 50%) 0%, transparent 70%)",
           }}
         />
       </div>
@@ -286,7 +291,7 @@ const GearLoader = ({ isLoading = true, onComplete, minDuration = 2000 }: GearLo
 
       {/* Branding and loading text */}
       <div className="mt-10 text-center relative z-10">
-        <h2 className="font-decorative text-3xl md:text-4xl royal-text-gradient mb-3 tracking-wider">
+        <h2 className="font-decorative text-3xl md:text-4xl tech-text-gradient mb-3 tracking-wider">
           TECH FLUENCE 6.0
         </h2>
         <p className="text-muted-foreground font-cinzel text-sm tracking-[0.3em] uppercase">

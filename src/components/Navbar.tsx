@@ -22,6 +22,7 @@ const Navbar = () => {
     { path: "/", label: "Home" },
     { path: "/register", label: "Register Now" },
     { path: "/activity", label: "Activity" },
+    { path: "/contact", label: "Contact" },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -42,7 +43,7 @@ const Navbar = () => {
               <Crown className="w-7 h-7 md:w-8 md:h-8 text-primary transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" />
               <div className="absolute inset-0 bg-primary/20 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
-            <span className="font-decorative text-lg md:text-2xl royal-text-gradient transition-all duration-300 group-hover:tracking-wider">
+            <span className="font-decorative text-lg md:text-2xl tech-text-gradient transition-all duration-300 group-hover:tracking-wider">
               TECH FLUENCE 6.0
             </span>
           </Link>

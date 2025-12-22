@@ -30,6 +30,28 @@ const Index = () => {
     setTimeout(() => setContentVisible(true), 100);
   };
 
+  // Function to replay the story intro
+  const handleTriggerStory = () => {
+    setContentVisible(false);
+    sessionStorage.removeItem("techfluence_story_shown");
+    setTimeout(() => setShowStory(true), 300);
+  };
+
+  // Keyboard shortcut: Cmd+S (Mac) or Ctrl+S (Windows/Linux) to trigger story
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        if (contentVisible && !showStory && !showLoader) {
+          handleTriggerStory();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [contentVisible, showStory, showLoader]);
+
   // If returning from another page, show loader instead of story
   useEffect(() => {
     if (hasSeenStory && showLoader) {
@@ -55,7 +77,7 @@ const Index = () => {
       >
         <Navbar />
         <main>
-          <HeroSection />
+          <HeroSection onTriggerStory={handleTriggerStory} />
           <AboutSection />
           <SpeakersSection />
           <LiveImpactSection />

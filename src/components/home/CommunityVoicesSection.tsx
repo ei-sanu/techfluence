@@ -2,9 +2,9 @@ import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
 import { Crown, Users } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-// Royal-themed avatar URLs using DiceBear API with different styles
-const getRoyalAvatar = (seed: string, index: number) => {
-    // Alternate between different royal-themed avatar styles
+// Tech-themed avatar URLs using DiceBear API with different styles
+const getTechAvatar = (seed: string, index: number) => {
+    // Alternate between different tech-themed avatar styles
     const styles = ["adventurer", "avataaars", "bottts", "personas", "lorelei"];
     const style = styles[index % styles.length];
     return `https://api.dicebear.com/7.x/${style}/svg?seed=${encodeURIComponent(seed)}&backgroundColor=f97316,fb923c,fdba74&radius=50`;
@@ -14,12 +14,12 @@ const communityMembers = [
     {
         name: "Deepanshu Pathak",
         title: "Student at Lovely Professional University",
-        quote: "Highly consistent and disciplined with a strong academic mindset. A true scholar of the royal court!",
+        quote: "Highly consistent and disciplined with a strong academic mindset. A true scholar of our tech community!",
     },
     {
         name: "Kasireddy Prasan Kumar",
         title: "Student at Lovely Professional University",
-        quote: "Demonstrates strong learning focus and technical curiosity. A rising knight in our tech kingdom!",
+        quote: "Demonstrates strong learning focus and technical curiosity. A rising star in our tech community!",
     },
     {
         name: "Praveen Rajana",
@@ -69,7 +69,7 @@ const communityMembers = [
     {
         name: "Divansh Sharma",
         title: "MCA Student",
-        quote: "Methodical thinker with growing technical expertise. Strategist of the royal council!",
+        quote: "Methodical thinker with growing technical expertise. Strategist of our tech council!",
     },
     {
         name: "Pratyay Das",
@@ -94,12 +94,12 @@ const communityMembers = [
     {
         name: "Sanket Singh",
         title: "Student at Lovely Professional University",
-        quote: "Demonstrates steady improvement and dedication. A knight in training!",
+        quote: "Demonstrates steady improvement and dedication. A developer in training!",
     },
     {
         name: "Vikas Rundla",
         title: "Student at Lovely Professional University",
-        quote: "Focused academic approach with growing technical skills. Scholar of the royal academy!",
+        quote: "Focused academic approach with growing technical skills. Scholar of our tech academy!",
     },
     {
         name: "Vinayak Tiwari",
@@ -114,7 +114,7 @@ const communityMembers = [
     {
         name: "Sarthak Prakash",
         title: "AI & Cyber Law Enthusiast",
-        quote: "Unique blend of law, AI, and cybersecurity interests. The royal judge of tech ethics!",
+        quote: "Unique blend of law, AI, and cybersecurity interests. The judge of tech ethics!",
     },
     {
         name: "Harsh Raj",
@@ -139,7 +139,7 @@ const communityMembers = [
     {
         name: "Balaji Tummala",
         title: "Python & DSA Learner",
-        quote: "Logic driven approach with scalable thinking. Mathematician of the royal court!",
+        quote: "Logic driven approach with scalable thinking. Mathematician of our tech community!",
     },
     {
         name: "Sneha Mishra",
@@ -156,7 +156,7 @@ const communityMembers = [
 // Add avatars to members
 const membersWithAvatars = communityMembers.map((member, index) => ({
     ...member,
-    avatar: getRoyalAvatar(member.name, index),
+    avatar: getTechAvatar(member.name, index),
 }));
 
 const CommunityVoicesSection = () => {
@@ -200,7 +200,7 @@ const CommunityVoicesSection = () => {
                             className={`w-8 h-8 text-primary transition-all duration-700 ${isVisible ? "opacity-100 rotate-0" : "opacity-0 -rotate-45"
                                 }`}
                         />
-                        <h2 className="font-decorative text-3xl md:text-5xl royal-text-gradient">
+                        <h2 className="font-decorative text-3xl md:text-5xl tech-text-gradient">
                             Voice of Our Attendees
                         </h2>
                         <Crown

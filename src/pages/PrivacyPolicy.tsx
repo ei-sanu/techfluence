@@ -5,17 +5,17 @@ import { Link } from "react-router-dom";
 
 const PrivacyPolicy = () => {
     return (
-        <div className="min-h-screen bg-background">
+        <div className="min-h-screen">
             <Navbar />
             <main className="pt-24 pb-16 px-4">
                 <div className="container mx-auto max-w-4xl">
                     <div className="text-center mb-12">
                         <Shield className="w-16 h-16 text-primary mx-auto mb-4" />
-                        <h1 className="font-decorative text-4xl royal-text-gradient mb-2">Privacy Policy</h1>
-                        <p className="text-muted-foreground font-sans">Last updated: December 2024</p>
+                        <h1 className="font-decorative text-4xl tech-text-gradient mb-2">Privacy Policy</h1>
+                        <p className="text-muted-foreground font-sans">Last updated: 22 December 2025</p>
                     </div>
 
-                    <div className="parchment-bg royal-border rounded-xl p-6 md:p-10 space-y-8">
+                    <div className="parchment-bg tech-border rounded-xl p-6 md:p-10 space-y-8">
                         <section>
                             <h2 className="font-decorative text-2xl text-primary mb-4">1. Information We Collect</h2>
                             <div className="font-sans text-foreground leading-relaxed space-y-3">

@@ -14,9 +14,9 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const quotes = [
-    "Where Innovation Meets Tradition",
+    "Where Innovation Meets Excellence",
     "Forge Your Legacy in Tech",
-    "Join the Royal Court of Innovators",
+    "Join the Community of Innovators",
     "Unlock Your Potential",
 ];
 
@@ -87,7 +87,7 @@ const Auth = () => {
     };
 
     return (
-        <div className="min-h-screen bg-background flex overflow-x-hidden">
+        <div className="min-h-screen flex overflow-x-hidden">
             {/* Left Side - Branding & Features */}
             <div className="hidden lg:flex lg:w-1/2 xl:w-[55%] relative overflow-hidden">
                 {/* Background Pattern */}
@@ -113,7 +113,7 @@ const Auth = () => {
                             <Sparkles className="absolute -top-1 -right-1 w-5 h-5 text-primary animate-pulse" />
                         </div>
                         <div>
-                            <span className="font-decorative text-4xl xl:text-5xl royal-text-gradient block">
+                            <span className="font-decorative text-4xl xl:text-5xl tech-text-gradient block">
                                 TECH FLUENCE
                             </span>
                             <span className="text-primary font-bold text-2xl">6.0</span>
@@ -169,7 +169,7 @@ const Auth = () => {
                         <Link to="/" className="inline-flex flex-col items-center gap-1 mb-2">
                             <Crown className="w-12 h-12 text-primary" />
                             <div className="text-center">
-                                <span className="font-decorative text-2xl sm:text-3xl royal-text-gradient block">
+                                <span className="font-decorative text-2xl sm:text-3xl tech-text-gradient block">
                                     TECH FLUENCE
                                 </span>
                                 <span className="text-primary font-bold text-lg">6.0</span>
@@ -213,7 +213,7 @@ const Auth = () => {
 
                     {/* Auth Form with Animation */}
                     <div
-                        className={`parchment-bg royal-border rounded-xl p-3 sm:p-5 transition-all duration-300 overflow-hidden ${isAnimating
+                        className={`parchment-bg tech-border rounded-xl p-3 sm:p-5 transition-all duration-300 overflow-hidden ${isAnimating
                             ? "opacity-0 scale-95 rotate-1"
                             : "opacity-100 scale-100 rotate-0"
                             }`}

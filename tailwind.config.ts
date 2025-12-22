@@ -53,12 +53,12 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        royal: {
-          gold: "hsl(var(--royal-gold))",
-          "gold-light": "hsl(var(--royal-gold-light))",
-          "gold-dark": "hsl(var(--royal-gold-dark))",
-          bronze: "hsl(var(--royal-bronze))",
-          copper: "hsl(var(--royal-copper))",
+        tech: {
+          orange: "hsl(var(--tech-orange))",
+          "orange-light": "hsl(var(--tech-orange-light))",
+          "orange-dark": "hsl(var(--tech-orange-dark))",
+          bronze: "hsl(var(--tech-bronze))",
+          copper: "hsl(var(--tech-copper))",
         },
         parchment: {
           DEFAULT: "hsl(var(--parchment))",
