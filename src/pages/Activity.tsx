@@ -611,26 +611,56 @@ const Activity = () => {
       // Get request details
       const request = joinRequests.find(r => r.id === requestId);
       if (!request) return;
+      // Fetch registration to get team_size limit
+      const { data: registration } = await supabase
+        .from("registrations")
+        .select("id, team_size")
+        .eq("id", registrationId)
+        .single();
 
-      // Get current team member count
-      const { count } = await supabase
+      const teamSizeLimit = registration?.team_size || 1;
+
+      // Fetch existing team members for this registration
+      const { data: existingMembers } = await supabase
         .from("team_members")
-        .select("*", { count: "exact", head: true })
+        .select("*")
         .eq("registration_id", registrationId);
 
-      if (count && count >= 4) {
-        toast({
-          title: "Team Full",
-          description: "Your team already has the maximum number of members.",
-          variant: "destructive",
-        });
+      const membersArr = existingMembers || [];
+
+      // Prevent duplicate: check if a member with same registration_number already exists
+      const alreadyMember = membersArr.find(m => m.registration_number === request.requester_registration_number);
+      if (alreadyMember) {
+        // Update request as accepted but do not insert duplicate
+        const { error: updateError } = await supabase
+          .from("team_join_requests")
+          .update({ status: "accepted", updated_at: new Date().toISOString() })
+          .eq("id", requestId);
+
+        if (updateError) throw updateError;
+
+        setJoinRequests(prev => prev.filter(r => r.id !== requestId));
+        toast({ title: "Already Member", description: `${request.requester_name} is already part of this team.` });
         return;
       }
 
-      // Determine member type
-      const memberType = `member${(count || 0)}`;
+      // Enforce team size limit (count includes leader)
+      if (membersArr.length >= teamSizeLimit) {
+        toast({ title: "Team Full", description: "Your team already has the maximum number of members.", variant: "destructive" });
+        return;
+      }
 
-      // Add as team member
+      // Determine member_type by finding available slot (member1..member3)
+      const usedSlots = new Set(membersArr.map(m => m.member_type));
+      let memberType = "member1";
+      for (const slot of ["member1", "member2", "member3"]) {
+        if (!usedSlots.has(slot)) {
+          memberType = slot;
+          break;
+        }
+      }
+
+      // Insert new team member
       const { error: memberError } = await supabase
         .from("team_members")
         .insert({
@@ -638,6 +668,7 @@ const Activity = () => {
           member_type: memberType,
           name: request.requester_name,
           registration_number: request.requester_registration_number,
+          created_at: new Date().toISOString(),
         });
 
       if (memberError) throw memberError;

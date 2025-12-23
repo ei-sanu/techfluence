@@ -27,6 +27,7 @@ import {
     ChevronDown,
     Code,
     Download,
+    Edit3,
     FileSpreadsheet,
     GraduationCap,
     Hash,
@@ -95,6 +96,31 @@ const Admin = () => {
     const [checkedInTeams, setCheckedInTeams] = useState<any[]>([]);
     const [showCheckedInModal, setShowCheckedInModal] = useState(false);
     const [checkedInFilterSize, setCheckedInFilterSize] = useState<number | null>(null);
+    // Breakdown auth and flow
+    const [breakdownAuthOpen, setBreakdownAuthOpen] = useState(false);
+    const [breakdownPass, setBreakdownPass] = useState("");
+    const [breakdownAuthed, setBreakdownAuthed] = useState(false);
+    const [breakdownSearchCode, setBreakdownSearchCode] = useState("");
+    const [breakdownResult, setBreakdownResult] = useState<SearchResult | null>(null);
+    const [breakdownUpdating, setBreakdownUpdating] = useState(false);
+    // Update Check-in details modal
+    const [updateCheckinOpen, setUpdateCheckinOpen] = useState(false);
+    const [updateSearchCode, setUpdateSearchCode] = useState("");
+    const [updateResult, setUpdateResult] = useState<SearchResult | null>(null);
+    const [updateNewLeaderId, setUpdateNewLeaderId] = useState<string | null>(null);
+    const [updateNewLeaderPhone, setUpdateNewLeaderPhone] = useState("");
+    const [updateNewLeaderEmail, setUpdateNewLeaderEmail] = useState("");
+    const [updateApplying, setUpdateApplying] = useState(false);
+    // Event details modal
+    const [eventDetailsOpen, setEventDetailsOpen] = useState(false);
+    const [eventDetailsType, setEventDetailsType] = useState<string | null>(null);
+    const [eventDetailsBreakdown, setEventDetailsBreakdown] = useState<Record<number, number>>({ 1: 0, 2: 0, 3: 0, 4: 0 });
+    // Manage Event state
+    const [manageEventOpen, setManageEventOpen] = useState(false);
+    const [managePass, setManagePass] = useState("");
+    const [manageAuthed, setManageAuthed] = useState(false);
+    const [eventControlStatus, setEventControlStatus] = useState<string | null>(null); // 'active' | 'paused' | 'ended'
+    const [endingPass, setEndingPass] = useState("");
     const [showDetailsModal, setShowDetailsModal] = useState(false);
     const [detailsResult, setDetailsResult] = useState<SearchResult | null>(null);
 
@@ -112,6 +138,9 @@ const Admin = () => {
     const [checkinTeamCode, setCheckinTeamCode] = useState("");
     const [checkinResult, setCheckinResult] = useState<SearchResult | null>(null);
     const [updatingCheckin, setUpdatingCheckin] = useState(false);
+    const [checkinNewLeaderId, setCheckinNewLeaderId] = useState<string | null>(null);
+    const [checkinNewLeaderPhone, setCheckinNewLeaderPhone] = useState("");
+    const [checkinNewLeaderEmail, setCheckinNewLeaderEmail] = useState("");
 
     // Clear search functions
     const clearTeamCodeSearch = () => {
@@ -129,6 +158,9 @@ const Admin = () => {
         setPassVerified(false);
         setCheckinTeamCode("");
         setCheckinResult(null);
+        setCheckinNewLeaderId(null);
+        setCheckinNewLeaderPhone("");
+        setCheckinNewLeaderEmail("");
         setShowCheckinModal(true);
     };
 
@@ -205,6 +237,13 @@ const Admin = () => {
 
                 setCheckedInBreakdown(breakdown);
                 setCheckedInTeams(teamsList);
+                // also fetch event control status
+                try {
+                    const { data: ev, error: evErr } = await supabase.from('event_controls').select('*').eq('key', 'hackathon_registration').maybeSingle();
+                    if (!evErr && ev && ev.value) setEventControlStatus(ev.value);
+                } catch (e) {
+                    // ignore if table missing
+                }
             } catch (e) {
                 console.warn("fetch checkin stats failed:", e);
             }
@@ -478,7 +517,26 @@ const Admin = () => {
                 // ignore
             }
 
+            // If admin selected a new leader during check-in, update roles and registration contact
             try {
+                if (checkinNewLeaderId) {
+                    const prevLeader = checkinResult.teamMembers.find((m) => m.member_type === 'leader');
+                    if (prevLeader && prevLeader.id !== checkinNewLeaderId) {
+                        await supabase.from('team_members').update({ member_type: 'member1' }).eq('id', prevLeader.id);
+                    }
+
+                    // set chosen member as leader
+                    await supabase.from('team_members').update({ member_type: 'leader' }).eq('id', checkinNewLeaderId);
+
+                    // update registration contact details if provided
+                    const regUpd: any = {};
+                    if (checkinNewLeaderPhone && checkinNewLeaderPhone.trim()) regUpd.contact_number = checkinNewLeaderPhone.trim();
+                    if (checkinNewLeaderEmail && checkinNewLeaderEmail.trim()) regUpd.email = checkinNewLeaderEmail.trim();
+                    if (Object.keys(regUpd).length > 0) {
+                        await supabase.from('registrations').update(regUpd).eq('id', reg.id);
+                    }
+                }
+
                 await supabase.from("registrations").update({ checked_in: true }).eq("id", reg.id);
             } catch (e) {
                 // ignore
@@ -488,12 +546,244 @@ const Admin = () => {
             // refresh data
             fetchAllRegistrations();
             setShowCheckinModal(false);
+            setCheckinNewLeaderId(null);
+            setCheckinNewLeaderPhone("");
+            setCheckinNewLeaderEmail("");
         } catch (err) {
             console.error("Submit checkin error:", err);
             toast({ title: "Error", description: "Failed to update check-in.", variant: "destructive" });
         } finally {
             setUpdatingCheckin(false);
         }
+    };
+
+    // Fetch team and checkin info for Breakdown dialog by team code
+    const fetchForBreakdown = async (code: string) => {
+        if (!code || !code.trim()) return;
+        setBreakdownResult(null);
+        try {
+            const { data: registration, error } = await supabase
+                .from("registrations")
+                .select("*")
+                .eq("check_in_code", code.trim().toUpperCase())
+                .maybeSingle();
+
+            if (error || !registration) {
+                toast({ title: "Not Found", description: "No registration found with this team code.", variant: "destructive" });
+                return;
+            }
+
+            const { data: members } = await supabase
+                .from("team_members")
+                .select("*")
+                .eq("registration_id", registration.id);
+
+            // fetch member checkins
+            const memberIds = (members || []).map((m: any) => m.id).filter(Boolean);
+            const { data: memberCheckins } = await supabase
+                .from("team_member_checkins")
+                .select("*")
+                .in("team_member_id", memberIds || []);
+
+            // fetch registration_checkin row
+            const { data: rcRow } = await supabase
+                .from("registration_checkins")
+                .select("*")
+                .eq("registration_id", registration.id)
+                .maybeSingle();
+
+            const merged = (members || []).map((m: any) => {
+                const mc = (memberCheckins || []).find((c: any) => c.team_member_id === m.id);
+                return { ...m, present: mc ? !!mc.present : !!m.present };
+            });
+
+            setBreakdownResult({ registration, teamMembers: merged, teamLeader: merged.find((x: any) => x.member_type === 'leader') });
+        } catch (err) {
+            console.error("fetchForBreakdown error:", err);
+            toast({ title: "Error", description: "Failed to fetch team for breakdown.", variant: "destructive" });
+        }
+    };
+
+    // Change a single member's presence flag from the Breakdown dialog
+    const changeMemberPresence = async (result: SearchResult | null, memberId: string, present: boolean) => {
+        if (!result || !result.registration) return;
+        setBreakdownUpdating(true);
+        try {
+            const regId = result.registration.id;
+
+            // ensure registration_checkins row exists
+            const { data: existingRC } = await supabase.from("registration_checkins").select("*").eq("registration_id", regId).maybeSingle();
+            const nowIso = new Date().toISOString();
+            let rcId = existingRC?.id || null;
+
+            if (!rcId) {
+                const { data: inserted } = await supabase.from("registration_checkins").insert([{ registration_id: regId, check_in_code: result.registration.check_in_code, checked_in: false, team_size: result.registration.team_size || 1, created_at: nowIso, updated_at: nowIso }]).select().maybeSingle();
+                rcId = inserted?.id || null;
+            }
+
+            // upsert team_member_checkins row
+            const { data: existingTMc } = await supabase.from("team_member_checkins").select("*").eq("team_member_id", memberId).maybeSingle();
+
+            if (existingTMc && existingTMc.id) {
+                await supabase.from("team_member_checkins").update({ present: !!present, present_at: present ? nowIso : null, registration_checkin_id: rcId, updated_at: nowIso }).eq("id", existingTMc.id);
+            } else {
+                await supabase.from("team_member_checkins").insert([{
+                    team_member_id: memberId,
+                    registration_checkin_id: rcId,
+                    present: !!present,
+                    present_at: present ? nowIso : null,
+                    created_at: nowIso,
+                    updated_at: nowIso,
+                }]);
+            }
+
+            // also update legacy team_members.present
+            try {
+                await supabase.from("team_members").update({ present: !!present }).eq("id", memberId);
+            } catch (e) {
+                // ignore
+            }
+
+            // update local UI
+            const updatedMembers = (result.teamMembers || []).map((m) => (m.id === memberId ? { ...m, present } : m));
+            setBreakdownResult({ ...result, teamMembers: updatedMembers });
+            toast({ title: "Updated", description: `Marked ${present ? 'Present' : 'Absent'}.` });
+        } catch (err) {
+            console.error("changeMemberPresence error:", err);
+            toast({ title: "Error", description: "Failed to update presence.", variant: "destructive" });
+        } finally {
+            setBreakdownUpdating(false);
+        }
+    };
+
+    // Fetch team for Update Check-in modal (reuse similar flow)
+    const fetchForUpdate = async (code: string) => {
+        if (!code || !code.trim()) return;
+        setUpdateResult(null);
+        try {
+            const { data: registration, error } = await supabase
+                .from("registrations")
+                .select("*")
+                .eq("check_in_code", code.trim().toUpperCase())
+                .maybeSingle();
+
+            if (error || !registration) {
+                toast({ title: "Not Found", description: "No registration found with this team code.", variant: "destructive" });
+                return;
+            }
+
+            const { data: members } = await supabase
+                .from("team_members")
+                .select("*")
+                .eq("registration_id", registration.id);
+
+            // fetch member checkins
+            const memberIds = (members || []).map((m: any) => m.id).filter(Boolean);
+            const { data: memberCheckins } = await supabase
+                .from("team_member_checkins")
+                .select("*")
+                .in("team_member_id", memberIds || []);
+
+            const merged = (members || []).map((m: any) => {
+                const mc = (memberCheckins || []).find((c: any) => c.team_member_id === m.id);
+                return { ...m, present: mc ? !!mc.present : !!m.present };
+            });
+
+            setUpdateResult({ registration, teamMembers: merged, teamLeader: merged.find((x: any) => x.member_type === 'leader') });
+        } catch (err) {
+            console.error("fetchForUpdate error:", err);
+            toast({ title: "Error", description: "Failed to fetch team for update.", variant: "destructive" });
+        }
+    };
+
+    // Set event control status in DB (uses table 'event_controls' with key/value)
+    const setEventControl = async (status: 'active' | 'paused' | 'ended') => {
+        try {
+            const nowIso = new Date().toISOString();
+            const { data, error } = await supabase.from('event_controls').upsert([{ key: 'hackathon_registration', value: status, updated_at: nowIso }], { onConflict: 'key' }).select().maybeSingle();
+            if (error) throw error;
+            setEventControlStatus(status);
+            toast({ title: 'Updated', description: `Hackathon registration ${status}.` });
+        } catch (err) {
+            console.error('setEventControl error:', err);
+            toast({ title: 'Error', description: 'Failed to update event control. Ensure table exists.', variant: 'destructive' });
+        }
+    };
+
+    const endRegistration = async () => {
+        if (endingPass !== '1111') {
+            toast({ title: 'Invalid End Pass', description: 'The end pass is incorrect.', variant: 'destructive' });
+            return;
+        }
+        await setEventControl('ended');
+    };
+
+    const applyUpdateCheckin = async () => {
+        if (!updateResult || !updateResult.registration) return;
+        if (!updateNewLeaderId) {
+            toast({ title: "Select Leader", description: "Please select a member to become leader.", variant: "destructive" });
+            return;
+        }
+
+        setUpdateApplying(true);
+        try {
+            const regId = updateResult.registration.id;
+            const nowIso = new Date().toISOString();
+
+            // update registration contact info if provided
+            const regUpdates: any = {};
+            if (updateNewLeaderPhone.trim()) regUpdates.contact_number = updateNewLeaderPhone.trim();
+            if (updateNewLeaderEmail.trim()) regUpdates.email = updateNewLeaderEmail.trim();
+            if (Object.keys(regUpdates).length > 0) {
+                await supabase.from("registrations").update(regUpdates).eq("id", regId);
+            }
+
+            // switch member_type: set previous leader to member1 (or next available) and set chosen to 'leader'
+            const prevLeader = updateResult.teamMembers.find((m) => m.member_type === 'leader');
+
+            if (prevLeader && prevLeader.id !== updateNewLeaderId) {
+                await supabase.from("team_members").update({ member_type: 'member1' }).eq('id', prevLeader.id);
+            }
+
+            // set chosen member as leader
+            await supabase.from("team_members").update({ member_type: 'leader' }).eq('id', updateNewLeaderId);
+
+            toast({ title: "Updated", description: "Check-in details updated." });
+            // refresh lists
+            fetchAllRegistrations();
+            setUpdateCheckinOpen(false);
+            setUpdateResult(null);
+            setUpdateNewLeaderId(null);
+            setUpdateNewLeaderPhone("");
+            setUpdateNewLeaderEmail("");
+        } catch (err) {
+            console.error("applyUpdateCheckin error:", err);
+            toast({ title: "Error", description: "Failed to apply update.", variant: "destructive" });
+        } finally {
+            setUpdateApplying(false);
+        }
+    };
+
+    const openEventDetails = (type: string) => {
+        // compute breakdown for the given type
+        const breakdown: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0 };
+        let regs = [] as Registration[];
+        if (type === 'hackathon') {
+            regs = allRegistrations.filter(r => r.event_type === 'hackathon' || r.event_type === 'both');
+        } else if (type === 'event') {
+            regs = allRegistrations.filter(r => r.event_type === 'event');
+        } else if (type === 'both') {
+            regs = allRegistrations.filter(r => r.event_type === 'both');
+        }
+
+        for (const r of regs) {
+            const s = r.team_size || 1;
+            if (s >= 1 && s <= 4) breakdown[s] = (breakdown[s] || 0) + 1;
+        }
+
+        setEventDetailsBreakdown(breakdown);
+        setEventDetailsType(type);
+        setEventDetailsOpen(true);
     };
 
     const searchByRegNumber = async () => {
@@ -774,8 +1064,19 @@ const Admin = () => {
             const rows = (regs || []).map((reg) => {
                 const rc = rcByReg[reg.id] || {};
                 const membersForReg = (presentMembers || []).filter((m) => m.registration_id === reg.id);
-                const leader = membersForReg.find((m) => m.member_type === "leader");
-                const others = membersForReg.filter((m) => m.member_type !== "leader");
+
+                // Pick leader: prefer actual leader among present members, otherwise fall back to first present member
+                let leader = membersForReg.find((m) => m.member_type === "leader");
+                if (!leader) leader = membersForReg[0] || null;
+
+                // If leader exists but is not in presentMembers (i.e., absent), leader will be undefined above and we fall back to first present member
+                if (!leader && (presentMembers || []).length > 0) {
+                    // fallback already handled, but keep for clarity
+                    leader = membersForReg[0] || null;
+                }
+
+                // Build ordered others list excluding chosen leader
+                const others = leader ? membersForReg.filter((m) => m.id !== leader?.id) : membersForReg;
                 const teamSize = rc.team_size || reg.team_size || 1;
 
                 return {
@@ -907,6 +1208,10 @@ const Admin = () => {
                                         <ShieldCheck className="w-4 h-4" />
                                         Check-In
                                     </Button>
+                                    <Button onClick={() => { setManagePass(""); setManageAuthed(false); setManageEventOpen(true); }} variant="ghost" className="gap-2">
+                                        <ShieldCheck className="w-4 h-4" />
+                                        Manage Event
+                                    </Button>
                                     <DropdownMenu>
                                         <DropdownMenuTrigger asChild>
                                             <Button
@@ -986,11 +1291,14 @@ const Admin = () => {
                                             <div className="p-3 bg-purple-500/10 rounded-lg">
                                                 <Code className="w-6 h-6 text-purple-500" />
                                             </div>
-                                            <div>
+                                            <div className="flex flex-col">
                                                 <p className="text-sm text-muted-foreground">Hackathon</p>
-                                                <p className="text-2xl font-bold">
+                                                <p className="text-3xl md:text-4xl font-bold leading-tight">
                                                     {allRegistrations.filter((r) => r.event_type === "hackathon" || r.event_type === "both").length}
                                                 </p>
+                                                <div className="mt-3 flex items-center gap-2">
+                                                    <Button size="sm" className="h-8 px-3 text-xs" onClick={() => openEventDetails('hackathon')}>View Details</Button>
+                                                </div>
                                             </div>
                                         </div>
                                     </CardContent>
@@ -1001,11 +1309,14 @@ const Admin = () => {
                                             <div className="p-3 bg-blue-500/10 rounded-lg">
                                                 <Calendar className="w-6 h-6 text-blue-500" />
                                             </div>
-                                            <div>
+                                            <div className="flex flex-col">
                                                 <p className="text-sm text-muted-foreground">Events Only</p>
-                                                <p className="text-2xl font-bold">
+                                                <p className="text-3xl md:text-4xl font-bold leading-tight">
                                                     {allRegistrations.filter((r) => r.event_type === "event").length}
                                                 </p>
+                                                <div className="mt-3 flex items-center gap-2">
+                                                    <Button size="sm" className="h-8 px-3 text-xs" onClick={() => openEventDetails('event')}>View Details</Button>
+                                                </div>
                                             </div>
                                         </div>
                                     </CardContent>
@@ -1016,11 +1327,14 @@ const Admin = () => {
                                             <div className="p-3 bg-green-500/10 rounded-lg">
                                                 <GraduationCap className="w-6 h-6 text-green-500" />
                                             </div>
-                                            <div>
+                                            <div className="flex flex-col">
                                                 <p className="text-sm text-muted-foreground">Both Events</p>
-                                                <p className="text-2xl font-bold">
+                                                <p className="text-3xl md:text-4xl font-bold leading-tight">
                                                     {allRegistrations.filter((r) => r.event_type === "both").length}
                                                 </p>
+                                                <div className="mt-3 flex items-center gap-2">
+                                                    <Button size="sm" className="h-8 px-3 text-xs" onClick={() => openEventDetails('both')}>View Details</Button>
+                                                </div>
                                             </div>
                                         </div>
                                     </CardContent>
@@ -1031,15 +1345,29 @@ const Admin = () => {
                                             <div className="p-3 bg-emerald-500/10 rounded-lg">
                                                 <ShieldCheck className="w-6 h-6 text-emerald-500" />
                                             </div>
-                                            <div>
+                                            <div className="flex flex-col">
                                                 <p className="text-sm text-muted-foreground">Checked-In Teams</p>
-                                                <p className="text-2xl font-bold">{checkedInCount}</p>
+                                                <p className="text-3xl md:text-4xl font-bold leading-tight">{checkedInCount}</p>
+                                                <div className="mt-3 flex items-center gap-2">
+                                                    <Button size="sm" className="h-8 px-3 text-xs" onClick={() => setShowCheckedInModal(true)}>View</Button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+
+                                {/* Update Check-in Details Card */}
+                                <Card>
+                                    <CardContent className="pt-6">
+                                        <div className="flex items-center gap-4">
+                                            <div className="p-3 bg-amber-500/10 rounded-lg">
+                                                <Edit3 className="w-6 h-6 text-amber-500" />
+                                            </div>
+                                            <div>
+                                                <p className="text-sm text-muted-foreground">Update Check-In Details</p>
+                                                <p className="text-2xl font-bold">Manage</p>
                                                 <div className="mt-2 flex gap-2">
-                                                    <Button size="sm" onClick={() => setShowCheckedInModal(true)}>View</Button>
-                                                    <Button size="sm" variant="outline" onClick={() => {
-                                                        setCheckedInFilterSize(null);
-                                                        setShowCheckedInModal(true);
-                                                    }}>Breakdown</Button>
+                                                    <Button size="sm" onClick={() => { setUpdateSearchCode(""); setUpdateResult(null); setUpdateCheckinOpen(true); }}>Open</Button>
                                                 </div>
                                             </div>
                                         </div>
@@ -1234,6 +1562,219 @@ const Admin = () => {
                                     </DialogContent>
                                 </Dialog>
 
+                                {/* Update Check-in Details Dialog */}
+                                <Dialog open={updateCheckinOpen} onOpenChange={(v) => { if (!v) { setUpdateCheckinOpen(false); setUpdateResult(null); setUpdateNewLeaderId(null); setUpdateNewLeaderPhone(""); setUpdateNewLeaderEmail(""); } }}>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle>Update Check-In Details</DialogTitle>
+                                            <DialogDescription>Reassign a team leader and update registration contact info.</DialogDescription>
+                                        </DialogHeader>
+
+                                        <div className="mt-4 space-y-4">
+                                            <div className="flex gap-2">
+                                                <Input placeholder="Team Code (e.g., AB123)" value={updateSearchCode} onChange={(e) => setUpdateSearchCode(e.target.value.toUpperCase())} onKeyDown={(e) => e.key === 'Enter' && fetchForUpdate(updateSearchCode)} className="font-mono uppercase" />
+                                                <Button onClick={() => fetchForUpdate(updateSearchCode)}>Fetch</Button>
+                                            </div>
+
+                                            {updateResult ? (
+                                                <div className="space-y-3">
+                                                    <div className="flex items-center justify-between">
+                                                        <div>
+                                                            <p className="font-semibold">{updateResult.registration.team_name || updateResult.registration.full_name}</p>
+                                                            <p className="text-xs text-muted-foreground">Code: <span className="font-mono">{updateResult.registration.check_in_code}</span></p>
+                                                        </div>
+                                                        <div className="text-sm text-muted-foreground">Size: {(updateResult.registration.team_size || 1) === 1 ? 'Solo' : (updateResult.registration.team_size || 1) === 2 ? 'Duo' : (updateResult.registration.team_size || 1) === 3 ? 'Trio' : 'Quadra'}</div>
+                                                    </div>
+
+                                                    <Separator />
+
+                                                    <div className="space-y-2">
+                                                        <p className="text-sm text-muted-foreground">Members</p>
+                                                        <div className="grid gap-2">
+                                                            {updateResult.teamMembers.map((m) => (
+                                                                <div key={m.id} className={`p-2 rounded bg-muted/20 flex items-center justify-between ${m.member_type === 'leader' ? 'border-l-4 border-primary' : ''}`}>
+                                                                    <div>
+                                                                        <p className="font-medium">{m.name}</p>
+                                                                        <p className="text-xs text-muted-foreground">{m.registration_number} {m.member_type === 'leader' && <span className="ml-2 text-xs text-primary">(Leader)</span>}</p>
+                                                                    </div>
+                                                                    <div className="flex items-center gap-2">
+                                                                        <div className={`text-sm font-medium ${m.present ? 'text-emerald-500' : 'text-red-500'}`}>{m.present ? 'Present' : 'Absent'}</div>
+                                                                        <Button size="sm" variant={updateNewLeaderId === m.id ? undefined : 'outline'} onClick={() => setUpdateNewLeaderId(m.id)}>Select</Button>
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="space-y-2">
+                                                        <p className="text-sm text-muted-foreground">New Leader Contact (will update registration contact)</p>
+                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                                            <Input placeholder="Mobile Number" value={updateNewLeaderPhone} onChange={(e) => setUpdateNewLeaderPhone(e.target.value)} />
+                                                            <Input placeholder="Email Address" value={updateNewLeaderEmail} onChange={(e) => setUpdateNewLeaderEmail(e.target.value)} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div className="text-sm text-muted-foreground">Fetch a team code to update its check-in details.</div>
+                                            )}
+                                        </div>
+
+                                        <DialogFooter>
+                                            <div className="flex gap-2 w-full">
+                                                <Button variant="outline" onClick={() => setUpdateCheckinOpen(false)} className="flex-1">Cancel</Button>
+                                                <Button onClick={applyUpdateCheckin} disabled={!updateResult || !updateNewLeaderId || updateApplying} className="flex-1">
+                                                    {updateApplying ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Apply Update'}
+                                                </Button>
+                                            </div>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
+
+                                {/* Event Details Dialog */}
+                                <Dialog open={eventDetailsOpen} onOpenChange={(v) => setEventDetailsOpen(v)}>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle>{eventDetailsType === 'hackathon' ? 'Hackathon' : eventDetailsType === 'event' ? 'Events Only' : 'Both Events'} Registrations</DialogTitle>
+                                            <DialogDescription>Breakdown by team size</DialogDescription>
+                                        </DialogHeader>
+
+                                        <div className="mt-4 space-y-3">
+                                            <div className="grid grid-cols-2 gap-2">
+                                                <div className="p-3 bg-muted/20 rounded">
+                                                    <p className="text-sm text-muted-foreground">Solo</p>
+                                                    <p className="text-2xl font-bold">{eventDetailsBreakdown[1] || 0}</p>
+                                                </div>
+                                                <div className="p-3 bg-muted/20 rounded">
+                                                    <p className="text-sm text-muted-foreground">Duo</p>
+                                                    <p className="text-2xl font-bold">{eventDetailsBreakdown[2] || 0}</p>
+                                                </div>
+                                                <div className="p-3 bg-muted/20 rounded">
+                                                    <p className="text-sm text-muted-foreground">Trio</p>
+                                                    <p className="text-2xl font-bold">{eventDetailsBreakdown[3] || 0}</p>
+                                                </div>
+                                                <div className="p-3 bg-muted/20 rounded">
+                                                    <p className="text-sm text-muted-foreground">Quadra</p>
+                                                    <p className="text-2xl font-bold">{eventDetailsBreakdown[4] || 0}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <DialogFooter>
+                                            <div className="flex gap-2 w-full">
+                                                <Button variant="outline" onClick={() => setEventDetailsOpen(false)} className="flex-1">Close</Button>
+                                            </div>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
+
+                                {/* Manage Event Dialog */}
+                                <Dialog open={manageEventOpen} onOpenChange={(v) => { if (!v) { setManageEventOpen(false); setManageAuthed(false); setManagePass(""); } }}>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle>Manage Event</DialogTitle>
+                                            <DialogDescription>Admin controls for hackathon registration </DialogDescription>
+                                        </DialogHeader>
+
+                                        <div className="mt-4 space-y-4">
+                                            {!manageAuthed ? (
+                                                <div className="space-y-2">
+                                                    <p className="text-sm text-muted-foreground">Enter admin passcode</p>
+                                                    <div className="flex gap-2">
+                                                        <Input placeholder="Admin Pass" value={managePass} onChange={(e) => setManagePass(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && (managePass === '2511' ? setManageAuthed(true) : toast({ title: 'Invalid Pass', description: 'Wrong passcode', variant: 'destructive' }))} />
+                                                        <Button onClick={() => { if (managePass === '2511') setManageAuthed(true); else toast({ title: 'Invalid Pass', description: 'Wrong passcode', variant: 'destructive' }); }}>Verify</Button>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div className="space-y-3">
+                                                    <p className="text-sm text-muted-foreground">Current status: <span className="font-medium">{eventControlStatus || 'active'}</span></p>
+                                                    <div className="flex flex-wrap gap-2 items-center">
+                                                        <Button size="sm" className="h-8 px-2 text-xs" onClick={() => setEventControl('paused')}>Pause Hackathon Registration</Button>
+                                                        <Button size="sm" className="h-8 px-2 text-xs" onClick={() => setEventControl('active')}>Resume Registration</Button>
+                                                        <div className="ml-0 flex items-center gap-2 flex-wrap">
+                                                            <Input placeholder="End Pass" value={endingPass} onChange={(e) => setEndingPass(e.target.value)} className="w-28 sm:w-36" />
+                                                            <Button size="sm" variant="destructive" className="h-8 px-2 text-xs" onClick={() => endRegistration()}>End Registration</Button>
+                                                        </div>
+                                                    </div>
+                                                    <p className="text-xs text-muted-foreground">Pausing prevents new hackathon registrations on the public registration page. Ending requires passcode **** and will mark registrations closed.</p>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <DialogFooter>
+                                            <div className="flex gap-2 w-full">
+                                                <Button variant="outline" onClick={() => { setManageEventOpen(false); setManageAuthed(false); setManagePass(""); }} className="flex-1">Close</Button>
+                                            </div>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
+
+                                {/* Breakdown Auth / Manager Dialog */}
+                                <Dialog open={breakdownAuthOpen} onOpenChange={(v) => { if (!v) { setBreakdownAuthOpen(false); setBreakdownAuthed(false); setBreakdownResult(null); } }}>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle>Checked-In Breakdown (Admin)</DialogTitle>
+                                            <DialogDescription>Enter passcode to view and manage check-ins.</DialogDescription>
+                                        </DialogHeader>
+
+                                        <div className="mt-4 space-y-4">
+                                            {!breakdownAuthed ? (
+                                                <div className="space-y-2">
+                                                    <p className="text-sm text-muted-foreground">Enter admin passcode</p>
+                                                    <div className="flex gap-2">
+                                                        <Input placeholder="Passcode" value={breakdownPass} onChange={(e) => setBreakdownPass(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && (breakdownPass === '2025' ? setBreakdownAuthed(true) : toast({ title: 'Invalid Pass', description: 'Wrong passcode', variant: 'destructive' }))} />
+                                                        <Button onClick={() => { if (breakdownPass === '2025') { setBreakdownAuthed(true); } else { toast({ title: 'Invalid Pass', description: 'Wrong passcode', variant: 'destructive' }); } }}>Verify</Button>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div className="space-y-3">
+                                                    <div className="flex gap-2">
+                                                        <Input placeholder="Enter Team Code (e.g., AB123)" value={breakdownSearchCode} onChange={(e) => setBreakdownSearchCode(e.target.value.toUpperCase())} onKeyDown={(e) => e.key === 'Enter' && fetchForBreakdown(breakdownSearchCode)} className="font-mono uppercase" />
+                                                        <Button onClick={() => fetchForBreakdown(breakdownSearchCode)}>Search</Button>
+                                                    </div>
+
+                                                    {breakdownResult ? (
+                                                        <div className="space-y-2">
+                                                            <div className="flex items-center justify-between">
+                                                                <div>
+                                                                    <p className="font-semibold">{breakdownResult.registration.team_name || breakdownResult.registration.full_name}</p>
+                                                                    <p className="text-xs text-muted-foreground">Code: <span className="font-mono">{breakdownResult.registration.check_in_code}</span></p>
+                                                                </div>
+                                                                <div className="text-sm text-muted-foreground">Size: {(breakdownResult.registration.team_size || 1) === 1 ? 'Solo' : (breakdownResult.registration.team_size || 1) === 2 ? 'Duo' : (breakdownResult.registration.team_size || 1) === 3 ? 'Trio' : 'Quadra'}</div>
+                                                            </div>
+                                                            <Separator />
+                                                            <div className="space-y-2">
+                                                                {(breakdownResult.teamMembers || []).map((m) => (
+                                                                    <div key={m.id} className="flex items-center justify-between bg-muted/20 p-2 rounded">
+                                                                        <div>
+                                                                            <p className="font-medium">{m.name}</p>
+                                                                            <p className="text-xs text-muted-foreground">{m.registration_number}</p>
+                                                                        </div>
+                                                                        <div className="flex items-center gap-2">
+                                                                            <div className={`text-sm font-medium ${m.present ? 'text-emerald-500' : 'text-red-500'}`}>{m.present ? 'Present' : 'Absent'}</div>
+                                                                            <div className="flex gap-1">
+                                                                                <Button size="sm" onClick={() => changeMemberPresence(breakdownResult, m.id, true)} disabled={m.present || breakdownUpdating}>Mark Present</Button>
+                                                                                <Button size="sm" variant="outline" onClick={() => changeMemberPresence(breakdownResult, m.id, false)} disabled={!m.present || breakdownUpdating}>Mark Absent</Button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="text-sm text-muted-foreground">Search a team code to view check-in details.</div>
+                                                    )}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <DialogFooter>
+                                            <div className="flex gap-2 w-full">
+                                                <Button variant="outline" onClick={() => { setBreakdownAuthOpen(false); setBreakdownAuthed(false); setBreakdownResult(null); }} className="flex-1">Close</Button>
+                                            </div>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
+
                                 {/* Search by Registration Number */}
                                 <Card>
                                     <CardHeader>
@@ -1390,6 +1931,33 @@ const Admin = () => {
                                                                 ))}
                                                             </div>
                                                         </div>
+                                                        {/* If leader is absent, allow selecting a replacement and updating contact */}
+                                                        {checkinResult.teamMembers.find((mm) => mm.member_type === 'leader' && !mm.present) && (
+                                                            <div className="mt-4 p-3 bg-yellow-50 rounded">
+                                                                <p className="font-medium">Leader is absent — choose a replacement</p>
+                                                                <div className="mt-2 grid gap-2">
+                                                                    {(checkinResult.teamMembers || []).filter(m => m.member_type !== 'leader').map((m) => (
+                                                                        <div key={m.id} className={`p-2 rounded flex items-center justify-between ${checkinNewLeaderId === m.id ? 'bg-primary/10' : 'bg-muted/10'}`}>
+                                                                            <div>
+                                                                                <p className="font-medium">{m.name}</p>
+                                                                                <p className="text-xs text-muted-foreground">{m.registration_number}</p>
+                                                                            </div>
+                                                                            <div>
+                                                                                <Button size="sm" variant={checkinNewLeaderId === m.id ? undefined : 'outline'} onClick={() => setCheckinNewLeaderId(m.id)}>Select</Button>
+                                                                            </div>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+
+                                                                <div className="mt-3">
+                                                                    <p className="text-sm text-muted-foreground">New leader contact (will replace registration contact)</p>
+                                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+                                                                        <Input placeholder="Mobile Number" value={checkinNewLeaderPhone} onChange={(e) => setCheckinNewLeaderPhone(e.target.value)} />
+                                                                        <Input placeholder="Email Address" value={checkinNewLeaderEmail} onChange={(e) => setCheckinNewLeaderEmail(e.target.value)} />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 )}
                                             </div>

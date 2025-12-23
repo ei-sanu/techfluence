@@ -28,6 +28,7 @@ const Register = () => {
   const [mode, setMode] = useState<RegistrationMode>("select");
   const [registrationStatus, setRegistrationStatus] = useState<RegistrationStatus | null>(null);
   const [checkingStatus, setCheckingStatus] = useState(true);
+  const [hackathonControl, setHackathonControl] = useState<string | null>(null); // 'active'|'paused'|'ended'
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 500);
@@ -113,6 +114,19 @@ const Register = () => {
 
     checkRegistrationStatus();
   }, [user?.id]);
+
+  // fetch hackathon registration control status
+  useEffect(() => {
+    const fetchControl = async () => {
+      try {
+        const { data: ev } = await supabase.from('event_controls').select('*').eq('key', 'hackathon_registration').maybeSingle();
+        if (ev && ev.value) setHackathonControl(ev.value);
+      } catch (err) {
+        // ignore if table doesn't exist
+      }
+    };
+    fetchControl();
+  }, []);
 
   return (
     <>
@@ -217,40 +231,40 @@ const Register = () => {
                   {mode === "select" && (
                     <div className="max-w-3xl mx-auto">
                       <div className="grid md:grid-cols-2 gap-6">
-                        {/* New Registration Card */}
+                        {/* New Registration Card (disabled when hackathon paused/ended) */}
                         <Card
-                          className="tech-border cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/10 group"
-                          onClick={() => setMode("new")}
+                          className={`tech-border transition-all duration-300 ${hackathonControl === 'paused' || hackathonControl === 'ended' ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/10 group'}`}
+                          onClick={() => { if (hackathonControl !== 'paused' && hackathonControl !== 'ended') setMode("new"); }}
                         >
                           <CardContent className="p-8 text-center">
-                            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
                               <PlusCircle className="w-10 h-10 text-primary" />
                             </div>
                             <h3 className="font-cinzel text-xl font-semibold mb-3">New Registration</h3>
                             <p className="text-muted-foreground text-sm">
                               Register as a new participant for TECH FLUENCE 6.0. Create your own team or participate individually.
                             </p>
-                            <div className="mt-6 py-2 px-4 bg-primary/10 rounded-full text-primary text-sm font-medium inline-block">
-                              Create New Team
+                            <div className="mt-6 py-2 px-4 rounded-full text-sm font-medium inline-block" style={{ background: hackathonControl === 'paused' || hackathonControl === 'ended' ? 'transparent' : undefined }}>
+                              {hackathonControl === 'paused' ? 'Hackathon Registrations Paused' : hackathonControl === 'ended' ? 'Registrations Ended' : 'Create New Team'}
                             </div>
                           </CardContent>
                         </Card>
 
-                        {/* Join Team Card */}
+                        {/* Join Team Card (disabled when hackathon paused/ended) */}
                         <Card
-                          className="tech-border cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/10 group"
-                          onClick={() => setMode("join")}
+                          className={`tech-border transition-all duration-300 ${hackathonControl === 'paused' || hackathonControl === 'ended' ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/10 group'}`}
+                          onClick={() => { if (hackathonControl !== 'paused' && hackathonControl !== 'ended') setMode("join"); }}
                         >
                           <CardContent className="p-8 text-center">
-                            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-500/5 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-500/5 flex items-center justify-center">
                               <Users className="w-10 h-10 text-blue-500" />
                             </div>
                             <h3 className="font-cinzel text-xl font-semibold mb-3">Join Existing Team</h3>
                             <p className="text-muted-foreground text-sm">
                               Already have a team code? Join an existing team created by your team leader.
                             </p>
-                            <div className="mt-6 py-2 px-4 bg-blue-500/10 rounded-full text-blue-500 text-sm font-medium inline-block">
-                              Enter Team Code
+                            <div className="mt-6 py-2 px-4 rounded-full text-sm font-medium inline-block">
+                              {hackathonControl === 'paused' ? 'Joining Paused' : hackathonControl === 'ended' ? 'Registrations Ended' : 'Enter Team Code'}
                             </div>
                           </CardContent>
                         </Card>
