@@ -26,7 +26,7 @@ const SpeakerCard = ({ speaker, index, isVisible }: { speaker: typeof sessions.s
       className={`group relative transition-all duration-700 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
       style={{ transitionDelay: `${300 + index * 200}ms` }}
     >
-      <div className="bg-card tech-border rounded-xl overflow-hidden transition-all duration-500 hover:scale-105 hover:-translate-y-2 hover:tech-glow group-hover:border-primary/40">
+      <div className="bg-card tech-border rounded-xl overflow-hidden transition-shadow duration-300 hover:tech-glow hover:shadow-xl hover:ring-2 hover:ring-primary/40 group-hover:border-primary/40">
         {/* Image Container */}
         <div className="relative aspect-square overflow-hidden">
           <img

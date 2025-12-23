@@ -229,6 +229,70 @@
 
 @layer utilities {
 
+  /* Custom cursor variables and styles */
+  :root {
+    --cursor-x: -100px;
+    --cursor-y: -100px;
+    --cursor-color: hsl(var(--primary) / 0.9);
+  }
+
+  /* Hide native cursor on pointer-capable devices */
+  @media (pointer: fine) {
+    body {
+      cursor: none;
+    }
+  }
+
+  .custom-cursor {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 9999px;
+    pointer-events: none;
+    z-index: 9999;
+    will-change: transform, opacity;
+    transform: translate3d(-200px, -200px, 0);
+    transition: opacity 0.12s linear, transform 0.12s linear;
+    background: radial-gradient(circle, hsl(var(--primary) / 0.9) 0%, hsl(var(--primary) / 0.45) 20%, transparent 45%);
+    box-shadow: 0 10px 30px hsl(var(--primary) / 0.14), inset 0 0 10px hsl(var(--primary) / 0.2);
+    opacity: 0.95;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  :root.cursor-pressed .custom-cursor,
+  .cursor-pressed .custom-cursor {
+    transform: translate3d(-200px, -200px, 0) scale(0.92);
+    opacity: 0.85;
+  }
+
+  /* Global overlay that tints the background under the cursor. Single element reduces repaints vs per-element gradients. */
+  .cursor-overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 360px;
+    height: 360px;
+    pointer-events: none;
+    z-index: 9998;
+    border-radius: 50%;
+    transform: translate3d(-400px, -400px, 0);
+    background: radial-gradient(circle at 50% 50%, var(--cursor-overlay-color), transparent 45%);
+    mix-blend-mode: screen;
+    filter: blur(10px) saturate(120%);
+    opacity: 0.95;
+    will-change: transform, opacity;
+  }
+
+  /* Remove per-element cursor-reactive gradient to avoid forcing many repaints. Use the overlay instead. */
+  .cursor-reactive {
+    /* optional subtle fallback for non-JS or touch devices */
+    transition: box-shadow 0.12s ease;
+  }
+
+
   /* Interlocking gear keyframes - opposite rotations for meshing */
   @keyframes gear-rotate-main {
     from {

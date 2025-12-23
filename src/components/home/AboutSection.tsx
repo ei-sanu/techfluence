@@ -266,7 +266,7 @@ const AboutSection = () => {
                 }`}
               style={{ transitionDelay: `${2200 + index * 200}ms` }}
             >
-              <div className="h-full bg-card tech-border rounded-xl p-6 hover:bg-secondary/50 transition-all duration-500 hover:scale-105 hover:-translate-y-2 hover:tech-glow group-hover:border-primary/50">
+              <div className="h-full bg-card tech-border rounded-xl p-6 hover:bg-secondary/50 transition-shadow duration-300 hover:tech-glow hover:shadow-xl hover:ring-2 hover:ring-primary/40 group-hover:border-primary/50">
                 <div className="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
                   <feature.icon className="w-7 h-7 text-primary transition-transform duration-500 group-hover:scale-110" />
                 </div>

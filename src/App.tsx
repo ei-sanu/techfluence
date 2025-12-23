@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import CustomCursor from "./components/ui/CustomCursor";
 import Activity from "./pages/Activity";
 import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
@@ -32,6 +33,7 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
+          <CustomCursor />
           <BrowserRouter>
             <ScrollToTop />
             <Routes>

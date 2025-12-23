@@ -104,7 +104,7 @@ const LiveImpactSection = () => {
                 }`}
               style={{ transitionDelay: `${200 + index * 150}ms` }}
             >
-              <div className="group bg-card tech-border rounded-xl p-6 md:p-8 hover:tech-glow transition-all duration-500 hover:scale-105 hover:-translate-y-2 hover:border-primary/40">
+              <div className="group bg-card tech-border rounded-xl p-6 md:p-8 hover:tech-glow transition-shadow duration-300 hover:shadow-xl hover:ring-2 hover:ring-primary/40">
                 <div className={`w-12 h-12 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center transition-all duration-500 group-hover:bg-primary/20 group-hover:scale-110 ${isVisible ? "rotate-0" : "rotate-180"}`}
                   style={{ transitionDelay: `${300 + index * 150}ms` }}>
                   <stat.icon className="w-6 h-6 text-primary transition-transform duration-300 group-hover:scale-110" />
