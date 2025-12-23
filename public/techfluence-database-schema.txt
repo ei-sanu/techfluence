@@ -142,3 +142,15 @@ BEGIN
         LEFT JOIN public.registration_checkins rc ON rc.registration_id = tm.registration_id;
     END IF;
 END$$;
+
+
+
+
+
+
+-- For the event controls like registration open/close, check-in open/close etc.
+create table if not exists event_controls (
+  key text primary key,
+  value text not null,
+  updated_at timestamptz default now()
+);
