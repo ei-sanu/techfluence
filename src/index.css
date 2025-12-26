@@ -225,6 +225,51 @@
   .gear-spin-slow {
     animation: gear-rotate 6s linear infinite;
   }
+
+  /* Premium footer cinematic styling */
+  .premium-footer {
+    background: linear-gradient(180deg, #050505 0%, #1b0f05 45%, #120a04 100%);
+    color: #fff;
+    position: relative;
+  }
+
+  .premium-footer .particles {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(1px 1px at 10% 20%, rgba(255, 255, 255, 0.012), transparent), radial-gradient(1px 1px at 70% 80%, rgba(255, 165, 50, 0.012), transparent);
+    pointer-events: none;
+    opacity: 0.6;
+    mix-blend-mode: overlay;
+    filter: contrast(100%) saturate(110%);
+  }
+
+  .premium-footer .font-display {
+    font-family: 'Playfair Display', serif;
+    letter-spacing: -0.02em;
+  }
+
+  .premium-footer a {
+    color: inherit;
+  }
+
+  .premium-footer .tech-text-gradient {
+    background: linear-gradient(90deg, #ffb26b, #ff7a00 60%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 4px 18px rgba(255, 120, 40, 0.14));
+  }
+
+  .premium-footer .rounded-lg {
+    backdrop-filter: blur(6px) saturate(120%);
+  }
+
+  @media (max-width: 640px) {
+    .premium-footer .max-w-6xl {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
 }
 
 @layer utilities {

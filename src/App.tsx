@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import FooterPremium from "./components/FooterPremium";
 import CustomCursor from "./components/ui/CustomCursor";
 import Activity from "./pages/Activity";
 import Admin from "./pages/Admin";
@@ -49,6 +50,7 @@ const App = () => (
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
+            <FooterPremium />
           </BrowserRouter>
         </TooltipProvider>
       </QueryClientProvider>
