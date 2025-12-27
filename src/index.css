@@ -1097,3 +1097,171 @@ html:not(.dark) footer {
 html:not(.dark) a:hover {
   color: hsl(22, 100%, 40%);
 }
+
+/* GlimpseSection styles - floating card rows */
+.glimpse-section {
+  background: linear-gradient(180deg, transparent, rgba(255, 120, 0, 0.02));
+}
+
+.glimpse-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  will-change: transform;
+  overflow: hidden;
+  padding: 0.25rem 0;
+}
+
+
+.glimpse-card.small {
+  width: 100%;
+  aspect-ratio: 4/3;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.13);
+  border: 2px solid rgba(255, 200, 120, 0.13);
+  background: #181818;
+  transition: box-shadow 0.2s;
+}
+
+.glimpse-card.small img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.glimpse-card img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 3px solid rgba(255, 200, 120, 0.12);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28), 0 0 18px rgba(255, 160, 50, 0.06) inset;
+}
+
+/* floating animation — smooth, subtle motion across X axis */
+@keyframes glimpse-marquee-ltr {
+  0% {
+    transform: translateX(-60%);
+  }
+
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes glimpse-marquee-rtl {
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-60%);
+  }
+}
+
+.row-ltr {
+  animation: glimpse-marquee-ltr 40s linear infinite;
+}
+
+.row-rtl {
+  animation: glimpse-marquee-rtl 40s linear infinite;
+}
+
+/* Subtitle text under the Glimpse heading */
+.glimpse-subtitle {
+  margin-top: 8px;
+  margin-bottom: 12px;
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+
+/* Gentle rhythmic lateral animation to evoke a "voice" cadence applied per-card */
+@keyframes voice-of-attendees-lr {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  25% {
+    transform: translate3d(10px, -3px, 0);
+  }
+
+  50% {
+    transform: translate3d(0, -6px, 0);
+  }
+
+  75% {
+    transform: translate3d(-8px, -3px, 0);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.row-ltr>.glimpse-card,
+.row-rtl>.glimpse-card {
+  will-change: transform;
+  animation: voice-of-attendees-lr 10s ease-in-out infinite;
+}
+
+.glimpse-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.42);
+}
+
+@media (max-width: 768px) {
+  .glimpse-card {
+    width: 140px;
+    height: 88px;
+  }
+
+  .glimpse-card.smaller {
+    width: 120px;
+    height: 76px;
+  }
+
+  .row-ltr,
+  .row-rtl {
+    animation-duration: 28s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .row-ltr,
+  .row-rtl {
+    animation-play-state: paused;
+    transform: none !important;
+  }
+
+  .glimpse-card:hover {
+    transform: none;
+  }
+}
+
+/* Stable past-season card styles */
+.glimpse-stable {
+  display: grid;
+}
+
+.stable-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.02));
+  border-radius: 12px;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+.stable-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.36);
+}
+
+@media (max-width: 640px) {
+  .stable-card {
+    width: 100% !important;
+  }
+}

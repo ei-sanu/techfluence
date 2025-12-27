@@ -3,6 +3,7 @@ import GearLoader from "@/components/GearLoader";
 import AboutSection from "@/components/home/AboutSection";
 import CommunityVoicesSection from "@/components/home/CommunityVoicesSection";
 import FAQSection from "@/components/home/FAQSection";
+import GlimpseSection from "@/components/home/GlimpseSection";
 import HeroSection from "@/components/home/HeroSection";
 import LiveImpactSection from "@/components/home/LiveImpactSection";
 import SpeakersSection from "@/components/home/SpeakersSection";
@@ -80,6 +81,7 @@ const Index = () => {
           <HeroSection onTriggerStory={handleTriggerStory} />
           <AboutSection />
           <SpeakersSection />
+          <GlimpseSection />
           <LiveImpactSection />
           <CommunityVoicesSection />
           <FAQSection />

@@ -84,7 +84,7 @@ const FooterPremium: React.FC = () => {
 
                 <div className="mt-6 w-full border-t border-orange-600/8 pt-4">
                     <p className="text-sm text-amber-200/60">© 2025 TECH FLUENCE. All Rights Reserved.</p>
-                    <p className="text-xs text-amber-100/40 mt-1">Secured & Powered by Advanced Web Security</p>
+                    <p className="text-xs text-amber-100/40 mt-1">Secured & Powered by Advanced somesh.social</p>
                 </div>
             </div>
         </footer>
