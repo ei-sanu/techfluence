@@ -1,4 +1,4 @@
-import Footer from "@/components/Footer";
+// import Footer from "@/components/Footer";
 import GearLoader from "@/components/GearLoader";
 import AboutSection from "@/components/home/AboutSection";
 import CommunityVoicesSection from "@/components/home/CommunityVoicesSection";
@@ -86,7 +86,7 @@ const Index = () => {
           <CommunityVoicesSection />
           <FAQSection />
         </main>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </div>
   );
