@@ -12,6 +12,7 @@ import Activity from "./pages/Activity";
 import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
 import Contact from "./pages/Contact";
+import Gallery from "./pages/Gallery";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -48,6 +49,7 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/gallery" element={<Gallery />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <FooterPremium />

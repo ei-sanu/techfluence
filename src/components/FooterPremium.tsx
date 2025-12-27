@@ -1,17 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const CrownIcon = ({ className = 'w-8 h-8' }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-        <path d="M3 7l4 4 3-6 4 6 3-4 4 4v6H3V7z" fill="url(#g)" />
-        <defs>
-            <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-                <stop offset="0" stopColor="#ff9a3c" />
-                <stop offset="1" stopColor="#ff6a00" />
-            </linearGradient>
-        </defs>
-    </svg>
-);
+
 
 const SocialIcon = ({ name }: { name: string }) => {
     const shared = 'w-5 h-5';
@@ -58,7 +48,7 @@ const FooterPremium: React.FC = () => {
             <div className="max-w-6xl mx-auto px-6 py-6 md:py-10 flex flex-col items-center text-center">
                 <div className="flex flex-col items-center gap-3">
                     <div className="p-1 rounded-full bg-gradient-to-br from-orange-400/8 to-amber-500/6 ring-1 ring-orange-500/8">
-                        <CrownIcon className="w-8 h-8" />
+                        {/* Crown removed */}
                     </div>
                     <h2 className="text-xl md:text-2xl font-display tracking-tight tech-text-gradient">TECH FLUENCE <span className="text-xs text-amber-200/80">6.0</span></h2>
                     <p className="text-xs text-amber-100/70">Innovation Meets Excellence</p>

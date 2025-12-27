@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { BookOpen, Crown, Lightbulb, Scroll, Sparkles } from "lucide-react";
+import { BookOpen, Crown, Scroll, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -225,7 +225,8 @@ const HeroSection = ({ onTriggerStory }: HeroSectionProps) => {
 
           {/* Keyboard Shortcuts Section */}
           <div className={`hidden md:flex items-center justify-center gap-8 mt-4 mb-2 transition-all duration-700 ${elementsVisible.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-            {/* Flash/Lamp Toggle Shortcut */}
+            {/* Flash/Lamp Toggle Shortcut - commented out */}
+            {/**
             <div
               className="flex items-center gap-3 px-4 py-2 rounded-lg bg-slate-900/40 dark:bg-slate-800/40 border border-slate-700/30 hover:border-primary/30 transition-all cursor-pointer group"
               onClick={handleStringPull}
@@ -247,6 +248,7 @@ const HeroSection = ({ onTriggerStory }: HeroSectionProps) => {
               </div>
               <span className="text-[10px] text-primary/70 font-mono tracking-wider">FLASH</span>
             </div>
+            */}
 
             {/* Story Mode Shortcut */}
             <div

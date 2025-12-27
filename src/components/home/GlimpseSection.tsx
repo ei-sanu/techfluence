@@ -12,10 +12,10 @@ const GlimpseSection: React.FC = () => {
     return (
         <section className="glimpse-section py-8 md:py-12">
             <div className="container mx-auto px-4">
-                <div className="text-center mb-6">
-                    <h3 className="text-sm tracking-widest text-amber-300 mb-1">TECHFLUENCE</h3>
-                    <h2 className="text-3xl md:text-4xl font-display tech-text-gradient">GLIMPSE</h2>
-                    <div className="glimpse-subtitle">Voice Of Our Attendees</div>
+                <div className="text-center mb-8">
+                    <h3 className="text-2xl md:text-4xl lg:text-5xl font-extrabold tracking-widest text-amber-300 mb-2 leading-tight">TECHFLUENCE</h3>
+                    <h2 className="text-4xl md:text-6xl lg:text-7xl font-display font-black tech-text-gradient mb-2 leading-tight">GLIMPSE</h2>
+                   
                 </div>
 
                 {/* Past seasons — stable cards */}
@@ -33,13 +33,10 @@ const GlimpseSection: React.FC = () => {
                     ))}
                 </div>
 
-                {/* All event images as small cards in a responsive grid */}
-                <div className="glimpse-gallery grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
-                    {eventImages.slice(0, 30).map((src, i) => (
-                        <div className="glimpse-card small" key={`gallery-${i}`}>
-                            <img loading="lazy" src={src} alt={`gallery-${i}`} className="w-full h-full object-cover rounded-md" />
-                        </div>
-                    ))}
+                {/* Gallery redirect button and caption */}
+                <div className="flex flex-col items-center mt-6">
+                    <p className="text-base text-muted-foreground mb-3">Want to see more moments? Explore the full event gallery!</p>
+                    <a href="/gallery" className="inline-block px-6 py-2 rounded-lg bg-primary text-primary-foreground font-semibold shadow hover:bg-primary/90 transition">View Gallery</a>
                 </div>
             </div>
         </section>

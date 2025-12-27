@@ -23,6 +23,8 @@ const Navbar = () => {
     { path: "/register", label: "Register Now" },
     { path: "/activity", label: "Activity" },
     { path: "/contact", label: "Contact" },
+    { path: "/gallery", label: "Gallery", shortcut: true },
+    { path: "/story", label: "Story Mode", shortcut: true, storyOnly: true },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -51,7 +53,7 @@ const Navbar = () => {
           {/* Desktop Navigation - Center */}
           <div className="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2">
             <div className="flex items-center gap-8">
-              {navLinks.map((link, index) => (
+              {navLinks.filter(link => !link.shortcut).map((link, index) => (
                 <Link
                   key={link.path}
                   to={link.path}
@@ -73,6 +75,17 @@ const Navbar = () => {
                   />
                   {/* Glow effect on hover */}
                   <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-primary/50 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </Link>
+              ))}
+              {/* Shortcut buttons */}
+              {navLinks.filter(link => link.shortcut && (!link.storyOnly || true)).map((link, index) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className="relative group px-3 py-1.5 rounded bg-primary/10 border border-primary/30 text-primary font-cinzel text-xs tracking-wider hover:bg-primary/20 transition-all duration-200"
+                  style={{ animationDelay: `${(navLinks.length + index) * 100}ms` }}
+                >
+                  {link.label}
                 </Link>
               ))}
             </div>
