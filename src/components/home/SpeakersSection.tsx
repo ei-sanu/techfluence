@@ -273,12 +273,19 @@ const SpeakerCard = ({ speaker, index, isVisible }: { speaker: any; index: numbe
             {/* Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent transition-opacity duration-500 group-hover:opacity-80" />
 
-            {/* LinkedIn Badge */}
-            {speaker.linkedin && (
-              <a href={speaker.linkedin} target="_blank" rel="noopener noreferrer" className="absolute top-4 right-4 w-10 h-10 bg-primary/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110 group-hover:rotate-12">
-                <img src="/public/logos/linkedin.png" alt="LinkedIn" className="w-5 h-5" />
-              </a>
-            )}
+            {/* Social Media Badges */}
+            <div className="absolute top-4 right-4 flex gap-2">
+              {speaker.stats?.some((stat: any) => stat.label.includes('YouTube')) && (
+                <a href={`https://youtube.com/@${speaker.name.replace(/\s+/g, '')}`} target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-red-600/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110">
+                  <img src="/public/logos/yt.png" alt="YouTube" className="w-5 h-5" />
+                </a>
+              )}
+              {speaker.linkedin && (
+                <a href={speaker.linkedin} target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-blue-600/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110">
+                  <img src="/public/logos/linkedin.png" alt="LinkedIn" className="w-5 h-5" />
+                </a>
+              )}
+            </div>
 
             {/* Shine effect on hover */}
             <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 translate-x-[-100%] group-hover:translate-x-[100%]"
@@ -421,74 +428,46 @@ const SpeakersSection = () => {
           </h3>
         </div>
 
-        {/* Speaker Cards - Functional Slider, Arrow on Right, Mouse Drag, Animation */}
-        <div className="w-full max-w-5xl mx-auto px-2 md:px-8 flex flex-row items-center justify-center relative" style={{ minHeight: '500px' }}>
+        {/* Speaker Cards - Horizontal Scroll */}
+        <div className="w-full max-w-6xl mx-auto px-4 relative">
+          {currentSpeakers.length > 3 && (
+            <p className="text-center text-sm text-muted-foreground mb-4">
+              Scroll horizontally to see more speakers →
+            </p>
+          )}
           <div
-            id="speakers-slider"
-            data-index="0"
-            className="flex gap-16 justify-center items-center py-2 transition-transform duration-500 ease-in-out"
-            style={{ minHeight: '500px', cursor: 'grab', userSelect: 'none' }}
-            onMouseDown={e => {
-              const slider = e.currentTarget;
-              let startX = e.pageX;
-              let scrollStart = Number(slider.getAttribute('data-index')) || 0;
-              let dragging = true;
-              slider.style.cursor = 'grabbing';
-              let direction = 0;
-              const onMove = (ev: MouseEvent) => {
-                if (!dragging) return;
-                const dx = ev.pageX - startX;
-                if (Math.abs(dx) > 80) {
-                  direction = dx < 0 ? 1 : -1;
-                  slider.style.transform = `translateX(${direction > 0 ? '-400px' : '400px'})`;
-                  dragging = false;
-                  window.removeEventListener('mousemove', onMove);
-                  window.removeEventListener('mouseup', onUp);
-                  setTimeout(() => {
-                    let current = scrollStart;
-                    if (direction > 0) current = (current + 3) % currentSpeakers.length;
-                    else current = (current - 3 + currentSpeakers.length) % currentSpeakers.length;
-                    slider.setAttribute('data-index', String(current));
-                    slider.style.transform = 'translateX(0)';
-                  }, 400);
-                }
-              };
-              const onUp = () => {
-                dragging = false;
-                slider.style.cursor = 'grab';
-                window.removeEventListener('mousemove', onMove);
-                window.removeEventListener('mouseup', onUp);
-              };
-              window.addEventListener('mousemove', onMove);
-              window.addEventListener('mouseup', onUp);
+            className="overflow-x-auto overflow-y-hidden pb-4"
+            style={{
+              scrollBehavior: 'smooth',
+              WebkitOverflowScrolling: 'touch'
             }}
           >
-            {currentSpeakers.slice(0, 3).map((speaker, index) => (
-              <div className="speaker-card" key={speaker.name + activeSeason} style={{ width: '340px', minWidth: '340px', maxWidth: '340px', height: '480px', display: 'flex', alignItems: 'stretch' }}>
-                <SpeakerCard speaker={speaker} index={index} isVisible={isVisible} />
-              </div>
-            ))}
+            <div className="flex gap-8 w-max py-2">
+              {currentSpeakers.map((speaker, index) => (
+                <div key={speaker.name + activeSeason} style={{ width: '340px', minWidth: '340px', maxWidth: '340px' }}>
+                  <SpeakerCard speaker={speaker} index={index} isVisible={isVisible} />
+                </div>
+              ))}
+            </div>
           </div>
-          {currentSpeakers.length > 3 && (
-            <button
-              className="absolute right-[-60px] top-1/2 -translate-y-1/2 bg-orange-500 rounded-full p-4 shadow-lg hover:bg-orange-600 transition z-10 border-2 border-primary"
-              aria-label="Next"
-              onClick={() => {
-                const container = document.getElementById('speakers-slider');
-                if (!container) return;
-                let current = Number(container.getAttribute('data-index')) || 0;
-                current = (current + 3) % currentSpeakers.length;
-                container.setAttribute('data-index', String(current));
-                container.style.transform = 'translateX(-60px)';
-                setTimeout(() => {
-                  container.style.transform = 'translateX(0)';
-                }, 400);
-              }}
-            >
-              <svg width="36" height="36" fill="none" stroke="white" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg>
-            </button>
-          )}
         </div>
+
+        <style>{`
+          .overflow-x-auto::-webkit-scrollbar {
+            height: 8px;
+          }
+          .overflow-x-auto::-webkit-scrollbar-track {
+            background: transparent;
+            border-radius: 10px;
+          }
+          .overflow-x-auto::-webkit-scrollbar-thumb {
+            background: hsl(25, 95%, 55%);
+            border-radius: 10px;
+          }
+          .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+            background: hsl(25, 95%, 45%);
+          }
+        `}</style>
 
       </div>
     </section>
