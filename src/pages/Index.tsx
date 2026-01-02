@@ -6,6 +6,7 @@ import FAQSection from "@/components/home/FAQSection";
 import GlimpseSection from "@/components/home/GlimpseSection";
 import HeroSection from "@/components/home/HeroSection";
 import LiveImpactSection from "@/components/home/LiveImpactSection";
+import SocialActivitySection from "@/components/home/SocialActivitySection";
 import SpeakersSection from "@/components/home/SpeakersSection";
 import Navbar from "@/components/Navbar";
 import StoryIntro from "@/components/StoryIntro";
@@ -85,6 +86,7 @@ const Index = () => {
           <LiveImpactSection />
           <CommunityVoicesSection />
           <FAQSection />
+          <SocialActivitySection />
         </main>
         {/* <Footer /> */}
       </div>
