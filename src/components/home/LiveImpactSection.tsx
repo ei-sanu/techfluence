@@ -2,10 +2,10 @@ import { Eye, Heart, MessageCircle, Users } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 const stats = [
-  { icon: Eye, value: 240000, label: "Views", suffix: "+" },
-  { icon: MessageCircle, value: 6800000, label: "Comments", suffix: "+" },
-  { icon: Users, value: 30000, label: "Audience", suffix: "+" },
-  { icon: Heart, value: 15000, label: "Engagements", suffix: "+" },
+  { icon: Eye, value: 6800000, label: "Views", suffix: "+" },
+  { icon: MessageCircle, value: 30000, label: "Comments", suffix: "+" },
+  { icon: Users, value: 15000, label: "Audience", suffix: "+" },
+  { icon: Heart, value: 240000, label: "Likes", suffix: "+" },
 ];
 
 const formatNumber = (num: number) => {
