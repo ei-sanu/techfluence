@@ -34,7 +34,7 @@ const Footer = () => {
             <div className="flex items-center gap-2 mb-4 group">
               <Code className="w-8 h-8 text-primary transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" />
               <span className="font-decorative text-2xl tech-text-gradient">
-                TECH FLUENCE 6.0
+                TECH FLUENCE 6
               </span>
             </div>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-md">
@@ -93,7 +93,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className={`mt-12 pt-6 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`} style={{ transitionDelay: "450ms" }}>
           <p className="text-muted-foreground text-sm">
-            © 2025 TECH FLUENCE 6.0. All rights reserved.
+            © 2025 TECH FLUENCE 6. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             <span className="text-muted-foreground text-xs font-cinzel tracking-widest hover:text-primary transition-colors duration-300 cursor-default">

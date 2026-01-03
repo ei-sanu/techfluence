@@ -9,7 +9,7 @@ const seasonData = {
     speakers: [
       {
         name: "MOHAMMAD FRAZ",
-        image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
+        image: "/guestimages/mhd_f.png",
         role: "Software Engineer, YouTuber",
         founder: "Founder LearnYard",
         companies: [
@@ -29,7 +29,7 @@ const seasonData = {
       },
       {
         name: "Abhishek Kumar",
-        image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
+        image: "/guestimages/abhishek_kumar.png",
         role: "Engineer Manager at Google",
         companies: [
           { name: "Google", logo: "/logos/gfg.avif" }
@@ -45,7 +45,7 @@ const seasonData = {
       },
       {
         name: "Shashank Mishra",
-        image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
+        image: "/guestimages/sashank_mishra.png",
         role: "Data Engineer, YouTuber, Public Speaker",
         companies: [
           { name: "Microsoft", logo: "/logos/ms.png" }
@@ -63,7 +63,7 @@ const seasonData = {
       },
       {
         name: "Rocky Bhatia",
-        image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
+        image: "/guestimages/rocky_b.png",
         role: "Architect/SCS at Adobe",
         companies: [
           { name: "Adobe", logo: "/logos/cs.png" }
@@ -82,7 +82,7 @@ const seasonData = {
       },
       {
         name: "Rahul Maheshwari",
-        image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
+        image: "/guestimages/rahul_m.png",
         role: "Founder-LinuxSocials",
         companies: [
           { name: "Linux", logo: "/logos/linux.png" }
@@ -100,7 +100,7 @@ const seasonData = {
       },
       {
         name: "Deepak Goyal",
-        image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
+        image: "/guestimages/deepak_g.png",
         role: "Founder- Crewsphere",
         companies: [
           { name: "Crewsphere", logo: "/logos/cs.png" }
@@ -119,7 +119,7 @@ const seasonData = {
     speakers: [
       {
         name: "Vivek Sridhar",
-        image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
+        image: "/guestimages/sirdhar.png",
         role: "CTO - Microsoft Startup",
         companies: [
           { name: "Microsoft", logo: "/logos/ms.png" }
@@ -138,7 +138,7 @@ const seasonData = {
     speakers: [
       {
         name: "Saumya Singh",
-        image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
+        image: "/guestimages/saumya_singh.png",
         role: "Software Engineer, Public Speaker",
         stats: [
           { label: "Subscribers on YouTube", value: "27K+" },
@@ -153,7 +153,7 @@ const seasonData = {
       },
       {
         name: "Sandeep Jain",
-        image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
+        image: "/guestimages/sandeep_j.png",
         role: "Founder, CEO of GFG",
         companies: [
           { name: "GeeksforGeeks", logo: "/logos/gfg.avif" }
@@ -171,7 +171,7 @@ const seasonData = {
       },
       {
         name: "Darika Jain",
-        image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
+        image: "/guestimages/darika_j.png",
         role: "LinkedIn Content Creator",
         stats: [
           { label: "Followers on LinkedIn", value: "800K+" }
@@ -184,7 +184,7 @@ const seasonData = {
       },
       {
         name: "Hina Arora",
-        image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
+        image: "/guestimages/hina_a.png",
         role: "Public Speaker",
         stats: [
           { label: "Followers on LinkedIn", value: "254K+" }
@@ -197,7 +197,7 @@ const seasonData = {
       },
       {
         name: "Dr. Deeksha Sharma",
-        image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
+        image: "/guestimages/deeksha_sm.png",
         role: "Founder Enso Life- NeuroArt",
         companies: [
           { name: "Enso Life", logo: "/logos/na.png" }
@@ -210,7 +210,7 @@ const seasonData = {
       },
       {
         name: "Nishant Chahar",
-        image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
+        image: "/guestimages/nishant_c.png",
         role: "Founder of Tayyari, Ex- Microsoft",
         companies: [
           { name: "YouTube", logo: "/logos/yt.png" }
@@ -227,7 +227,7 @@ const seasonData = {
       },
       {
         name: "M.V. Karan",
-        image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
+        image: "/guestimages/karan_mv.png",
         role: "Head, Director DevRel next",
         companies: [
           { name: "Linux", logo: "/logos/linux.png" }
@@ -260,81 +260,83 @@ const SpeakerCard = ({ speaker, index, isVisible }: { speaker: any; index: numbe
       className={`group relative transition-all duration-700 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
       style={{ transitionDelay: `${300 + index * 200}ms` }}
     >
-      <div className="bg-card tech-border rounded-xl overflow-hidden transition-shadow duration-300 hover:tech-glow hover:shadow-xl hover:ring-2 hover:ring-primary/40 group-hover:border-primary/40 flex flex-col md:w-[340px] w-full mx-auto h-[480px]">
-        {/* Image and Content Side by Side, Equal Height */}
-        <div className="flex flex-col h-full">
-          <div className="relative w-full h-[200px] flex-shrink-0">
-            <img
-              src={speaker.image}
-              alt={speaker.name}
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              style={{ height: '100%', objectFit: 'cover' }}
-            />
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent transition-opacity duration-500 group-hover:opacity-80" />
-
-            {/* Social Media Badges */}
-            <div className="absolute top-4 right-4 flex gap-2">
-              {speaker.stats?.some((stat: any) => stat.label.includes('YouTube')) && (
-                <a href={`https://youtube.com/@${speaker.name.replace(/\s+/g, '')}`} target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-red-600/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110">
-                  <img src="/logos/yt.png" alt="YouTube" className="w-5 h-5" />
-                </a>
-              )}
-              {speaker.linkedin && (
-                <a href={speaker.linkedin} target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-blue-600/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110">
-                  <img src="/logos/linkedin.png" alt="LinkedIn" className="w-5 h-5" />
-                </a>
-              )}
+      <div className="bg-card tech-border rounded-xl overflow-hidden transition-shadow duration-300 hover:tech-glow hover:shadow-xl hover:ring-2 hover:ring-primary/40 group-hover:border-primary/40 flex flex-col md:w-[340px] w-full mx-auto h-[520px]">
+        <div className="flex flex-col h-full p-6">
+          {/* Circular Image at Top */}
+          <div className="flex justify-center mb-4">
+            <div className="relative">
+              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-primary/30 transition-all duration-300 group-hover:border-primary group-hover:shadow-lg group-hover:shadow-primary/30">
+                <img
+                  src={speaker.image}
+                  alt={speaker.name}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+              </div>
+              {/* Glow effect */}
+              <div className="absolute -inset-1 bg-primary/20 rounded-full blur-md -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
-
-            {/* Shine effect on hover */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 translate-x-[-100%] group-hover:translate-x-[100%]"
-              style={{ transition: "transform 0.7s ease-out, opacity 0.3s ease" }} />
           </div>
+
           {/* Content */}
-          <div className="p-6 text-center flex-1 flex flex-col justify-start overflow-hidden">
+          <div className="text-center flex-1 flex flex-col">
             <h3 className="font-cinzel text-xl text-foreground mb-2 transition-colors duration-300 group-hover:text-primary font-bold">
               {speaker.name}
             </h3>
-            <p className="text-base text-muted-foreground mb-3">
+            <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
               {speaker.role}
             </p>
             {speaker.founder && (
               <p className="text-sm text-primary font-semibold mb-3">{speaker.founder}</p>
             )}
+
             {/* Company Logos */}
             {speaker.companies && (
-              <div className="flex items-center justify-center gap-2 mb-3">
+              <div className="flex items-center justify-center gap-2 mb-4">
                 {speaker.companies.map((company: any, idx: number) => (
-                  <img key={company.name + idx} src={company.logo} alt={company.name} className="w-9 h-9 rounded-full border" />
+                  <img key={company.name + idx} src={company.logo} alt={company.name} className="w-8 h-8 rounded-full border border-border" />
                 ))}
               </div>
             )}
+
             {/* Social Stats with Logo Icons */}
             {speaker.stats && (
-              <div className="flex flex-col items-center gap-2 mb-3">
+              <div className="flex flex-col items-center gap-2 mb-4 bg-secondary/30 rounded-lg p-3">
                 {speaker.stats.map((stat: any, idx: number) => (
-                  <div key={stat.label + idx} className="flex items-center gap-2">
+                  <div key={stat.label + idx} className="flex items-center gap-3 w-full justify-center">
                     {stat.label.includes('YouTube') ? (
-                      <img src="/logos/yt.png" alt="YouTube" className="w-5 h-5" />
+                      <>
+                        <svg className="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                        </svg>
+                        <span className="text-sm text-foreground font-bold">{stat.value}</span>
+                      </>
                     ) : (
-                      <img src="/logos/linkedin.png" alt="LinkedIn" className="w-5 h-5" />
+                      <>
+                        <svg className="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                        </svg>
+                        <span className="text-sm text-foreground font-bold">{stat.value}</span>
+                      </>
                     )}
-                    <span className="text-sm text-foreground font-bold">{stat.value}</span>
                   </div>
                 ))}
               </div>
             )}
-            {/* Highlights */}
+
+            {/* Highlights - Now directly after stats */}
             {speaker.highlights && (
-              <ul className="text-sm text-muted-foreground list-disc list-inside space-y-1 text-left">
-                {speaker.highlights.slice(0, 3).map((hl: string, idx: number) => (
-                  <li key={hl + idx} className="truncate">{hl}</li>
+              <ul className="text-xs text-muted-foreground space-y-1 text-left">
+                {speaker.highlights.slice(0, 2).map((hl: string, idx: number) => (
+                  <li key={hl + idx} className="line-clamp-2 flex items-start gap-2">
+                    <span className="text-primary mt-1 flex-shrink-0">•</span>
+                    <span>{hl}</span>
+                  </li>
                 ))}
               </ul>
             )}
           </div>
         </div>
+
         {/* Decorative corner */}
         <div className="absolute bottom-0 left-0 w-16 h-16 opacity-20 transition-opacity duration-300 group-hover:opacity-40">
           <svg viewBox="0 0 64 64">

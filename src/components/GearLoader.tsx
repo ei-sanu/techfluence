@@ -292,7 +292,7 @@ const GearLoader = ({ isLoading = true, onComplete, minDuration = 2000 }: GearLo
       {/* Branding and loading text */}
       <div className="mt-10 text-center relative z-10">
         <h2 className="font-decorative text-3xl md:text-4xl tech-text-gradient mb-3 tracking-wider">
-          TECH FLUENCE 6.0
+          TECH FLUENCE 6
         </h2>
         <p className="text-muted-foreground font-cinzel text-sm tracking-[0.3em] uppercase">
           Initializing Experience

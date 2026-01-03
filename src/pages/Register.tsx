@@ -133,7 +133,7 @@ const Register = () => {
       <SignedOut>
         <NotAuthenticated
           title="Sign In to Register"
-          description="You need to be authenticated to register for TECH FLUENCE 6.0 events. Sign in or create an account to continue your tech journey!"
+          description="You need to be authenticated to register for TECH FLUENCE 6 events. Sign in or create an account to continue your tech journey!"
         />
       </SignedOut>
       <SignedIn>
@@ -149,7 +149,7 @@ const Register = () => {
                   Event Registration
                 </h1>
                 <p className="text-muted-foreground font-cinzel max-w-xl mx-auto">
-                  Complete your registration to join TECH FLUENCE 6.0.
+                  Complete your registration to join TECH FLUENCE 6.
                   Your journey to innovation begins here.
                 </p>
               </div>
@@ -242,7 +242,7 @@ const Register = () => {
                             </div>
                             <h3 className="font-cinzel text-xl font-semibold mb-3">New Registration</h3>
                             <p className="text-muted-foreground text-sm">
-                              Register as a new participant for TECH FLUENCE 6.0. Create your own team or participate individually.
+                              Register as a new participant for TECH FLUENCE 6. Create your own team or participate individually.
                             </p>
                             <div className="mt-6 py-2 px-4 rounded-full text-sm font-medium inline-block" style={{ background: hackathonControl === 'paused' || hackathonControl === 'ended' ? 'transparent' : undefined }}>
                               {hackathonControl === 'paused' ? 'Hackathon Registrations Paused' : hackathonControl === 'ended' ? 'Registrations Ended' : 'Create New Team'}

@@ -9,19 +9,19 @@ import { useEffect, useRef, useState } from "react";
 
 const faqs = [
   {
-    question: "What is TECH FLUENCE 6.0?",
-    answer: "TECH FLUENCE 6.0 is a premier tech event that brings together students, founders, and industry experts. It's designed to inspire innovation, foster entrepreneurship, and provide real-world insights into the technology industry.",
+    question: "What is TECH FLUENCE 6?",
+    answer: "TECH FLUENCE 6 is a premier tech event that brings together students, founders, and industry experts. It's designed to inspire innovation, foster entrepreneurship, and provide real-world insights into the technology industry.",
   },
   {
-    question: "Who can attend TECH FLUENCE 6.0?",
-    answer: "TECH FLUENCE 6.0 is open to students, professionals, entrepreneurs, and anyone passionate about technology and innovation. Whether you're just starting your journey or are an experienced professional, you'll find value in our sessions.",
+    question: "Who can attend TECH FLUENCE 6?",
+    answer: "TECH FLUENCE 6 is open to students, professionals, entrepreneurs, and anyone passionate about technology and innovation. Whether you're just starting your journey or are an experienced professional, you'll find value in our sessions.",
   },
   {
     question: "What events are included?",
-    answer: "TECH FLUENCE 6.0 includes keynote sessions from industry leaders, panel discussions, networking opportunities, and a hackathon. Participants can choose to attend the main event, the hackathon, or both.",
+    answer: "TECH FLUENCE 6 includes keynote sessions from industry leaders, panel discussions, networking opportunities, and a hackathon. Participants can choose to attend the main event, the hackathon, or both.",
   },
   {
-    question: "How do I register for TECH FLUENCE 6.0?",
+    question: "How do I register for TECH FLUENCE 6?",
     answer: "Registration is simple! Click the 'Register Now' button, create an account or sign in, and fill out the registration form. Team registrations for the hackathon require all team member details.",
   },
   {

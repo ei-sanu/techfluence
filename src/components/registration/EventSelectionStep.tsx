@@ -19,20 +19,20 @@ interface EventSelectionStepProps {
 const events = [
   {
     value: "event",
-    label: "TECH FLUENCE 6.0 Event",
+    label: "TECH FLUENCE 6 Event",
     description: "Join keynote sessions, panels, and networking opportunities with industry leaders.",
     icon: Calendar,
   },
   {
     value: "hackathon",
-    label: "TECH FLUENCE 6.0 Hackathon",
+    label: "TECH FLUENCE 6 Hackathon",
     description: "Compete in a 24-hour hackathon with your team to build innovative solutions.",
     icon: Code,
   },
   {
     value: "both",
     label: "Both Events",
-    description: "Get the complete TECH FLUENCE 6.0 experience with access to both the event and hackathon.",
+    description: "Get the complete TECH FLUENCE 6 experience with access to both the event and hackathon.",
     icon: Sparkles,
   },
 ];

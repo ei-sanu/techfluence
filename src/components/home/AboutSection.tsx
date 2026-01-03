@@ -24,7 +24,7 @@ const features = [
   },
 ];
 
-const aboutText = "TECH FLUENCE 6.0 is an immersive event designed to connect students with tech founders, influencers, and industry experts. Our gathering focuses on innovation, entrepreneurship, real-world insights, networking, and exposure to the latest modern trends shaping our world.";
+const aboutText = "TECH FLUENCE 6 is an immersive event designed to connect students with tech founders, influencers, and industry experts. Our gathering focuses on innovation, entrepreneurship, real-world insights, networking, and exposure to the latest modern trends shaping our world.";
 
 const AboutSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -91,7 +91,7 @@ const AboutSection = () => {
 
   // Helper function to highlight keywords
   const renderTextWithHighlights = (text: string) => {
-    const keywords = ["innovation", "entrepreneurship", "TECH FLUENCE 6.0"];
+    const keywords = ["innovation", "entrepreneurship", "TECH FLUENCE 6"];
     let result = text;
 
     keywords.forEach(keyword => {
@@ -111,7 +111,7 @@ const AboutSection = () => {
         {/* Section Header */}
         <div className={`text-center mb-16 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
           <h2 className="font-decorative text-3xl md:text-5xl tech-text-gradient mb-4">
-            About TECH FLUENCE 6.0
+            About TECH FLUENCE 6
           </h2>
           <div className="flex items-center justify-center gap-4 mb-6">
             <div className="h-px w-16 bg-gradient-to-r from-transparent to-primary/50" />

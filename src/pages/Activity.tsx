@@ -901,7 +901,7 @@ const Activity = () => {
               ) : registrations.length === 0 && joinedTeamRegistrations.length === 0 && myJoinRequests.filter(r => r.status === "pending").length === 0 ? (
                 <div className="parchment-bg tech-border rounded-xl p-8 text-center">
                   <p className="text-muted-foreground mb-6">
-                    You have not registered for any TECH FLUENCE 6.0 events yet.
+                    You have not registered for any TECH FLUENCE 6 events yet.
                   </p>
                   <Link to="/register">
                     <Button className="font-cinzel">Register Now</Button>

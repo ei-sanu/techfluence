@@ -692,7 +692,7 @@ const RegistrationForm = ({ onBack }: RegistrationFormProps) => {
           {existingRegistration?.event_type === "both" ? (
             <p className="font-sans text-muted-foreground text-lg mb-8 max-w-md mx-auto">
               You are registered for both the Event and Hackathon.
-              See you at TECH FLUENCE 6.0!
+              See you at TECH FLUENCE 6!
             </p>
           ) : (
             <div className="mb-8">

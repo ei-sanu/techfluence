@@ -9,7 +9,7 @@ interface NotAuthenticatedProps {
 
 const NotAuthenticated = ({
     title = "Authentication Required",
-    description = "You need to sign in to access this page. Join TECH FLUENCE 6.0 and unlock exclusive features!"
+    description = "You need to sign in to access this page. Join TECH FLUENCE 6 and unlock exclusive features!"
 }: NotAuthenticatedProps) => {
     return (
         <div className="min-h-screen flex items-center justify-center px-4">
@@ -26,7 +26,7 @@ const NotAuthenticated = ({
                 <div className="flex items-center justify-center gap-2 mb-6">
                     <Code className="w-8 h-8 text-primary" />
                     <span className="font-decorative text-2xl tech-text-gradient">
-                        TECH FLUENCE 6.0
+                        TECH FLUENCE 6
                     </span>
                 </div>
 
