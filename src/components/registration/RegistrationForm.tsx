@@ -3,7 +3,7 @@ import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useUser } from "@clerk/clerk-react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, ArrowRight, Calendar, CheckCircle, Code, Crown, Loader2, Plus } from "lucide-react";
+import { ArrowLeft, ArrowRight, Calendar, CheckCircle, Code, Loader2, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -684,8 +684,6 @@ const RegistrationForm = ({ onBack }: RegistrationFormProps) => {
             <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse" />
             <CheckCircle className="w-20 h-20 text-primary relative" />
           </div>
-
-          <Crown className="w-12 h-12 text-primary mx-auto mb-4" />
 
           <h2 className="font-decorative text-3xl md:text-4xl tech-text-gradient mb-4">
             {existingRegistration?.event_type === "both" ? "Fully Registered!" : "Already Registered!"}

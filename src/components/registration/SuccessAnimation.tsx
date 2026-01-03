@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { Check, Copy, Crown, Sparkles } from "lucide-react";
+import { Check, Copy, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -114,11 +114,7 @@ const SuccessAnimation = ({ checkInCode, teamName }: SuccessAnimationProps) => {
               <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-primary via-primary to-accent flex items-center justify-center tech-glow animate-scale-in">
                 <div className="w-20 h-20 rounded-full bg-background flex items-center justify-center">
                   <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                    {stage >= 3 ? (
-                      <Check className="w-8 h-8 text-primary-foreground animate-scale-in" />
-                    ) : (
-                      <Crown className="w-7 h-7 text-primary-foreground" />
-                    )}
+                    <Check className="w-8 h-8 text-primary-foreground animate-scale-in" />
                   </div>
                 </div>
               </div>

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Crown, Lock, Sparkles } from "lucide-react";
+import { Code, Lock, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface NotAuthenticatedProps {
@@ -22,9 +22,9 @@ const NotAuthenticated = ({
                     <Sparkles className="absolute -top-2 -right-2 w-6 h-6 text-primary animate-bounce" />
                 </div>
 
-                {/* Crown Logo */}
+                {/* Logo */}
                 <div className="flex items-center justify-center gap-2 mb-6">
-                    <Crown className="w-8 h-8 text-primary" />
+                    <Code className="w-8 h-8 text-primary" />
                     <span className="font-decorative text-2xl tech-text-gradient">
                         TECH FLUENCE 6.0
                     </span>

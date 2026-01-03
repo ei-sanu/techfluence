@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
-import { CheckCircle, Crown, PartyPopper, PlusCircle, Users } from "lucide-react";
+import { CheckCircle, Code, PartyPopper, PlusCircle, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -144,7 +144,7 @@ const Register = () => {
             <div className="container mx-auto">
               {/* Header */}
               <div className="text-center mb-12">
-                <Crown className="w-16 h-16 text-primary mx-auto mb-4 animate-float" />
+                <Code className="w-16 h-16 text-primary mx-auto mb-4 animate-float" />
                 <h1 className="font-decorative text-4xl md:text-5xl tech-text-gradient mb-4">
                   Event Registration
                 </h1>

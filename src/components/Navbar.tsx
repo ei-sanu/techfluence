@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/clerk-react";
-import { Crown, Settings, ShieldCheck } from "lucide-react";
+import { Code, Settings, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
@@ -42,7 +42,7 @@ const Navbar = () => {
           {/* Logo - Left */}
           <Link to="/" className="flex items-center gap-2 group flex-shrink-0">
             <div className="relative">
-              <Crown className="w-7 h-7 md:w-8 md:h-8 text-primary transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" />
+              <Code className="w-7 h-7 md:w-8 md:h-8 text-primary transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" />
               <div className="absolute inset-0 bg-primary/20 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
             <span className="font-decorative text-lg md:text-2xl tech-text-gradient transition-all duration-300 group-hover:tracking-wider">
@@ -78,14 +78,26 @@ const Navbar = () => {
                 </Link>
               ))}
               {/* Shortcut buttons */}
-              {navLinks.filter(link => link.shortcut && (!link.storyOnly || true)).map((link, index) => (
+              {navLinks.filter(link => link.shortcut).map((link, index) => (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className="relative group px-3 py-1.5 rounded bg-primary/10 border border-primary/30 text-primary font-cinzel text-xs tracking-wider hover:bg-primary/20 transition-all duration-200"
+                  className="relative group"
                   style={{ animationDelay: `${(navLinks.length + index) * 100}ms` }}
                 >
-                  {link.label}
+                  <span
+                    className={`font-cinzel text-sm tracking-wider transition-all duration-300 group-hover:text-primary ${isActive(link.path) ? "text-primary" : "text-foreground/80"
+                      }`}
+                  >
+                    {link.label}
+                  </span>
+                  {/* Animated underline */}
+                  <span
+                    className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-primary via-primary/80 to-primary transition-all duration-300 ${isActive(link.path) ? "w-full" : "w-0 group-hover:w-full"
+                      }`}
+                  />
+                  {/* Glow effect on hover */}
+                  <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-primary/50 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </Link>
               ))}
             </div>

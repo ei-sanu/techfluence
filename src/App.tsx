@@ -1,4 +1,5 @@
 import ScrollToTop from "@/components/ScrollToTop";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
@@ -17,6 +18,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Register from "./pages/Register";
+import Story from "./pages/Story";
 import TermsAndConditions from "./pages/TermsAndConditions";
 
 const queryClient = new QueryClient();
@@ -50,8 +52,10 @@ const App = () => (
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/gallery" element={<Gallery />} />
+              <Route path="/story" element={<Story />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
+            <ScrollToTopButton />
             <FooterPremium />
           </BrowserRouter>
         </TooltipProvider>

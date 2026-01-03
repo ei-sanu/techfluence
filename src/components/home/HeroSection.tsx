@@ -103,8 +103,7 @@ const HeroSection = ({ onTriggerStory }: HeroSectionProps) => {
           </div>
 
           <p className={`font-cinzel text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed text-foreground/80 transition-all duration-700 ${elementsVisible.description ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
-            An immersive gathering of visionaries, innovators, and tech leaders.
-            Join us for the ultimate tech experience.
+            An Immersive large-scale technology and innovation conference bringing together industry leaders, startup founders, developers, creators, and students for high-impact talks, panels, workshops, and networking—focused on real-world technology and future careers.
           </p>
 
           {/* CTA Buttons */}

@@ -1,4 +1,4 @@
-import { Crown, Mail, MapPin, Phone } from "lucide-react";
+import { Code, Mail, MapPin, Phone } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -32,7 +32,7 @@ const Footer = () => {
           {/* Brand */}
           <div className={`md:col-span-2 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
             <div className="flex items-center gap-2 mb-4 group">
-              <Crown className="w-8 h-8 text-primary transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" />
+              <Code className="w-8 h-8 text-primary transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" />
               <span className="font-decorative text-2xl tech-text-gradient">
                 TECH FLUENCE 6.0
               </span>

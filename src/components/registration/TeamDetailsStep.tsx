@@ -8,7 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ChevronLeft, ChevronRight, Crown, Shield, User, Users } from "lucide-react";
+import { ChevronLeft, ChevronRight, Shield, User, Users } from "lucide-react";
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
 
@@ -102,7 +102,7 @@ const TeamDetailsStep = ({ form, onNext, onPrev }: TeamDetailsStepProps) => {
           {/* Team Leader */}
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-4">
-              <Crown className="w-5 h-5 text-primary" />
+              <User className="w-5 h-5 text-primary" />
               <h3 className="font-sans text-lg text-foreground font-semibold">Team Leader</h3>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

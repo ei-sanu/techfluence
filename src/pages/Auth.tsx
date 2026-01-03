@@ -4,11 +4,10 @@ import {
     Calendar,
     CheckCircle,
     Code,
-    Crown,
     Shield,
     Sparkles,
     Trophy,
-    Users,
+    Users
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -109,7 +108,7 @@ const Auth = () => {
                     {/* Logo */}
                     <Link to="/" className="inline-flex items-center gap-4 mb-8 group">
                         <div className="relative">
-                            <Crown className="w-16 h-16 text-primary transition-transform group-hover:scale-110" />
+                            <Code className="w-16 h-16 text-primary transition-transform group-hover:scale-110" />
                             <Sparkles className="absolute -top-1 -right-1 w-5 h-5 text-primary animate-pulse" />
                         </div>
                         <div>
@@ -167,7 +166,7 @@ const Auth = () => {
                     {/* Mobile Logo */}
                     <div className="lg:hidden text-center mb-6">
                         <Link to="/" className="inline-flex flex-col items-center gap-1 mb-2">
-                            <Crown className="w-12 h-12 text-primary" />
+                            <Code className="w-12 h-12 text-primary" />
                             <div className="text-center">
                                 <span className="font-decorative text-2xl sm:text-3xl tech-text-gradient block">
                                     TECH FLUENCE
@@ -202,7 +201,7 @@ const Auth = () => {
                     {/* Form Header */}
                     <div className="text-center mb-4">
                         <h1 className="font-decorative text-xl sm:text-2xl text-foreground mb-1">
-                            {isSignUp ? "Join the Kingdom" : "Welcome Back"}
+                            {isSignUp ? "Get Started" : "Welcome Back"}
                         </h1>
                         <p className="text-muted-foreground text-xs sm:text-sm">
                             {isSignUp

@@ -9,7 +9,7 @@ import {
     CalendarPlus,
     Check,
     Clock,
-    Crown,
+    Code,
     Mail,
     MapPin,
     MessageSquare,
@@ -217,7 +217,7 @@ END:VCALENDAR`;
                         <Card className="tech-border">
                             <CardContent className="p-6 h-full">
                                 <h3 className="font-cinzel text-xl font-semibold flex items-center gap-2 mb-4">
-                                    <Crown className="w-5 h-5 text-primary" />
+                                    <Code className="w-5 h-5 text-primary" />
                                     Contact Information
                                 </h3>
 

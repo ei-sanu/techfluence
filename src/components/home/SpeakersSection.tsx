@@ -13,9 +13,9 @@ const seasonData = {
         role: "Software Engineer, YouTuber",
         founder: "Founder LearnYard",
         companies: [
-          { name: "SAP", logo: "/public/logos/sap.png" },
-          { name: "Google", logo: "/public/logos/gfg.avif" },
-          { name: "Cure.fit", logo: "/public/logos/cf.png" }
+          { name: "SAP", logo: "/logos/sap.png" },
+          { name: "Google", logo: "/logos/gfg.avif" },
+          { name: "Cure.fit", logo: "/logos/cf.png" }
         ],
         stats: [
           { label: "Subscribers on YouTube", value: "496K+" },
@@ -32,7 +32,7 @@ const seasonData = {
         image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
         role: "Engineer Manager at Google",
         companies: [
-          { name: "Google", logo: "/public/logos/gfg.avif" }
+          { name: "Google", logo: "/logos/gfg.avif" }
         ],
         stats: [
           { label: "Followers on LinkedIn", value: "140K+" }
@@ -48,7 +48,7 @@ const seasonData = {
         image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
         role: "Data Engineer, YouTuber, Public Speaker",
         companies: [
-          { name: "Microsoft", logo: "/public/logos/ms.png" }
+          { name: "Microsoft", logo: "/logos/ms.png" }
         ],
         stats: [
           { label: "Subscribers on YouTube", value: "178K+" },
@@ -66,7 +66,7 @@ const seasonData = {
         image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
         role: "Architect/SCS at Adobe",
         companies: [
-          { name: "Adobe", logo: "/public/logos/cs.png" }
+          { name: "Adobe", logo: "/logos/cs.png" }
         ],
         stats: [
           { label: "Subscribers on YouTube", value: "6.32K+" },
@@ -85,7 +85,7 @@ const seasonData = {
         image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
         role: "Founder-LinuxSocials",
         companies: [
-          { name: "Linux", logo: "/public/logos/linux.png" }
+          { name: "Linux", logo: "/logos/linux.png" }
         ],
         stats: [
           { label: "Subscribers on YouTube", value: "25K+" },
@@ -103,7 +103,7 @@ const seasonData = {
         image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
         role: "Founder- Crewsphere",
         companies: [
-          { name: "Crewsphere", logo: "/public/logos/cs.png" }
+          { name: "Crewsphere", logo: "/logos/cs.png" }
         ],
         linkedin: "https://www.linkedin.com/in/deepak-goyal/",
         highlights: [
@@ -122,7 +122,7 @@ const seasonData = {
         image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
         role: "CTO - Microsoft Startup",
         companies: [
-          { name: "Microsoft", logo: "/public/logos/ms.png" }
+          { name: "Microsoft", logo: "/logos/ms.png" }
         ],
         linkedin: "https://www.linkedin.com/in/vivek-sridhar/",
         highlights: [
@@ -156,7 +156,7 @@ const seasonData = {
         image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
         role: "Founder, CEO of GFG",
         companies: [
-          { name: "GeeksforGeeks", logo: "/public/logos/gfg.avif" }
+          { name: "GeeksforGeeks", logo: "/logos/gfg.avif" }
         ],
         stats: [
           { label: "Subscribers on YouTube", value: "936K+" },
@@ -200,7 +200,7 @@ const seasonData = {
         image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
         role: "Founder Enso Life- NeuroArt",
         companies: [
-          { name: "Enso Life", logo: "/public/logos/na.png" }
+          { name: "Enso Life", logo: "/logos/na.png" }
         ],
         linkedin: "https://www.linkedin.com/in/dr-deeksha-sharma/",
         highlights: [
@@ -213,7 +213,7 @@ const seasonData = {
         image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
         role: "Founder of Tayyari, Ex- Microsoft",
         companies: [
-          { name: "YouTube", logo: "/public/logos/yt.png" }
+          { name: "YouTube", logo: "/logos/yt.png" }
         ],
         stats: [
           { label: "Subscribers on YouTube", value: "476K+" },
@@ -230,7 +230,7 @@ const seasonData = {
         image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
         role: "Head, Director DevRel next",
         companies: [
-          { name: "Linux", logo: "/public/logos/linux.png" }
+          { name: "Linux", logo: "/logos/linux.png" }
         ],
         linkedin: "https://www.linkedin.com/in/mv-karan/",
         highlights: [
@@ -277,12 +277,12 @@ const SpeakerCard = ({ speaker, index, isVisible }: { speaker: any; index: numbe
             <div className="absolute top-4 right-4 flex gap-2">
               {speaker.stats?.some((stat: any) => stat.label.includes('YouTube')) && (
                 <a href={`https://youtube.com/@${speaker.name.replace(/\s+/g, '')}`} target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-red-600/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110">
-                  <img src="/public/logos/yt.png" alt="YouTube" className="w-5 h-5" />
+                  <img src="/logos/yt.png" alt="YouTube" className="w-5 h-5" />
                 </a>
               )}
               {speaker.linkedin && (
                 <a href={speaker.linkedin} target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-blue-600/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110">
-                  <img src="/public/logos/linkedin.png" alt="LinkedIn" className="w-5 h-5" />
+                  <img src="/logos/linkedin.png" alt="LinkedIn" className="w-5 h-5" />
                 </a>
               )}
             </div>
@@ -316,9 +316,9 @@ const SpeakerCard = ({ speaker, index, isVisible }: { speaker: any; index: numbe
                 {speaker.stats.map((stat: any, idx: number) => (
                   <div key={stat.label + idx} className="flex items-center gap-2">
                     {stat.label.includes('YouTube') ? (
-                      <img src="/public/logos/yt.png" alt="YouTube" className="w-5 h-5" />
+                      <img src="/logos/yt.png" alt="YouTube" className="w-5 h-5" />
                     ) : (
-                      <img src="/public/logos/linkedin.png" alt="LinkedIn" className="w-5 h-5" />
+                      <img src="/logos/linkedin.png" alt="LinkedIn" className="w-5 h-5" />
                     )}
                     <span className="text-sm text-foreground font-bold">{stat.value}</span>
                   </div>

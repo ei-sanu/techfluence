@@ -1,5 +1,5 @@
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
-import { Crown, Users } from "lucide-react";
+import { Users } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 // Tech-themed avatar URLs using DiceBear API with different styles
@@ -79,7 +79,7 @@ const communityMembers = [
     {
         name: "Parakh Tyagi",
         title: "Student at Lovely Professional University",
-        quote: "Enthusiastic learner with steady growth mindset. Rising star of the kingdom!",
+        quote: "Enthusiastic learner with steady growth mindset. Rising star in the community!",
     },
     {
         name: "Vanshika Singh Jaryal",
@@ -89,7 +89,7 @@ const communityMembers = [
     {
         name: "Khushi Dwivedi",
         title: "Student at Lovely Professional University",
-        quote: "Consistent efforts and strong learning discipline. Dedication worthy of the crown!",
+        quote: "Consistent efforts and strong learning discipline. Dedication worth celebrating!",
     },
     {
         name: "Sanket Singh",
@@ -124,7 +124,7 @@ const communityMembers = [
     {
         name: "Pavan Kumar Nedimineni",
         title: "DevSecOps Engineer",
-        quote: "Strong automation and cloud security expertise. Guardian of the kingdom's infrastructure!",
+        quote: "Strong automation and cloud security expertise. Guardian of secure infrastructure!",
     },
     {
         name: "Rishu Mahatha",
@@ -203,13 +203,13 @@ const CommunityVoicesSection = () => {
                         <h2 className="font-decorative text-3xl md:text-5xl tech-text-gradient">
                             Voice of Our Attendees
                         </h2>
-                        <Crown
+                        <Users
                             className={`w-8 h-8 text-primary transition-all duration-700 ${isVisible ? "opacity-100 rotate-0" : "opacity-0 rotate-45"
                                 }`}
                         />
                     </div>
                     <p className="font-sans text-muted-foreground tracking-wider max-w-2xl mx-auto">
-                        Trusted by scholars, warriors, and innovators across the kingdom
+                        Trusted by innovators, developers, and tech enthusiasts worldwide
                     </p>
                 </div>
 
