@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { logRegistrationDetails, sendRegistrationEmail } from "@/lib/emailService";
 import { useUser } from "@clerk/clerk-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, ArrowRight, Calendar, CheckCircle, Code, Loader2, Plus } from "lucide-react";
@@ -360,6 +361,7 @@ const RegistrationForm = ({ onBack }: RegistrationFormProps) => {
       if (regError) throw regError;
 
       // If hackathon or both, add team members according to selected team size
+      const teamMembersData: any[] = [];
       if (formData.event?.eventType !== "event" && formData.team) {
         const size = Number(formData.team.teamSize) || 1;
         const membersToInsert: any[] = [];
@@ -387,7 +389,51 @@ const RegistrationForm = ({ onBack }: RegistrationFormProps) => {
             );
 
           if (teamError) throw teamError;
+
+          // Store team members for email
+          teamMembersData.push(...membersToInsert);
         }
+      }
+
+      // Send registration confirmation email
+      try {
+        const emailDetails = {
+          fullName: formData.personalInfo?.fullName || "",
+          registrationNumber: formData.personalInfo?.registrationNumber || "",
+          universityName: formData.personalInfo?.universityName || "",
+          email: formData.personalInfo?.email || "",
+          contactNumber: formData.personalInfo?.contactNumber || "",
+          course: formData.personalInfo?.course || "",
+          yearOfStudy: formData.personalInfo?.yearOfStudy || "",
+          eventType: formData.event?.eventType || "event",
+          address: formData.address?.address || "",
+          city: formData.address?.city || "",
+          pincode: formData.address?.pincode || "",
+          technicalSkills: formData.address?.technicalSkills,
+          teamName: formData.team?.teamName,
+          teamCode: generatedCode,
+          teamMembers: teamMembersData.map(member => ({
+            name: member.name,
+            registrationNumber: member.registration_number,
+            memberType: member.member_type,
+          })),
+        };
+
+        // Log email details (for development/debugging)
+        logRegistrationDetails(emailDetails);
+
+        // Attempt to send email (will gracefully fail if edge function is not set up)
+        const emailResult = await sendRegistrationEmail(emailDetails);
+
+        if (emailResult.success) {
+          console.log("✅ Registration email sent successfully!");
+        } else {
+          console.warn("⚠️ Email sending failed, but registration is complete:", emailResult.error);
+          // Don't show error to user - registration is still successful
+        }
+      } catch (emailError) {
+        console.error("Email error (non-critical):", emailError);
+        // Continue - email is a nice-to-have, not critical
       }
 
       setShowSuccess(true);
@@ -425,6 +471,55 @@ const RegistrationForm = ({ onBack }: RegistrationFormProps) => {
         .eq("id", existingRegistration.id);
 
       if (error) throw error;
+
+      // Fetch full registration details for email
+      const { data: regData } = await supabase
+        .from("registrations")
+        .select("*")
+        .eq("id", existingRegistration.id)
+        .single();
+
+      if (regData) {
+        // Fetch team members if any
+        const { data: members } = await supabase
+          .from("team_members")
+          .select("*")
+          .eq("registration_id", existingRegistration.id);
+
+        // Send upgrade confirmation email
+        try {
+          const emailDetails = {
+            fullName: regData.full_name,
+            registrationNumber: regData.registration_number,
+            universityName: regData.university_name,
+            email: regData.email,
+            contactNumber: regData.contact_number,
+            course: regData.course,
+            yearOfStudy: regData.year_of_study,
+            eventType: "both",
+            address: regData.address,
+            city: regData.city,
+            pincode: regData.pincode,
+            technicalSkills: regData.technical_skills,
+            teamName: regData.team_name,
+            teamCode: regData.check_in_code || "",
+            teamMembers: members?.map(m => ({
+              name: m.name,
+              registrationNumber: m.registration_number,
+              memberType: m.member_type,
+            })) || [],
+          };
+
+          logRegistrationDetails(emailDetails);
+          const emailResult = await sendRegistrationEmail(emailDetails);
+
+          if (emailResult.success) {
+            console.log("✅ Upgrade confirmation email sent!");
+          }
+        } catch (emailError) {
+          console.error("Email error (non-critical):", emailError);
+        }
+      }
 
       toast({
         title: "Registration Updated!",
@@ -515,6 +610,49 @@ const RegistrationForm = ({ onBack }: RegistrationFormProps) => {
         .eq("id", existingRegistration.id);
 
       if (updateError) throw updateError;
+
+      // Fetch full registration details for email
+      const { data: regData } = await supabase
+        .from("registrations")
+        .select("*")
+        .eq("id", existingRegistration.id)
+        .single();
+
+      if (regData) {
+        // Send upgrade confirmation email
+        try {
+          const emailDetails = {
+            fullName: regData.full_name,
+            registrationNumber: regData.registration_number,
+            universityName: regData.university_name,
+            email: regData.email,
+            contactNumber: regData.contact_number,
+            course: regData.course,
+            yearOfStudy: regData.year_of_study,
+            eventType: "both",
+            address: regData.address,
+            city: regData.city,
+            pincode: regData.pincode,
+            technicalSkills: regData.technical_skills,
+            teamName: teamData.teamName,
+            teamCode: regData.check_in_code || "",
+            teamMembers: teamMembers.map(m => ({
+              name: m.name,
+              registrationNumber: m.registration_number,
+              memberType: m.member_type,
+            })),
+          };
+
+          logRegistrationDetails(emailDetails);
+          const emailResult = await sendRegistrationEmail(emailDetails);
+
+          if (emailResult.success) {
+            console.log("✅ Upgrade confirmation email sent!");
+          }
+        } catch (emailError) {
+          console.error("Email error (non-critical):", emailError);
+        }
+      }
 
       toast({
         title: "Registration Updated!",
