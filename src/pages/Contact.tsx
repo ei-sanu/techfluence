@@ -331,183 +331,217 @@ END:VCALENDAR`;
                     </div>
 
                     {/* Contact Form - Full Width Below */}
-                    <Card className="tech-border overflow-hidden">
-                        <CardContent className="p-0">
-                            {/* Success Animation Overlay */}
-                            {isSuccess && (
-                                <div className="absolute inset-0 bg-background/95 z-10 flex items-center justify-center">
-                                    <div className="text-center p-8">
-                                        {/* Gears Animation */}
-                                        <div className={`relative w-32 h-32 mx-auto mb-6 transition-opacity duration-500 ${stage >= 2 ? "opacity-0 absolute" : "opacity-100"}`}>
-                                            <div className="absolute top-0 left-1/2 -translate-x-1/2 text-primary">
-                                                <Gear size={48} delay={0} />
-                                            </div>
-                                            <div className="absolute bottom-4 left-2 text-primary/70">
-                                                <Gear size={36} delay={200} className="animate-spin-reverse" />
-                                            </div>
-                                            <div className="absolute bottom-4 right-2 text-primary/70">
-                                                <Gear size={36} delay={400} />
-                                            </div>
-                                        </div>
+                    <div className="relative overflow-hidden">
+                        {/* Animated Background */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5 opacity-50" />
+                        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
+                        <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse delay-1000" />
 
-                                        {/* Success Seal */}
-                                        <div className={`transition-all duration-700 ${stage >= 2 ? "opacity-100 scale-100" : "opacity-0 scale-50"}`}>
-                                            <div className="relative inline-block">
-                                                <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-primary via-primary to-accent flex items-center justify-center tech-glow animate-scale-in">
-                                                    <div className="w-20 h-20 rounded-full bg-background flex items-center justify-center">
-                                                        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                                                            {stage >= 3 ? (
-                                                                <Check className="w-8 h-8 text-primary-foreground animate-scale-in" />
-                                                            ) : (
-                                                                <Send className="w-6 h-6 text-primary-foreground" />
-                                                            )}
+                        <Card className="tech-border relative backdrop-blur-sm bg-background/50">
+                            <CardContent className="p-0">
+                                {/* Success Animation Overlay */}
+                                {isSuccess && (
+                                    <div className="absolute inset-0 bg-background/98 backdrop-blur-md z-10 flex items-center justify-center rounded-lg">
+                                        <div className="text-center p-8">
+                                            {/* Gears Animation */}
+                                            <div className={`relative w-32 h-32 mx-auto mb-6 transition-opacity duration-500 ${stage >= 2 ? "opacity-0 absolute" : "opacity-100"}`}>
+                                                <div className="absolute top-0 left-1/2 -translate-x-1/2 text-primary">
+                                                    <Gear size={48} delay={0} />
+                                                </div>
+                                                <div className="absolute bottom-4 left-2 text-primary/70">
+                                                    <Gear size={36} delay={200} className="animate-spin-reverse" />
+                                                </div>
+                                                <div className="absolute bottom-4 right-2 text-primary/70">
+                                                    <Gear size={36} delay={400} />
+                                                </div>
+                                            </div>
+
+                                            {/* Success Seal */}
+                                            <div className={`transition-all duration-700 ${stage >= 2 ? "opacity-100 scale-100" : "opacity-0 scale-50"}`}>
+                                                <div className="relative inline-block">
+                                                    <div className="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-primary via-primary to-accent flex items-center justify-center tech-glow animate-scale-in shadow-2xl shadow-primary/50">
+                                                        <div className="w-28 h-28 rounded-full bg-background flex items-center justify-center">
+                                                            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                                                                {stage >= 3 ? (
+                                                                    <Check className="w-12 h-12 text-primary-foreground animate-scale-in" />
+                                                                ) : (
+                                                                    <Send className="w-8 h-8 text-primary-foreground" />
+                                                                )}
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <Sparkles className="absolute -top-1 -right-1 w-5 h-5 text-primary animate-pulse" />
-                                                <Sparkles className="absolute -bottom-1 -left-1 w-5 h-5 text-primary animate-pulse" />
-                                            </div>
-                                        </div>
-
-                                        {/* Success Message */}
-                                        <div className={`mt-6 transition-all duration-500 ${stage >= 3 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-                                            <h3 className="font-decorative text-2xl tech-text-gradient mb-2">
-                                                Message Sent!
-                                            </h3>
-                                            <p className="text-muted-foreground mb-6">
-                                                Your message has been delivered. We'll respond soon!
-                                            </p>
-                                            <Button onClick={resetForm} variant="outline">
-                                                Send Another Message
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Form Header */}
-                            <div className="bg-gradient-to-r from-primary/20 via-primary/10 to-transparent p-6 border-b border-border/50">
-                                <h3 className="font-cinzel text-xl font-semibold flex items-center gap-2">
-                                    <Send className="w-5 h-5 text-primary" />
-                                    Send Us a Message
-                                </h3>
-                                <p className="text-muted-foreground text-sm mt-1">
-                                    Fill out the form below and we'll get back to you promptly.
-                                </p>
-                            </div>
-
-                            {/* Form - Landscape Layout */}
-                            <form onSubmit={handleSubmit} className="p-6 relative">
-                                {/* Loading Overlay */}
-                                {isSubmitting && (
-                                    <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10 flex items-center justify-center">
-                                        <div className="text-center">
-                                            <div className="relative w-24 h-24 mx-auto">
-                                                <div className="absolute top-0 left-1/2 -translate-x-1/2 text-primary">
-                                                    <Gear size={40} delay={0} />
-                                                </div>
-                                                <div className="absolute bottom-2 left-0 text-primary/70">
-                                                    <Gear size={28} delay={150} className="animate-spin-reverse" />
-                                                </div>
-                                                <div className="absolute bottom-2 right-0 text-primary/70">
-                                                    <Gear size={28} delay={300} />
+                                                    <Sparkles className="absolute -top-2 -right-2 w-6 h-6 text-primary animate-pulse" />
+                                                    <Sparkles className="absolute -bottom-2 -left-2 w-6 h-6 text-accent animate-pulse" />
+                                                    <Sparkles className="absolute top-1/2 -left-4 w-5 h-5 text-primary/70 animate-pulse delay-300" />
                                                 </div>
                                             </div>
-                                            <p className="text-muted-foreground mt-4 animate-pulse">
-                                                Sending your message...
-                                            </p>
+
+                                            {/* Success Message */}
+                                            <div className={`mt-8 transition-all duration-500 ${stage >= 3 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+                                                <h3 className="font-decorative text-3xl tech-text-gradient mb-3">
+                                                    Message Sent Successfully!
+                                                </h3>
+                                                <p className="text-muted-foreground mb-6 text-lg">
+                                                    Your message has been delivered. Our team will respond within 24 hours!
+                                                </p>
+                                                <Button onClick={resetForm} variant="outline" className="gap-2 group">
+                                                    <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                                    Send Another Message
+                                                </Button>
+                                            </div>
                                         </div>
                                     </div>
                                 )}
 
-                                {/* Form Fields - Grid Layout for Desktop */}
-                                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 mb-5">
-                                    <div className="space-y-2">
-                                        <Label htmlFor="name" className="flex items-center gap-2">
-                                            <User className="w-4 h-4 text-primary" />
-                                            Your Name
-                                        </Label>
-                                        <Input
-                                            id="name"
-                                            name="name"
-                                            placeholder="Enter your full name"
-                                            value={formData.name}
-                                            onChange={handleInputChange}
-                                            required
-                                            className="transition-all duration-300 focus:ring-2 focus:ring-primary/20"
-                                        />
+                                {/* Form Header */}
+                                <div className="relative overflow-hidden">
+                                    <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-primary/10 to-accent/20" />
+                                    <div className="relative p-8 border-b border-border/50">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <h3 className="font-cinzel text-2xl font-bold flex items-center gap-3">
+                                                <div className="p-2 bg-primary/20 rounded-lg">
+                                                    <Send className="w-6 h-6 text-primary" />
+                                                </div>
+                                                Get in Touch
+                                            </h3>
+                                            <Sparkles className="w-6 h-6 text-primary animate-pulse" />
+                                        </div>
+                                        <p className="text-muted-foreground ml-14">
+                                            We're here to help! Share your thoughts, questions, or feedback with us.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Form - Modern Layout */}
+                                <form onSubmit={handleSubmit} className="p-8 relative">
+                                    {/* Loading Overlay */}
+                                    {isSubmitting && (
+                                        <div className="absolute inset-0 bg-background/95 backdrop-blur-md z-10 flex items-center justify-center rounded-lg">
+                                            <div className="text-center">
+                                                <div className="relative w-28 h-28 mx-auto mb-6">
+                                                    <div className="absolute inset-0 bg-primary/20 rounded-full animate-ping" />
+                                                    <div className="relative top-0 left-1/2 -translate-x-1/2 text-primary">
+                                                        <Gear size={48} delay={0} />
+                                                    </div>
+                                                    <div className="absolute bottom-2 left-2 text-primary/70">
+                                                        <Gear size={32} delay={150} className="animate-spin-reverse" />
+                                                    </div>
+                                                    <div className="absolute bottom-2 right-2 text-primary/70">
+                                                        <Gear size={32} delay={300} />
+                                                    </div>
+                                                </div>
+                                                <h4 className="font-cinzel text-xl mb-2">Sending Message...</h4>
+                                                <p className="text-muted-foreground animate-pulse">
+                                                    Please wait while we process your request
+                                                </p>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Form Fields - Modern Grid */}
+                                    <div className="grid md:grid-cols-2 gap-6 mb-6">
+                                        <div className="space-y-2 group">
+                                            <Label htmlFor="name" className="flex items-center gap-2 text-sm font-semibold">
+                                                <div className="p-1.5 bg-primary/10 rounded-md group-hover:bg-primary/20 transition-colors">
+                                                    <User className="w-4 h-4 text-primary" />
+                                                </div>
+                                                Full Name *
+                                            </Label>
+                                            <Input
+                                                id="name"
+                                                name="name"
+                                                placeholder="John Doe"
+                                                value={formData.name}
+                                                onChange={handleInputChange}
+                                                required
+                                                className="h-12 transition-all duration-300 focus:ring-2 focus:ring-primary/20 border-border/50 hover:border-primary/50"
+                                            />
+                                        </div>
+
+                                        <div className="space-y-2 group">
+                                            <Label htmlFor="email" className="flex items-center gap-2 text-sm font-semibold">
+                                                <div className="p-1.5 bg-primary/10 rounded-md group-hover:bg-primary/20 transition-colors">
+                                                    <Mail className="w-4 h-4 text-primary" />
+                                                </div>
+                                                Email Address *
+                                            </Label>
+                                            <Input
+                                                id="email"
+                                                name="email"
+                                                type="email"
+                                                placeholder="john.doe@example.com"
+                                                value={formData.email}
+                                                onChange={handleInputChange}
+                                                required
+                                                className="h-12 transition-all duration-300 focus:ring-2 focus:ring-primary/20 border-border/50 hover:border-primary/50"
+                                            />
+                                        </div>
                                     </div>
 
-                                    <div className="space-y-2">
-                                        <Label htmlFor="email" className="flex items-center gap-2">
-                                            <Mail className="w-4 h-4 text-primary" />
-                                            Email Address
-                                        </Label>
-                                        <Input
-                                            id="email"
-                                            name="email"
-                                            type="email"
-                                            placeholder="your.email@example.com"
-                                            value={formData.email}
-                                            onChange={handleInputChange}
-                                            required
-                                            className="transition-all duration-300 focus:ring-2 focus:ring-primary/20"
-                                        />
-                                    </div>
-
-                                    <div className="space-y-2 lg:col-span-2">
-                                        <Label htmlFor="subject" className="flex items-center gap-2">
-                                            <MessageSquare className="w-4 h-4 text-primary" />
-                                            Subject
+                                    <div className="space-y-2 mb-6 group">
+                                        <Label htmlFor="subject" className="flex items-center gap-2 text-sm font-semibold">
+                                            <div className="p-1.5 bg-primary/10 rounded-md group-hover:bg-primary/20 transition-colors">
+                                                <MessageSquare className="w-4 h-4 text-primary" />
+                                            </div>
+                                            Subject *
                                         </Label>
                                         <Input
                                             id="subject"
                                             name="subject"
-                                            placeholder="What is this about?"
+                                            placeholder="What would you like to discuss?"
                                             value={formData.subject}
                                             onChange={handleInputChange}
                                             required
-                                            className="transition-all duration-300 focus:ring-2 focus:ring-primary/20"
+                                            className="h-12 transition-all duration-300 focus:ring-2 focus:ring-primary/20 border-border/50 hover:border-primary/50"
                                         />
                                     </div>
-                                </div>
 
-                                <div className="space-y-2 mb-5">
-                                    <Label htmlFor="message" className="flex items-center gap-2">
-                                        <MessageSquare className="w-4 h-4 text-primary" />
-                                        Your Message
-                                    </Label>
-                                    <Textarea
-                                        id="message"
-                                        name="message"
-                                        placeholder="Type your message here..."
-                                        value={formData.message}
-                                        onChange={handleInputChange}
-                                        required
-                                        rows={4}
-                                        className="transition-all duration-300 focus:ring-2 focus:ring-primary/20 resize-none"
-                                    />
-                                </div>
+                                    <div className="space-y-2 mb-8 group">
+                                        <Label htmlFor="message" className="flex items-center gap-2 text-sm font-semibold">
+                                            <div className="p-1.5 bg-primary/10 rounded-md group-hover:bg-primary/20 transition-colors">
+                                                <MessageSquare className="w-4 h-4 text-primary" />
+                                            </div>
+                                            Your Message *
+                                        </Label>
+                                        <Textarea
+                                            id="message"
+                                            name="message"
+                                            placeholder="Tell us more about your inquiry, feedback, or questions..."
+                                            value={formData.message}
+                                            onChange={handleInputChange}
+                                            required
+                                            rows={6}
+                                            className="transition-all duration-300 focus:ring-2 focus:ring-primary/20 resize-none border-border/50 hover:border-primary/50"
+                                        />
+                                        <p className="text-xs text-muted-foreground mt-1">
+                                            {formData.message.length} / 1000 characters
+                                        </p>
+                                    </div>
 
-                                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                                    <p className="text-xs text-muted-foreground order-2 sm:order-1">
-                                        By submitting this form, you agree to our{" "}
-                                        <a href="/privacy-policy" className="text-primary hover:underline">
-                                            Privacy Policy
-                                        </a>
-                                    </p>
-                                    <Button
-                                        type="submit"
-                                        className="w-full sm:w-auto gap-2 h-12 px-8 text-base order-1 sm:order-2"
-                                        disabled={isSubmitting}
-                                    >
-                                        <Send className="w-4 h-4" />
-                                        Send Message
-                                    </Button>
-                                </div>
-                            </form>
-                        </CardContent>
-                    </Card>
+                                    {/* Submit Section */}
+                                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-border/50">
+                                        <p className="text-sm text-muted-foreground order-2 sm:order-1">
+                                            <span className="inline-flex items-center gap-1">
+                                                <Shield className="w-4 h-4 text-primary" />
+                                                Protected by our{" "}
+                                                <a href="/privacy-policy" className="text-primary hover:underline font-medium">
+                                                    Privacy Policy
+                                                </a>
+                                            </span>
+                                        </p>
+                                        <Button
+                                            type="submit"
+                                            className="w-full sm:w-auto gap-2 h-14 px-10 text-base order-1 sm:order-2 font-semibold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all group"
+                                            disabled={isSubmitting}
+                                        >
+                                            <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                                            Send Message
+                                        </Button>
+                                    </div>
+                                </form>
+                            </CardContent>
+                        </Card>
+                    </div>
                 </div>
             </main>
             <Footer />
