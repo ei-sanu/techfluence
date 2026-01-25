@@ -281,13 +281,6 @@
     --cursor-color: hsl(var(--primary) / 0.9);
   }
 
-  /* Hide native cursor on pointer-capable devices */
-  @media (pointer: fine) {
-    body {
-      cursor: none;
-    }
-  }
-
   .custom-cursor {
     position: fixed;
     left: 0;

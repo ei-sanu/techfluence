@@ -8,7 +8,6 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import FooterPremium from "./components/FooterPremium";
-import CustomCursor from "./components/ui/CustomCursor";
 import Activity from "./pages/Activity";
 import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
@@ -42,7 +41,6 @@ function ClerkProviderWithRoutes() {
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <CustomCursor />
           <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
