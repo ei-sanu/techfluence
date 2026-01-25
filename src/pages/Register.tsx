@@ -283,7 +283,6 @@ const Register = () => {
               )}
             </div>
           </main>
-          <FooterPremium />
         </div>
       </SignedIn>
     </>
