@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
-import { Calendar, Check, Code, GraduationCap, Loader2, MapPin, Plus, RotateCcw, Scroll, Ticket, UserPlus, Users, X, XCircle } from "lucide-react";
+import { Calendar, Check, GraduationCap, Loader2, MapPin, RotateCcw, Scroll, Ticket, UserPlus, Users, X, XCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import QRCode from "react-qr-code";
 import { Link, useNavigate } from "react-router-dom";
@@ -156,7 +156,7 @@ const TicketModal = ({
                     </div>
 
                     <div>
-                      <p className="text-xs text-white/60 dark:text-muted-foreground uppercase tracking-widest mb-1">Team Code</p>
+                      <p className="text-xs text-white/60 dark:text-muted-foreground uppercase tracking-widest mb-1">Invitation Code</p>
                       <p className="font-mono text-xl sm:text-2xl text-orange-400 dark:text-primary font-bold tracking-[0.2em] sm:tracking-[0.3em]">
                         {registration.check_in_code || "N/A"}
                       </p>
@@ -928,11 +928,11 @@ const Activity = () => {
                             </div>
                           </CardHeader>
                           <CardContent className="space-y-4">
-                            {/* Team Code Display */}
+                            {/* Invitation Code Display */}
                             {reg.check_in_code && (
                               <div className="bg-primary/10 tech-border rounded-lg p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                                 <div>
-                                  <p className="text-xs text-muted-foreground font-sans mb-1">Team Code</p>
+                                  <p className="text-xs text-muted-foreground font-sans mb-1">Invitation Code</p>
                                   <p className="text-xl sm:text-2xl font-bold text-primary tracking-widest font-mono">{reg.check_in_code}</p>
                                 </div>
                                 {reg.team_name && (
@@ -1001,8 +1001,8 @@ const Activity = () => {
                               />
                             )}
 
-                            {/* Upgrade option for partial registrations */}
-                            {reg.event_type !== "both" && (
+                            {/* COMMENTED OUT: Hackathon upgrade section - Event registration only */}
+                            {/* {reg.event_type !== "both" && (
                               <div className="pt-4 border-t border-border">
                                 <div className="bg-primary/10 rounded-lg p-4 border border-primary/30">
                                   <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -1032,7 +1032,7 @@ const Activity = () => {
                                   </div>
                                 </div>
                               </div>
-                            )}
+                            )} */}
                           </CardContent>
                         </Card>
                       ))}
@@ -1071,7 +1071,7 @@ const Activity = () => {
                               {reg.check_in_code && (
                                 <div className="bg-primary/10 tech-border rounded-lg p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                                   <div>
-                                    <p className="text-xs text-muted-foreground font-sans mb-1">Team Code</p>
+                                    <p className="text-xs text-muted-foreground font-sans mb-1">Invitation Code</p>
                                     <p className="text-xl sm:text-2xl font-bold text-primary tracking-widest font-mono">{reg.check_in_code}</p>
                                   </div>
                                   {reg.team_name && (

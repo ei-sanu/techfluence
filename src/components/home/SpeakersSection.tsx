@@ -245,10 +245,308 @@ const seasonData = {
     title: "Season 04",
     speakers: [
       {
-        name: "Coming Soon",
-        image: "https://media.licdn.com/dms/image/D4D03AQFJwKQwQwQwQw/profile-displayphoto-shrink_400_400/0/1660000000000?e=1700000000&v=beta&t=xxxx",
-        role: "Stay Tuned for Updates",
-        linkedin: "#"
+        name: "Rajya Vardhan Mishra",
+        image: "/guestimages/rajya_vardhan.png",
+        role: "Engineering Lead at Google",
+        companies: [
+          { name: "Google", logo: "/logos/gfg.avif" }
+        ],
+        stats: [
+          { label: "Followers on LinkedIn", value: "102.6K+" }
+        ],
+        linkedin: "https://www.linkedin.com/in/rajya-vardhan/",
+        highlights: [
+          "Engineering leadership at Google",
+          "Building scalable distributed systems"
+        ]
+      },
+      {
+        name: "Rocky Bhatia",
+        image: "/guestimages/rocky_bhatia.png",
+        role: "Software Architecture at Adobe",
+        companies: [
+          { name: "Adobe", logo: "/logos/cs.png" }
+        ],
+        stats: [
+          { label: "Followers on LinkedIn", value: "192.5K+" },
+          { label: "Followers on Instagram", value: "144K+" },
+          { label: "Subscribers on YouTube", value: "15.3K+" }
+        ],
+        linkedin: "https://www.linkedin.com/in/rocky-bhatia-a4801010/",
+        highlights: [
+          "Software architecture expert at Adobe",
+          "Content creator with 350K+ total followers"
+        ]
+      },
+      {
+        name: "Ajay Suneja",
+        image: "/guestimages/ajay_suneja.png",
+        role: "Software Engineer at Adidas",
+        companies: [
+          { name: "Adidas", logo: "/logos/adidas.png" }
+        ],
+        stats: [
+          { label: "Followers on LinkedIn", value: "80.9K+" },
+          { label: "Followers on Instagram", value: "160K+" }
+        ],
+        linkedin: "https://www.linkedin.com/in/ajaysuneja/",
+        highlights: [
+          "Software engineering at Adidas",
+          "Tech influencer with 240K+ total followers"
+        ]
+      },
+      {
+        name: "Parikh Jain",
+        image: "/guestimages/parikh_jain.png",
+        role: "Founder - Propeer, Ex-Amazon",
+        companies: [
+          { name: "Amazon", logo: "/logos/amazon.png" }
+        ],
+        stats: [
+          { label: "Followers on LinkedIn", value: "155K+" },
+          { label: "Followers on Instagram", value: "96K+" }
+        ],
+        linkedin: "https://www.linkedin.com/in/parikh-jain-79568798/",
+        highlights: [
+          "Founded Propeer, ex-Amazon engineer",
+          "Career guidance influencer with 250K+ followers"
+        ]
+      },
+      {
+        name: "Shivangi Narula",
+        image: "/guestimages/shivangi_narula.png",
+        role: "Chief Learning Officer at Skillldify",
+        companies: [
+          { name: "Skillldify", logo: "/logos/skillldify.png" }
+        ],
+        stats: [
+          { label: "Followers on LinkedIn", value: "249K+" },
+          { label: "Followers on Instagram", value: "311K+" }
+        ],
+        linkedin: "https://www.linkedin.com/in/shivanginarula/",
+        highlights: [
+          "Communications & soft skills trainer",
+          "560K+ total followers across platforms"
+        ]
+      },
+      {
+        name: "Shivani Gera",
+        image: "/guestimages/shivani_gera.png",
+        role: "Young Professional at SEBI",
+        companies: [
+          { name: "SEBI", logo: "/logos/sebi.png" }
+        ],
+        stats: [
+          { label: "Followers on LinkedIn", value: "192K+" },
+          { label: "Followers on Instagram", value: "52K+" }
+        ],
+        linkedin: "https://www.linkedin.com/in/shivanigera30/",
+        highlights: [
+          "Financial education content creator",
+          "244K+ total followers in fintech space"
+        ]
+      }
+    ]
+  },
+  5: {
+    title: "Season 05",
+    speakers: [
+      {
+        name: "Archy Gupta",
+        image: "/guestimages/archy_gupta.png",
+        role: "Software Engineer III at Google",
+        companies: [
+          { name: "Google", logo: "/logos/gfg.avif" }
+        ],
+        stats: [
+          { label: "Followers on LinkedIn", value: "788K+" },
+          { label: "Followers on Instagram", value: "56.8K+" }
+        ],
+        linkedin: "https://www.linkedin.com/in/archy-gupta-myprofile/",
+        highlights: [
+          "Senior engineer at Google",
+          "844K+ total followers, top tech influencer"
+        ]
+      },
+      {
+        name: "Hina Arora",
+        image: "/guestimages/hina_a.png",
+        role: "Engineering Manager at Jio",
+        companies: [
+          { name: "Jio", logo: "/logos/jio.png" }
+        ],
+        stats: [
+          { label: "Followers on LinkedIn", value: "254K+" },
+          { label: "Followers on Instagram", value: "75K+" }
+        ],
+        linkedin: "https://www.linkedin.com/in/careerwithhina/",
+        highlights: [
+          "Engineering leadership at Jio",
+          "Career guidance expert with 329K+ followers"
+        ]
+      },
+      {
+        name: "Hemant Pandey",
+        image: "/guestimages/hemant_pandey.png",
+        role: "Senior Software Engineer at LinkedIn",
+        companies: [
+          { name: "LinkedIn", logo: "/logos/linkedin.png" }
+        ],
+        stats: [
+          { label: "Followers on LinkedIn", value: "65.9K+" }
+        ],
+        linkedin: "https://www.linkedin.com/in/hemant-pandey/",
+        highlights: [
+          "Senior engineer at LinkedIn",
+          "Tech content creator and mentor"
+        ]
+      },
+      {
+        name: "Omkar Srivastava",
+        image: "/guestimages/omkar_srivastava.png",
+        role: "Country Head and Influencer at Autodesk",
+        companies: [
+          { name: "Autodesk", logo: "/logos/autodesk.png" }
+        ],
+        stats: [
+          { label: "Followers on LinkedIn", value: "21.8K+" }
+        ],
+        linkedin: "https://www.linkedin.com/in/omsrivastava/",
+        highlights: [
+          "Leadership role at Autodesk",
+          "Tech influencer and community builder"
+        ]
+      },
+      {
+        name: "Vijaykumar Jangamashetti",
+        image: "/guestimages/vijaykumar.png",
+        role: "Senior Technical Solutions Consultant at Google",
+        companies: [
+          { name: "Google", logo: "/logos/gfg.avif" }
+        ],
+        linkedin: "https://www.linkedin.com/in/vijaykumar-jangamashetti/",
+        highlights: [
+          "Technical solutions expert at Google",
+          "Cloud and enterprise solutions specialist"
+        ]
+      },
+      {
+        name: "Priyank Ahuja",
+        image: "/guestimages/priyank_ahuja.png",
+        role: "Product Lead at Accenture",
+        companies: [
+          { name: "Accenture", logo: "/logos/accenture.png" }
+        ],
+        stats: [
+          { label: "Followers on LinkedIn", value: "671K+" },
+          { label: "Followers on Instagram", value: "9K+" }
+        ],
+        linkedin: "https://www.linkedin.com/in/priyank-ahuja/",
+        highlights: [
+          "Product leadership at Accenture",
+          "680K+ total followers, top career influencer"
+        ]
+      }
+    ]
+  },
+  6: {
+    title: "Season 06",
+    speakers: [
+      {
+        name: "Mahima Hans",
+        image: "/guestimages/mahima_hans.png",
+        role: "Software Engineer at Salesforce | Ex-Microsoft",
+        companies: [
+          { name: "Salesforce", logo: "/logos/salesforce.png" },
+          { name: "Microsoft", logo: "/logos/ms.png" }
+        ],
+        stats: [
+          { label: "Followers on LinkedIn", value: "308K+" },
+          { label: "Followers on Instagram", value: "52.5K+" }
+        ],
+        linkedin: "https://www.linkedin.com/in/mahimahans/",
+        highlights: [
+          "Technical Interview Coach & Public Speaker with 300K+ community",
+          "6+ years of experience in software engineering"
+        ]
+      },
+      {
+        name: "Vanshika Pandey",
+        image: "/guestimages/vanshika_pandey.png",
+        role: "SDE II | National Award Holding Creator",
+        companies: [
+          { name: "JP Morgan", logo: "/logos/jpmorgan.png" }
+        ],
+        stats: [
+          { label: "Total Followers", value: "500K+" }
+        ],
+        linkedin: "https://www.linkedin.com/in/vanshikapandeyy/",
+        highlights: [
+          "Featured on Entrepreneurs of India & EatMyNews",
+          "Top 25 Unstop Creator Awardee | GDSC Lead '21"
+        ]
+      },
+      {
+        name: "Abhishek Kumar",
+        image: "/guestimages/abhishek_kumar_walmart.png",
+        role: "Engineering Manager at Walmart Global Tech India",
+        companies: [
+          { name: "Walmart", logo: "/logos/walmart.png" },
+          { name: "Google", logo: "/logos/gfg.avif" }
+        ],
+        stats: [
+          { label: "Total Followers", value: "170K+" }
+        ],
+        linkedin: "https://www.linkedin.com/in/abhishek0647/",
+        highlights: [
+          "$1B+ Revenue Impact | 11+ years experience",
+          "Ex-Startup Founder | Stanford GSB – LEAD Business Program"
+        ]
+      },
+      {
+        name: "Radhakrishnan Ramasamy",
+        image: "/guestimages/radhakrishnan.png",
+        role: "Senior Engineering Manager – Walmart",
+        companies: [
+          { name: "Walmart", logo: "/logos/walmart.png" },
+          { name: "Amazon", logo: "/logos/amazon.png" }
+        ],
+        linkedin: "https://www.linkedin.com/in/radhakrishnan-ramasamy/",
+        highlights: [
+          "13+ years experience scaling products & platforms",
+          "Ex-PayPal, Amazon, Caterpillar | AI & Leadership Learner"
+        ]
+      },
+      {
+        name: "Nancy Solanki",
+        image: "/guestimages/nancy_solanki.png",
+        role: "Software Engineer at Microsoft",
+        companies: [
+          { name: "Microsoft", logo: "/logos/ms.png" },
+          { name: "Goldman Sachs", logo: "/logos/goldman.png" }
+        ],
+        stats: [
+          { label: "Subscribers on YouTube", value: "50K+" },
+          { label: "Total Followers", value: "100K+" }
+        ],
+        linkedin: "https://www.linkedin.com/in/nancy-solanki/",
+        highlights: [
+          "Ex-Goldman Sachs | Speaker & Educator",
+          "GHC Scholar | YouTube Creator"
+        ]
+      },
+      {
+        name: "Prasant Kumar",
+        image: "/guestimages/prasant_kumar.png",
+        role: "Head of Commercial Digital – India & Asia, Volvo",
+        companies: [
+          { name: "Volvo", logo: "/logos/volvo.png" }
+        ],
+        linkedin: "https://www.linkedin.com/in/prashanth-kumar-3ab702a/",
+        highlights: [
+          "Built & Scaled Volvo Cars India Tech Hub | 25+ years experience",
+          "Ex-GE, Ex-Monsanto | AI & GenAI-Driven Enterprise Value"
+        ]
       }
     ]
   }
@@ -400,7 +698,7 @@ const SpeakersSection = () => {
 
         {/* Season Tabs */}
         <div className={`flex flex-wrap items-center justify-center gap-3 mb-8 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`} style={{ transitionDelay: "200ms" }}>
-          {[1, 2, 3, 4].map((seasonNum) => (
+          {[1, 2, 3, 4, 5, 6].map((seasonNum) => (
             <button
               key={seasonNum}
               onClick={() => setActiveSeason(seasonNum)}
@@ -430,46 +728,16 @@ const SpeakersSection = () => {
           </h3>
         </div>
 
-        {/* Speaker Cards - Horizontal Scroll */}
-        <div className="w-full max-w-6xl mx-auto px-4 relative">
-          {currentSpeakers.length > 3 && (
-            <p className="text-center text-sm text-muted-foreground mb-4">
-              Scroll horizontally to see more speakers →
-            </p>
-          )}
-          <div
-            className="overflow-x-auto overflow-y-hidden pb-4"
-            style={{
-              scrollBehavior: 'smooth',
-              WebkitOverflowScrolling: 'touch'
-            }}
-          >
-            <div className="flex gap-8 w-max py-2">
-              {currentSpeakers.map((speaker, index) => (
-                <div key={speaker.name + activeSeason} style={{ width: '340px', minWidth: '340px', maxWidth: '340px' }}>
-                  <SpeakerCard speaker={speaker} index={index} isVisible={isVisible} />
-                </div>
-              ))}
-            </div>
+        {/* Speaker Cards - Grid Layout */}
+        <div className="w-full max-w-6xl mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {currentSpeakers.map((speaker, index) => (
+              <div key={speaker.name + activeSeason}>
+                <SpeakerCard speaker={speaker} index={index} isVisible={isVisible} />
+              </div>
+            ))}
           </div>
         </div>
-
-        <style>{`
-          .overflow-x-auto::-webkit-scrollbar {
-            height: 8px;
-          }
-          .overflow-x-auto::-webkit-scrollbar-track {
-            background: transparent;
-            border-radius: 10px;
-          }
-          .overflow-x-auto::-webkit-scrollbar-thumb {
-            background: hsl(25, 95%, 55%);
-            border-radius: 10px;
-          }
-          .overflow-x-auto::-webkit-scrollbar-thumb:hover {
-            background: hsl(25, 95%, 45%);
-          }
-        `}</style>
 
       </div>
     </section>

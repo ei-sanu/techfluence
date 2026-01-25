@@ -1,4 +1,4 @@
-import Footer from "@/components/Footer";
+
 import Navbar from "@/components/Navbar";
 import { Shield } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -123,7 +123,6 @@ const PrivacyPolicy = () => {
                     </div>
                 </div>
             </main>
-            <Footer />
         </div>
     );
 };

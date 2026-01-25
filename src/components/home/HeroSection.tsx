@@ -161,7 +161,7 @@ const HeroSection = ({ onTriggerStory, handGesture, scrollProgress }: HeroSectio
           <div className={`mt-16 inline-block transition-all duration-700 ${elementsVisible.banner ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"}`}>
             <div className={`parchment-bg tech-border rounded-lg px-8 py-4 transition-all duration-500 hover:tech-glow`}>
               <p className="font-medieval text-sm text-muted-foreground mb-1">Mark Your Calendar</p>
-              <p className="font-cinzel text-xl text-primary">Coming Soon 2025</p>
+              <p className="font-cinzel text-xl text-primary">30 Jan & 2 Feb 2026</p>
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import Footer from "@/components/Footer";
+
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -8,15 +8,15 @@ import { Textarea } from "@/components/ui/textarea";
 import {
     CalendarPlus,
     Check,
-    Clock,
     Code,
     Mail,
     MapPin,
     MessageSquare,
     Phone,
     Send,
+    Shield,
     Sparkles,
-    User,
+    User
 } from "lucide-react";
 import { useState } from "react";
 
@@ -127,7 +127,7 @@ const Contact = () => {
     const addToGoogleCalendar = () => {
         const event = {
             text: "TECH FLUENCE 6 - Premier Tech Event",
-            dates: "20250131T090000/20250131T180000",
+            dates: "20260130T090000/20260202T180000",
             details: "Join us for TECH FLUENCE 6 - The Hub of Innovation! Experience hackathons, tech events, and more.",
             location: "Lovely Professional University, Jalandhar - Delhi G.T. Road, Phagwara, Punjab",
         };
@@ -140,8 +140,8 @@ const Contact = () => {
 VERSION:2.0
 PRODID:-//TECH FLUENCE 6//EN
 BEGIN:VEVENT
-DTSTART:20250131T090000
-DTEND:20250131T180000
+DTSTART:20260130T090000
+DTEND:20260202T180000
 SUMMARY:TECH FLUENCE 6 - Premier Tech Event
 DESCRIPTION:Join us for TECH FLUENCE 6 - The Hub of Innovation! Experience hackathons, tech events, and more.
 LOCATION:GIET University, Gunupur, Odisha
@@ -190,13 +190,15 @@ END:VCALENDAR`;
                                 <div className="bg-background/80 backdrop-blur-sm rounded-xl p-4 mb-4">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-3xl font-bold text-primary">31</p>
-                                            <p className="text-lg font-semibold">January 2025</p>
-                                            <p className="text-sm text-muted-foreground">Friday</p>
+                                            <p className="text-3xl font-bold text-primary">30</p>
+                                            <p className="text-lg font-semibold">Jan 2026</p>
+                                        </div>
+                                        <div className="text-center px-2">
+                                            <p className="text-2xl font-bold text-primary">&</p>
                                         </div>
                                         <div className="text-right">
-                                            <Clock className="w-5 h-5 text-muted-foreground inline mr-2" />
-                                            <span className="text-muted-foreground">9:00 AM - 6:00 PM</span>
+                                            <p className="text-2xl font-bold text-primary">2</p>
+                                            <p className="text-base font-semibold">Feb 2026</p>
                                         </div>
                                     </div>
                                 </div>
@@ -253,9 +255,10 @@ END:VCALENDAR`;
                                         </div>
                                         <div>
                                             <p className="font-semibold text-sm">Call Us</p>
-                                            <a href="tel:+919876543210" className="text-primary hover:underline text-sm">
-                                                +91 98765 43210
+                                            <a href="tel:+918273165573" className="text-primary hover:underline text-sm">
+                                                +91 82731 65573
                                             </a>
+                                            <p className="text-xs text-muted-foreground">Divyansh Goyal</p>
                                         </div>
                                     </div>
                                 </div>
@@ -544,7 +547,6 @@ END:VCALENDAR`;
                     </div>
                 </div>
             </main>
-            <Footer />
         </div>
     );
 };

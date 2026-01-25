@@ -46,7 +46,7 @@ import { Link, useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
 
 // Admin email(s) that can access this panel
-const ADMIN_EMAILS = ["someshranjanbiswal13678@gmail.com", "biswalranjansomesh@gmail.com",""];
+const ADMIN_EMAILS = ["someshranjanbiswal13678@gmail.com", "biswalranjansomesh@gmail.com", "amssre.15467@gmail.com"];
 
 interface Registration {
     id: string;
@@ -932,7 +932,7 @@ const Admin = () => {
                     const otherMembers = members.filter((m) => m.member_type !== "leader");
 
                     return {
-                        "Team Code": reg.check_in_code || "",
+                        "Invitation Code": reg.check_in_code || "",
                         "Team Name": reg.team_name || "",
                         "Event Type": reg.event_type,
                         "Leader Name": leader?.name || "",
@@ -969,7 +969,7 @@ const Admin = () => {
                     const otherMembers = members.filter((m) => m.member_type !== "leader");
 
                     return {
-                        "Team Code": reg.check_in_code || "",
+                        "Invitation Code": reg.check_in_code || "",
                         "Full Name": reg.full_name,
                         "Registration Number": reg.registration_number,
                         University: reg.university_name,
@@ -1080,7 +1080,7 @@ const Admin = () => {
                 const teamSize = rc.team_size || reg.team_size || 1;
 
                 return {
-                    "Team Code": reg.check_in_code || "",
+                    "Invitation Code": reg.check_in_code || "",
                     "Team Name": reg.team_name || "",
                     "Team Size": teamSize === 1 ? 'Solo' : teamSize === 2 ? 'Duo' : teamSize === 3 ? 'Trio' : 'Quadra',
                     "Event Type": reg.event_type,
@@ -1114,6 +1114,53 @@ const Admin = () => {
         } catch (error) {
             console.error("Checked-in download error:", error);
             toast({ title: "Error", description: "Failed to download checked-in teams.", variant: "destructive" });
+        } finally {
+            setIsDownloading(false);
+        }
+    };
+
+    const downloadEventCheckins = async () => {
+        setIsDownloading(true);
+        try {
+            const { data: rcData, error: rcError } = await supabase
+                .from("registration_checkins")
+                .select(`
+                    *,
+                    registrations!inner(*)
+                `)
+                .eq("checked_in", true);
+
+            if (rcError) throw rcError;
+
+            if (!rcData || rcData.length === 0) {
+                toast({ title: "No Check-ins", description: "No participants have checked in yet.", variant: "destructive" });
+                setIsDownloading(false);
+                return;
+            }
+
+            const rows = rcData.map((rc: any) => {
+                const reg = rc.registrations;
+                return {
+                    "Invitation Code": reg.check_in_code || "",
+                    "Name": reg.full_name,
+                    "Email": reg.email,
+                    "Mobile Number": reg.contact_number,
+                    "Event Type": reg.event_type,
+                    "Checked In Date": rc.checked_in_at ? new Date(rc.checked_in_at).toLocaleDateString() : 'N/A',
+                    "Checked In Time": rc.checked_in_at ? new Date(rc.checked_in_at).toLocaleTimeString() : 'N/A',
+                };
+            });
+
+            const worksheet = XLSX.utils.json_to_sheet(rows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Event Check-ins");
+            const date = new Date().toISOString().split("T")[0];
+            XLSX.writeFile(workbook, `event_checkins_${date}.xlsx`);
+
+            toast({ title: "Downloaded!", description: `${rows.length} event check-ins exported.` });
+        } catch (error) {
+            console.error("Event check-in download error:", error);
+            toast({ title: "Error", description: "Failed to download event check-ins.", variant: "destructive" });
         } finally {
             setIsDownloading(false);
         }
@@ -1254,7 +1301,6 @@ const Admin = () => {
                                             </DropdownMenuItem>
                                             <DropdownMenuItem
                                                 onClick={async () => {
-                                                    // call the new checked-in download
                                                     await downloadCheckedIn();
                                                 }}
                                                 className="gap-2 cursor-pointer"
@@ -1263,6 +1309,18 @@ const Admin = () => {
                                                 <div>
                                                     <p className="font-medium">Checked-In Teams</p>
                                                     <p className="text-xs text-muted-foreground">Only teams/participants who were checked in</p>
+                                                </div>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem
+                                                onClick={async () => {
+                                                    await downloadEventCheckins();
+                                                }}
+                                                className="gap-2 cursor-pointer"
+                                            >
+                                                <FileSpreadsheet className="w-4 h-4" />
+                                                <div>
+                                                    <p className="font-medium">Event Check-ins Only</p>
+                                                    <p className="text-xs text-muted-foreground">Code, Name, Email, Mobile, Event Type, Check-in Date/Time</p>
                                                 </div>
                                             </DropdownMenuItem>
                                         </DropdownMenuContent>
@@ -1392,7 +1450,7 @@ const Admin = () => {
                                         <div className="flex gap-2">
                                             <div className="relative flex-1">
                                                 <Input
-                                                    placeholder="Enter Team Code (e.g., AB123)"
+                                                    placeholder="Enter Invitation Code (e.g., AB123)"
                                                     value={teamCodeSearch}
                                                     onChange={(e) => setTeamCodeSearch(e.target.value.toUpperCase())}
                                                     onKeyDown={(e) => e.key === "Enter" && searchByTeamCode()}

@@ -242,17 +242,11 @@ const StoryIntro = ({ onComplete }: StoryIntroProps) => {
         {
             id: 2,
             duration: 4000,
-            title: "The Tech Proclamation",
-            subtitle: "Bose Sir, Keeper of Knowledge",
-        },
-        {
-            id: 3,
-            duration: 4000,
             title: "The Grand Assembly",
             subtitle: "SDMA Auditorium, LPU",
         },
         {
-            id: 4,
+            id: 3,
             duration: 3000,
             title: "TECH FLUENCE 6",
             subtitle: "The Legacy Continues...",
@@ -459,71 +453,8 @@ const StoryIntro = ({ onComplete }: StoryIntroProps) => {
                     </div>
                 )}
 
-                {/* Scene 2: Bose Sir with Scroll */}
+                {/* Scene 2: SDMA Auditorium with Students */}
                 {currentScene === 1 && (
-                    <div className="absolute inset-0 flex items-center justify-center story-scene-enter">
-                        {/* Spotlight Background */}
-                        <div className="absolute inset-0">
-                            <div className="absolute inset-0 bg-gradient-to-b from-primary/20 via-transparent to-transparent" />
-                            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-48 bg-primary/10 rounded-t-full blur-3xl" />
-                        </div>
-
-                        {/* Bose Sir - Actual Image */}
-                        <div className="relative z-10 flex flex-col items-center px-4">
-                            <div className="relative mb-6 story-figure-appear">
-                                <div className="relative w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 rounded-full overflow-hidden border-4 border-primary/30 shadow-2xl">
-                                    <img
-                                        src="/bosesir.jpg"
-                                        alt="Bose Sir"
-                                        className="w-full h-full object-cover animate-float-slow"
-                                    />
-                                    {/* Glow effect */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent" />
-                                </div>
-                                {/* Outer glow */}
-                                <div className="absolute -inset-8 bg-primary/10 rounded-full blur-2xl -z-10 animate-pulse" />
-                                {/* Sparkles around image */}
-                                <Sparkles className="absolute -top-4 -right-4 w-8 h-8 text-primary animate-sparkle" />
-                                <Sparkles className="absolute -bottom-4 -left-4 w-6 h-6 text-primary/60 animate-sparkle" style={{ animationDelay: "0.5s" }} />
-                            </div>
-
-                            {/* Podium */}
-                            <div
-                                className="w-40 md:w-56 h-6 bg-gradient-to-b from-stone-700 to-stone-900 rounded-t-lg mb-8"
-                                style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.5)" }}
-                            />
-
-                            {/* Text */}
-                            <h2
-                                className={`font-decorative text-2xl md:text-4xl lg:text-5xl tech-text-gradient mb-3 transition-all duration-1000 ${textVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                                    }`}
-                            >
-                                {scenes[1].title}
-                            </h2>
-                            <p
-                                className={`font-cinzel text-base md:text-lg text-muted-foreground tracking-widest transition-all duration-1000 ${textVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                                    }`}
-                                style={{ transitionDelay: "300ms" }}
-                            >
-                                {scenes[1].subtitle}
-                            </p>
-
-                            {/* Proclamation text */}
-                            <div
-                                className={`mt-6 max-w-md text-center transition-all duration-1000 ${textVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                                    }`}
-                                style={{ transitionDelay: "500ms" }}
-                            >
-                                <p className="text-sm md:text-base text-primary/70 font-cinzel italic">
-                                    "Empowering minds through technology and innovation..."
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {/* Scene 3: SDMA Auditorium with Students */}
-                {currentScene === 2 && (
                     <div className="absolute inset-0 flex items-center justify-center story-scene-enter">
                         {/* Auditorium Background */}
                         <div className="absolute inset-0">
@@ -588,22 +519,22 @@ const StoryIntro = ({ onComplete }: StoryIntroProps) => {
                                     className={`font-decorative text-2xl md:text-4xl lg:text-5xl tech-text-gradient mb-3 transition-all duration-1000 ${textVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                                         }`}
                                 >
-                                    {scenes[2].title}
+                                    {scenes[1].title}
                                 </h2>
                                 <p
                                     className={`font-cinzel text-base md:text-lg text-muted-foreground tracking-widest transition-all duration-1000 ${textVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                                         }`}
                                     style={{ transitionDelay: "300ms" }}
                                 >
-                                    {scenes[2].subtitle}
+                                    {scenes[1].subtitle}
                                 </p>
                             </div>
                         </div>
                     </div>
                 )}
 
-                {/* Scene 4: Final - Tech Fluence 6 Logo */}
-                {currentScene === 3 && (
+                {/* Scene 3: Final - Tech Fluence 6 Logo */}
+                {currentScene === 2 && (
                     <div className="absolute inset-0 flex items-center justify-center story-scene-enter">
                         {/* Epic background */}
                         <div className="absolute inset-0">
@@ -658,14 +589,14 @@ const StoryIntro = ({ onComplete }: StoryIntroProps) => {
                                 className={`font-decorative text-4xl md:text-6xl lg:text-8xl tech-text-gradient mb-4 transition-all duration-1000 ${textVisible ? "opacity-100 scale-100" : "opacity-0 scale-90"
                                     }`}
                             >
-                                {scenes[3].title}
+                                {scenes[2].title}
                             </h1>
                             <p
                                 className={`font-cinzel text-lg md:text-2xl text-muted-foreground tracking-widest transition-all duration-1000 ${textVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                                     }`}
                                 style={{ transitionDelay: "500ms" }}
                             >
-                                {scenes[3].subtitle}
+                                {scenes[2].subtitle}
                             </p>
                             <p
                                 className={`font-cinzel text-sm md:text-base text-primary/80 mt-6 transition-all duration-1000 ${textVisible ? "opacity-100" : "opacity-0"

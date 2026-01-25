@@ -1,3 +1,5 @@
+
+import Navbar from "@/components/Navbar";
 import React from "react";
 
 const eventImages = [
@@ -6,21 +8,25 @@ const eventImages = [
 
 const Gallery: React.FC = () => {
     return (
-        <section className="py-10 md:py-16 min-h-[60vh]">
-            <div className="container mx-auto px-4">
-                <h1 className="text-3xl md:text-4xl font-display tech-text-gradient text-center mb-2">Event Gallery</h1>
-                <p className="text-center text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                    Relive the vibrant moments of TECH FLUENCE through our curated gallery. Each photo captures the energy, innovation, and community spirit that define our event. Dive in and experience the highlights!
-                </p>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
-                    {eventImages.map((src, i) => (
-                        <div className="glimpse-card small" key={`gallery-${i}`}>
-                            <img loading="lazy" src={src} alt={`gallery-${i}`} className="w-full h-full object-cover rounded-md" />
-                        </div>
-                    ))}
+        <div className="min-h-screen">
+            <Navbar />
+            <section className="py-10 md:py-16 pt-24 min-h-[60vh]">
+                <div className="container mx-auto px-4">
+                    <h1 className="text-3xl md:text-4xl font-display tech-text-gradient text-center mb-2">Event Gallery</h1>
+                    <p className="text-center text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+                        Relive the vibrant moments of TECH FLUENCE through our curated gallery. Each photo captures the energy, innovation, and community spirit that define our event. Dive in and experience the highlights!
+                    </p>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
+                        {eventImages.map((src, i) => (
+                            <div className="glimpse-card small" key={`gallery-${i}`}>
+                                <img loading="lazy" src={src} alt={`gallery-${i}`} className="w-full h-full object-cover rounded-md" />
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+            <FooterPremium />
+        </div>
     );
 };
 

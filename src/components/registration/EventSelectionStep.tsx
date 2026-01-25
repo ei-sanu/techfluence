@@ -7,7 +7,7 @@ import {
   FormMessage
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Calendar, ChevronLeft, ChevronRight, Code, Sparkles } from "lucide-react";
+import { Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 
 interface EventSelectionStepProps {
@@ -16,6 +16,7 @@ interface EventSelectionStepProps {
   onPrev: () => void;
 }
 
+// COMMENTED OUT: Only event registration available
 const events = [
   {
     value: "event",
@@ -23,18 +24,19 @@ const events = [
     description: "Join keynote sessions, panels, and networking opportunities with industry leaders.",
     icon: Calendar,
   },
-  {
-    value: "hackathon",
-    label: "TECH FLUENCE 6 Hackathon",
-    description: "Compete in a 24-hour hackathon with your team to build innovative solutions.",
-    icon: Code,
-  },
-  {
-    value: "both",
-    label: "Both Events",
-    description: "Get the complete TECH FLUENCE 6 experience with access to both the event and hackathon.",
-    icon: Sparkles,
-  },
+  // COMMENTED OUT: Hackathon registration
+  // {
+  //   value: "hackathon",
+  //   label: "TECH FLUENCE 6 Hackathon",
+  //   description: "Compete in a 24-hour hackathon with your team to build innovative solutions.",
+  //   icon: Code,
+  // },
+  // {
+  //   value: "both",
+  //   label: "Both Events",
+  //   description: "Get the complete TECH FLUENCE 6 experience with access to both the event and hackathon.",
+  //   icon: Sparkles,
+  // },
 ];
 
 const EventSelectionStep = ({ form, onNext, onPrev }: EventSelectionStepProps) => {
@@ -84,14 +86,15 @@ const EventSelectionStep = ({ form, onNext, onPrev }: EventSelectionStepProps) =
             )}
           />
 
-          {(form.watch("eventType") === "hackathon" || form.watch("eventType") === "both") && (
+          {/* COMMENTED OUT: Team registration notice - Only event registration available */}
+          {/* {(form.watch("eventType") === "hackathon" || form.watch("eventType") === "both") && (
             <div className="mt-6 p-4 bg-primary/10 rounded-lg border border-primary/30">
               <p className="text-sm text-foreground font-sans font-medium">
                 <Sparkles className="w-4 h-4 inline mr-2 text-primary" />
                 Team registration required! You'll need to provide details for your team in the next step.
               </p>
             </div>
-          )}
+          )} */}
         </div>
 
         <div className="flex justify-between">

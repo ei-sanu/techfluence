@@ -1,4 +1,4 @@
-import Footer from "@/components/Footer";
+
 import GearLoader from "@/components/GearLoader";
 import Navbar from "@/components/Navbar";
 import NotAuthenticated from "@/components/NotAuthenticated";
@@ -17,7 +17,7 @@ type RegistrationMode = "select" | "new" | "join";
 interface RegistrationStatus {
   type: "leader" | "member";
   team_name: string;
-  team_code: string;
+  invitation_code: string;
   leader_name: string;
   event_type?: string;
 }
@@ -35,7 +35,7 @@ const Register = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Check if user has already registered or joined a team
+  // COMMENTED OUT: Team-related registration status checks - Event registration only
   useEffect(() => {
     const checkRegistrationStatus = async () => {
       if (!user?.id) {
@@ -56,10 +56,10 @@ const Register = () => {
           return;
         }
 
-        // First, check if user has their own registration (is a leader)
+        // Check if user has registered for the event
         const { data: ownRegistration } = await supabase
           .from("registrations")
-          .select("team_name, full_name, check_in_code, event_type")
+          .select("full_name, check_in_code, event_type")
           .eq("profile_id", profile.id)
           .order("created_at", { ascending: false })
           .limit(1)
@@ -68,8 +68,8 @@ const Register = () => {
         if (ownRegistration) {
           setRegistrationStatus({
             type: "leader",
-            team_name: ownRegistration.team_name || "Your Team",
-            team_code: ownRegistration.check_in_code || "",
+            team_name: "Event Participant",
+            invitation_code: ownRegistration.check_in_code || "",
             leader_name: ownRegistration.full_name,
             event_type: ownRegistration.event_type,
           });
@@ -77,34 +77,33 @@ const Register = () => {
           return;
         }
 
-        // If no own registration, check for accepted join requests (is a member)
-        const { data: acceptedRequest } = await supabase
-          .from("team_join_requests")
-          .select("team_code, leader_registration_id")
-          .eq("requester_profile_id", profile.id)
-          .eq("status", "accepted")
-          .order("created_at", { ascending: false })
-          .limit(1)
-          .single();
+        // COMMENTED OUT: Team join request check - not needed for event-only registration
+        // const { data: acceptedRequest } = await supabase
+        //   .from("team_join_requests")
+        //   .select("team_code, leader_registration_id")
+        //   .eq("requester_profile_id", profile.id)
+        //   .eq("status", "accepted")
+        //   .order("created_at", { ascending: false })
+        //   .limit(1)
+        //   .single();
 
-        if (acceptedRequest) {
-          // Get team details
-          const { data: registration } = await supabase
-            .from("registrations")
-            .select("team_name, full_name, check_in_code, event_type")
-            .eq("id", acceptedRequest.leader_registration_id)
-            .single();
+        // if (acceptedRequest) {
+        //   const { data: registration } = await supabase
+        //     .from("registrations")
+        //     .select("team_name, full_name, check_in_code, event_type")
+        //     .eq("id", acceptedRequest.leader_registration_id)
+        //     .single();
 
-          if (registration) {
-            setRegistrationStatus({
-              type: "member",
-              team_name: registration.team_name || "Team",
-              team_code: registration.check_in_code || acceptedRequest.team_code,
-              leader_name: registration.full_name,
-              event_type: registration.event_type,
-            });
-          }
-        }
+        //   if (registration) {
+        //     setRegistrationStatus({
+        //       type: "member",
+        //       team_name: registration.team_name || "Team",
+        //       team_code: registration.check_in_code || acceptedRequest.team_code,
+        //       leader_name: registration.full_name,
+        //       event_type: registration.event_type,
+        //     });
+        //   }
+        // }
       } catch (error) {
         console.error("Error checking registration status:", error);
       } finally {
@@ -115,18 +114,18 @@ const Register = () => {
     checkRegistrationStatus();
   }, [user?.id]);
 
-  // fetch hackathon registration control status
-  useEffect(() => {
-    const fetchControl = async () => {
-      try {
-        const { data: ev } = await supabase.from('event_controls').select('*').eq('key', 'hackathon_registration').maybeSingle();
-        if (ev && ev.value) setHackathonControl(ev.value);
-      } catch (err) {
-        // ignore if table doesn't exist
-      }
-    };
-    fetchControl();
-  }, []);
+  // COMMENTED OUT: Hackathon control check - not needed for event-only registration
+  // useEffect(() => {
+  //   const fetchControl = async () => {
+  //     try {
+  //       const { data: ev } = await supabase.from('event_controls').select('*').eq('key', 'hackathon_registration').maybeSingle();
+  //       if (ev && ev.value) setHackathonControl(ev.value);
+  //     } catch (err) {
+  //       // ignore if table doesn't exist
+  //     }
+  //   };
+  //   fetchControl();
+  // }, []);
 
   return (
     <>
@@ -187,8 +186,8 @@ const Register = () => {
 
                       <div className="bg-primary/10 rounded-lg p-4 space-y-3">
                         <div className="flex items-center justify-between">
-                          <span className="text-sm text-muted-foreground">Team Code</span>
-                          <span className="font-mono text-lg font-bold text-primary">{registrationStatus.team_code}</span>
+                          <span className="text-sm text-muted-foreground">Invitation Code</span>
+                          <span className="font-mono text-lg font-bold text-primary">{registrationStatus.invitation_code}</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-sm text-muted-foreground">
@@ -213,13 +212,13 @@ const Register = () => {
 
                       <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400 bg-green-500/10 rounded-lg p-3">
                         <CheckCircle className="w-5 h-5 flex-shrink-0" />
-                        <span>Your team details and event pass are available in the Activity page.</span>
+                        <span>Your registration details and event pass are available in the Activity page.</span>
                       </div>
 
                       <Link to="/activity" className="block">
                         <Button className="w-full gap-2 font-cinzel" size="lg">
                           <Users className="w-5 h-5" />
-                          View Activity & Team Details
+                          View Activity & Registration Details
                         </Button>
                       </Link>
                     </CardContent>
@@ -229,46 +228,45 @@ const Register = () => {
                 <>
                   {/* Mode Selection */}
                   {mode === "select" && (
-                    <div className="max-w-3xl mx-auto">
-                      <div className="grid md:grid-cols-2 gap-6">
-                        {/* New Registration Card (disabled when hackathon paused/ended) */}
-                        <Card
-                          className={`tech-border transition-all duration-300 ${hackathonControl === 'paused' || hackathonControl === 'ended' ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/10 group'}`}
-                          onClick={() => { if (hackathonControl !== 'paused' && hackathonControl !== 'ended') setMode("new"); }}
-                        >
-                          <CardContent className="p-8 text-center">
-                            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-                              <PlusCircle className="w-10 h-10 text-primary" />
-                            </div>
-                            <h3 className="font-cinzel text-xl font-semibold mb-3">New Registration</h3>
-                            <p className="text-muted-foreground text-sm">
-                              Register as a new participant for TECH FLUENCE 6. Create your own team or participate individually.
-                            </p>
-                            <div className="mt-6 py-2 px-4 rounded-full text-sm font-medium inline-block" style={{ background: hackathonControl === 'paused' || hackathonControl === 'ended' ? 'transparent' : undefined }}>
-                              {hackathonControl === 'paused' ? 'Hackathon Registrations Paused' : hackathonControl === 'ended' ? 'Registrations Ended' : 'Create New Team'}
-                            </div>
-                          </CardContent>
-                        </Card>
-
-                        {/* Join Team Card (disabled when hackathon paused/ended) */}
-                        <Card
-                          className={`tech-border transition-all duration-300 ${hackathonControl === 'paused' || hackathonControl === 'ended' ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/10 group'}`}
-                          onClick={() => { if (hackathonControl !== 'paused' && hackathonControl !== 'ended') setMode("join"); }}
-                        >
-                          <CardContent className="p-8 text-center">
-                            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-500/5 flex items-center justify-center">
-                              <Users className="w-10 h-10 text-blue-500" />
-                            </div>
-                            <h3 className="font-cinzel text-xl font-semibold mb-3">Join Existing Team</h3>
-                            <p className="text-muted-foreground text-sm">
-                              Already have a team code? Join an existing team created by your team leader.
-                            </p>
-                            <div className="mt-6 py-2 px-4 rounded-full text-sm font-medium inline-block">
-                              {hackathonControl === 'paused' ? 'Joining Paused' : hackathonControl === 'ended' ? 'Registrations Ended' : 'Enter Team Code'}
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </div>
+                    <div className="max-w-2xl mx-auto">
+                      {/* COMMENTED OUT: Join Team functionality - Only event registration available */}
+                      {/* <div className="grid md:grid-cols-2 gap-6"> */}
+                      <Card
+                        className="tech-border transition-all duration-300 cursor-pointer hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/10 group"
+                        onClick={() => setMode("new")}
+                      >
+                        <CardContent className="p-8 text-center">
+                          <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
+                            <PlusCircle className="w-10 h-10 text-primary" />
+                          </div>
+                          <h3 className="font-cinzel text-xl font-semibold mb-3">Event Registration</h3>
+                          <p className="text-muted-foreground text-sm">
+                            Register for TECH FLUENCE 6. Join keynote sessions, panels, and networking opportunities with industry leaders.
+                          </p>
+                          <div className="mt-6 py-2 px-4 rounded-full bg-primary/10 text-primary text-sm font-medium inline-block">
+                            Register Now
+                          </div>
+                        </CardContent>
+                      </Card>
+                      {/* COMMENTED OUT: Join Team Card */}
+                      {/* <Card
+                        className="tech-border transition-all duration-300 cursor-pointer hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/10 group"
+                        onClick={() => setMode("join")}
+                      >
+                        <CardContent className="p-8 text-center">
+                          <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-500/5 flex items-center justify-center">
+                            <Users className="w-10 h-10 text-blue-500" />
+                          </div>
+                          <h3 className="font-cinzel text-xl font-semibold mb-3">Join Existing Team</h3>
+                          <p className="text-muted-foreground text-sm">
+                            Already have a team code? Join an existing team created by your team leader.
+                          </p>
+                          <div className="mt-6 py-2 px-4 rounded-full text-sm font-medium inline-block">
+                            Enter Team Code
+                          </div>
+                        </CardContent>
+                      </Card> */}
+                      {/* </div> */}
                     </div>
                   )}
 
@@ -285,7 +283,7 @@ const Register = () => {
               )}
             </div>
           </main>
-          <Footer />
+          <FooterPremium />
         </div>
       </SignedIn>
     </>

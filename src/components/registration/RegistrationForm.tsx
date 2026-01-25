@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { logRegistrationDetails, sendRegistrationEmail } from "@/lib/emailService";
 import { useUser } from "@clerk/clerk-react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, ArrowRight, Calendar, CheckCircle, Code, Loader2, Plus } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -28,7 +28,7 @@ const personalInfoSchema = z.object({
 });
 
 const eventSchema = z.object({
-  eventType: z.enum(["event", "hackathon", "both"]),
+  eventType: z.enum(["event" /*, "hackathon", "both" */]),
 });
 
 const teamSchema = z.object({
@@ -67,7 +67,7 @@ const RegistrationForm = ({ onBack }: RegistrationFormProps) => {
   const { user } = useUser();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const upgradeMode = searchParams.get("upgrade"); // 'event' or 'hackathon'
+  // const upgradeMode = searchParams.get("upgrade"); // 'event' or 'hackathon' - COMMENTED OUT: Only event registration available
 
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -108,14 +108,14 @@ const RegistrationForm = ({ onBack }: RegistrationFormProps) => {
 
           if (registration) {
             setExistingRegistration(registration);
-            // Only mark as fully registered if they have "both" or if not in upgrade mode
-            if (registration.event_type === "both") {
-              setIsAlreadyRegistered(true);
-            } else if (!upgradeMode) {
-              // User has partial registration and not in upgrade mode
-              setIsAlreadyRegistered(true);
-            }
-            // If in upgrade mode and they don't have "both", allow upgrade flow
+            // Only event registration available - mark as registered if they have any registration
+            setIsAlreadyRegistered(true);
+            // COMMENTED OUT: Hackathon upgrade flow
+            // if (registration.event_type === "both") {
+            //   setIsAlreadyRegistered(true);
+            // } else if (!upgradeMode) {
+            //   setIsAlreadyRegistered(true);
+            // }
           }
         }
       } catch (error) {
@@ -126,7 +126,7 @@ const RegistrationForm = ({ onBack }: RegistrationFormProps) => {
     };
 
     checkExistingRegistration();
-  }, [user, upgradeMode]);
+  }, [user]); // Removed upgradeMode - only event registration available
 
   const personalForm = useForm<z.infer<typeof personalInfoSchema>>({
     resolver: zodResolver(personalInfoSchema),
@@ -688,8 +688,8 @@ const RegistrationForm = ({ onBack }: RegistrationFormProps) => {
     );
   }
 
-  // Show upgrade UI for users registered for only one type
-  if (upgradeMode && existingRegistration && existingRegistration.event_type !== "both") {
+  // COMMENTED OUT: Upgrade UI for users registered for only one type - Event-only registration
+  /* if (upgradeMode && existingRegistration && existingRegistration.event_type !== "both") {
     const isRegisteredForEvent = existingRegistration.event_type === "event";
     const isRegisteredForHackathon = existingRegistration.event_type === "hackathon";
 
@@ -807,7 +807,7 @@ const RegistrationForm = ({ onBack }: RegistrationFormProps) => {
         </div>
       </div>
     );
-  }
+  } */
 
   // Show already registered message
   if (isAlreadyRegistered) {
@@ -835,28 +835,9 @@ const RegistrationForm = ({ onBack }: RegistrationFormProps) => {
           ) : (
             <div className="mb-8">
               <p className="font-sans text-muted-foreground text-lg mb-4 max-w-md mx-auto">
-                You are registered for the{" "}
-                <strong className={isRegisteredForEvent ? "text-blue-500" : "text-purple-500"}>
-                  {isRegisteredForEvent ? "Event" : "Hackathon"}
-                </strong>
-                .
+                You are registered for the Event.
               </p>
-              {canUpgrade && (
-                <div className="bg-primary/10 rounded-lg p-4 border border-primary/30">
-                  <p className="font-sans text-foreground mb-3">
-                    Want to also register for the{" "}
-                    <strong>{isRegisteredForEvent ? "Hackathon" : "Event"}</strong>?
-                  </p>
-                  <Button
-                    onClick={() => navigate(`/register?upgrade=${isRegisteredForEvent ? "hackathon" : "event"}`)}
-                    variant="outline"
-                    className="font-sans font-semibold gap-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                  >
-                    <Plus className="w-4 h-4" />
-                    Register for {isRegisteredForEvent ? "Hackathon" : "Event"}
-                  </Button>
-                </div>
-              )}
+              {/* COMMENTED OUT: Hackathon upgrade prompt - Event registration only */}
             </div>
           )}
 
