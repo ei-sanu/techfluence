@@ -6,7 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
 
 // Admin emails that can access admin panel
-const ADMIN_EMAILS = ["someshranjanbiswal13678@gmail.com", "biswalranjansomesh@gmail.com"];
+const ADMIN_EMAILS = ["someshranjanbiswal13678@gmail.com", "biswalranjansomesh@gmail.com", "amssre.15467@gmail.com", "theoryunseen@gmail.com"];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);

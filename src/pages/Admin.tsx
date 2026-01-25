@@ -46,7 +46,7 @@ import { Link, useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
 
 // Admin email(s) that can access this panel
-const ADMIN_EMAILS = ["someshranjanbiswal13678@gmail.com", "biswalranjansomesh@gmail.com", "amssre.15467@gmail.com"];
+const ADMIN_EMAILS = ["someshranjanbiswal13678@gmail.com", "biswalranjansomesh@gmail.com", "amssre.15467@gmail.com", "theoryunseen@gmail.com"];
 
 interface Registration {
     id: string;
@@ -171,6 +171,16 @@ const Admin = () => {
     const isAdmin =
         user?.primaryEmailAddress?.emailAddress &&
         ADMIN_EMAILS.includes(user.primaryEmailAddress.emailAddress);
+
+    // Debug logging to help troubleshoot admin access
+    useEffect(() => {
+        if (isLoaded && user) {
+            console.log('User email:', user.primaryEmailAddress?.emailAddress);
+            console.log('Email addresses:', user.emailAddresses?.map(e => e.emailAddress));
+            console.log('Is admin:', isAdmin);
+            console.log('Admin emails list:', ADMIN_EMAILS);
+        }
+    }, [isLoaded, user, isAdmin]);
 
     useEffect(() => {
         if (isLoaded && user && isAdmin) {
@@ -1228,9 +1238,14 @@ const Admin = () => {
                             <CardContent className="pt-6 text-center">
                                 <ShieldCheck className="w-16 h-16 mx-auto text-red-500 mb-4" />
                                 <h2 className="font-cinzel text-2xl mb-2">Access Denied</h2>
-                                <p className="text-muted-foreground mb-6">
+                                <p className="text-muted-foreground mb-4">
                                     You don't have permission to access the admin panel.
                                 </p>
+                                {user?.primaryEmailAddress?.emailAddress && (
+                                    <p className="text-sm text-muted-foreground mb-6">
+                                        Signed in as: <span className="font-mono">{user.primaryEmailAddress.emailAddress}</span>
+                                    </p>
+                                )}
                                 <Link to="/">
                                     <Button variant="outline">Go Back Home</Button>
                                 </Link>
