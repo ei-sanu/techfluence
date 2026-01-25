@@ -1,9 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/clerk-react";
-import { Code, Settings, ShieldCheck, Video } from "lucide-react";
+import { Code, Settings, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import MotionControl from "./MotionControl";
 import ThemeToggle from "./ThemeToggle";
 
 // Admin emails that can access admin panel
@@ -11,7 +10,6 @@ const ADMIN_EMAILS = ["someshranjanbiswal13678@gmail.com", "biswalranjansomesh@g
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [motionControlOpen, setMotionControlOpen] = useState(false);
   const [rotationDegree, setRotationDegree] = useState(0);
   const location = useLocation();
   const { user } = useUser();
@@ -108,16 +106,6 @@ const Navbar = () => {
 
             {/* Auth Buttons & Theme Toggle - Desktop - Right */}
             <div className="hidden md:flex items-center gap-3 flex-shrink-0">
-              <button
-                onClick={() => setMotionControlOpen(!motionControlOpen)}
-                className={`px-4 py-2 rounded-lg font-cinzel text-sm flex items-center gap-2 transition-all duration-300 ${motionControlOpen
-                    ? 'bg-primary text-primary-foreground shadow-lg'
-                    : 'bg-card/80 backdrop-blur-sm text-muted-foreground hover:bg-primary/20 hover:text-foreground border border-border'
-                  }`}
-              >
-                <Video className="w-4 h-4" />
-                Motion
-              </button>
               <ThemeToggle />
               <SignedOut>
                 <Link to="/auth">
@@ -288,18 +276,6 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
-
-      {/* Motion Control Panel */}
-      <MotionControl
-        isOpen={motionControlOpen}
-        onClose={() => setMotionControlOpen(false)}
-        onTrackingChange={(enabled, mode) => {
-          console.log('Tracking:', enabled, mode);
-        }}
-        onHandGesture={(isOpen) => {
-          console.log('Hand gesture:', isOpen ? 'open' : 'closed');
-        }}
-      />
     </>
   );
 };
