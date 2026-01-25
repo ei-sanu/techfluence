@@ -46,7 +46,7 @@ import { Link, useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
 
 // Admin email(s) that can access this panel
-const ADMIN_EMAILS = ["someshranjanbiswal13678@gmail.com", "biswalranjansomesh@gmail.com"];
+const ADMIN_EMAILS = ["someshranjanbiswal13678@gmail.com", "biswalranjansomesh@gmail.com",""];
 
 interface Registration {
     id: string;

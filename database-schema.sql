@@ -1,0 +1,237 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+CREATE TABLE public.profiles (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
+    clerk_user_id TEXT UNIQUE NOT NULL,
+    email TEXT,
+    full_name TEXT,
+    created_at TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW(),
+        updated_at TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE public.registrations (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
+    profile_id UUID REFERENCES public.profiles (id) ON DELETE CASCADE NOT NULL,
+    full_name TEXT NOT NULL,
+    registration_number TEXT NOT NULL,
+    university_name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    contact_number TEXT NOT NULL,
+    course TEXT NOT NULL,
+    year_of_study TEXT NOT NULL,
+    event_type TEXT NOT NULL CHECK (
+        event_type IN ('event', 'hackathon', 'both')
+    ),
+    address TEXT NOT NULL,
+    city TEXT NOT NULL,
+    pincode TEXT NOT NULL,
+    technical_skills TEXT,
+    team_name TEXT,
+    team_size INTEGER NOT NULL DEFAULT 1,
+    checked_in BOOLEAN NOT NULL DEFAULT FALSE,
+    check_in_code TEXT UNIQUE,
+    created_at TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE public.team_members (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
+    registration_id UUID REFERENCES public.registrations (id) ON DELETE CASCADE NOT NULL,
+    member_type TEXT NOT NULL CHECK (
+        member_type IN (
+            'leader',
+            'member1',
+            'member2',
+            'member3'
+        )
+    ),
+    name TEXT NOT NULL,
+    registration_number TEXT NOT NULL,
+    created_at TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW(),
+        present BOOLEAN NOT NULL DEFAULT FALSE
+);
+
+CREATE TABLE public.team_join_requests (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
+    team_code TEXT NOT NULL,
+    requester_profile_id UUID REFERENCES public.profiles (id) ON DELETE CASCADE NOT NULL,
+    requester_name TEXT NOT NULL,
+    requester_registration_number TEXT NOT NULL,
+    requester_email TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'pending' CHECK (
+        status IN (
+            'pending',
+            'accepted',
+            'rejected'
+        )
+    ),
+    leader_registration_id UUID REFERENCES public.registrations (id) ON DELETE CASCADE,
+    created_at TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW(),
+        updated_at TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS public.registration_checkins (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
+    registration_id UUID REFERENCES public.registrations (id) ON DELETE CASCADE NOT NULL,
+    check_in_code TEXT,
+    checked_in BOOLEAN NOT NULL DEFAULT FALSE,
+    checked_in_at TIMESTAMP
+    WITH
+        TIME ZONE,
+        checked_in_by TEXT,
+        team_size INTEGER,
+        notes TEXT,
+        created_at TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW(),
+        updated_at TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS public.team_member_checkins (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
+    team_member_id UUID REFERENCES public.team_members (id) ON DELETE CASCADE NOT NULL,
+    registration_checkin_id UUID REFERENCES public.registration_checkins (id) ON DELETE CASCADE,
+    present BOOLEAN NOT NULL DEFAULT FALSE,
+    present_at TIMESTAMP
+    WITH
+        TIME ZONE,
+        notes TEXT,
+        created_at TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW(),
+        updated_at TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS public.event_controls (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+
+ALTER TABLE public.registrations ENABLE ROW LEVEL SECURITY;
+
+ALTER TABLE public.team_members ENABLE ROW LEVEL SECURITY;
+
+ALTER TABLE public.team_join_requests ENABLE ROW LEVEL SECURITY;
+
+ALTER TABLE public.registration_checkins ENABLE ROW LEVEL SECURITY;
+
+ALTER TABLE public.team_member_checkins ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Enable all for profiles" ON public.profiles FOR ALL USING (true)
+WITH
+    CHECK (true);
+
+CREATE POLICY "Enable all for registrations" ON public.registrations FOR ALL USING (true)
+WITH
+    CHECK (true);
+
+CREATE POLICY "Enable all for team_members" ON public.team_members FOR ALL USING (true)
+WITH
+    CHECK (true);
+
+CREATE POLICY "Enable all for team_join_requests" ON public.team_join_requests FOR ALL USING (true)
+WITH
+    CHECK (true);
+
+CREATE POLICY "Enable all for registration_checkins" ON public.registration_checkins FOR ALL USING (true)
+WITH
+    CHECK (true);
+
+CREATE POLICY "Enable all for team_member_checkins" ON public.team_member_checkins FOR ALL USING (true)
+WITH
+    CHECK (true);
+
+CREATE INDEX idx_profiles_clerk_user_id ON public.profiles (clerk_user_id);
+
+CREATE INDEX idx_registrations_profile_id ON public.registrations (profile_id);
+
+CREATE INDEX idx_registrations_check_in_code ON public.registrations (check_in_code);
+
+CREATE INDEX idx_registrations_team_size ON public.registrations (team_size);
+
+CREATE INDEX idx_team_members_registration_id ON public.team_members (registration_id);
+
+CREATE INDEX idx_team_join_requests_team_code ON public.team_join_requests (team_code);
+
+CREATE INDEX idx_team_join_requests_requester ON public.team_join_requests (requester_profile_id);
+
+CREATE INDEX IF NOT EXISTS idx_registration_checkins_registration_id ON public.registration_checkins (registration_id);
+
+CREATE INDEX IF NOT EXISTS idx_registration_checkins_code ON public.registration_checkins (check_in_code);
+
+CREATE INDEX IF NOT EXISTS idx_team_member_checkins_member_id ON public.team_member_checkins (team_member_id);
+
+CREATE INDEX IF NOT EXISTS idx_team_member_checkins_registration_checkin_id ON public.team_member_checkins (registration_checkin_id);
+
+DO $$
+BEGIN
+    IF (SELECT count(*) FROM public.registration_checkins) = 0 THEN
+        INSERT INTO public.registration_checkins (registration_id, check_in_code, checked_in, checked_in_at, team_size, created_at, updated_at)
+        SELECT r.id,
+               r.check_in_code,
+               COALESCE(r.checked_in, FALSE) AS checked_in,
+               CASE WHEN r.checked_in IS TRUE THEN now() ELSE NULL END AS checked_in_at,
+               COALESCE(r.team_size, 1) AS team_size,
+               now(),
+               now()
+        FROM public.registrations r;
+    END IF;
+END$$;
+
+DO $$
+BEGIN
+    IF (SELECT count(*) FROM public.team_member_checkins) = 0 THEN
+        INSERT INTO public.team_member_checkins (team_member_id, registration_checkin_id, present, present_at, created_at, updated_at)
+        SELECT tm.id,
+               rc.id,
+               COALESCE(tm.present, FALSE) AS present,
+               CASE WHEN tm.present IS TRUE THEN now() ELSE NULL END AS present_at,
+               now(),
+               now()
+        FROM public.team_members tm
+        LEFT JOIN public.registration_checkins rc ON rc.registration_id = tm.registration_id;
+    END IF;
+END$$;
+
+INSERT INTO public.event_controls (key, value, updated_at) VALUES
+    ('registration_open', 'true', NOW()),
+    ('check_in_open', 'false', NOW())
+ON CONFLICT (key) DO NOTHING;
+
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_profiles_updated_at BEFORE UPDATE ON public.profiles
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_team_join_requests_updated_at BEFORE UPDATE ON public.team_join_requests
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_registration_checkins_updated_at BEFORE UPDATE ON public.registration_checkins
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_team_member_checkins_updated_at BEFORE UPDATE ON public.team_member_checkins
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
