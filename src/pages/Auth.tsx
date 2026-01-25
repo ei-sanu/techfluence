@@ -219,6 +219,9 @@ const Auth = () => {
                     >
                         {isSignUp ? (
                             <ClerkSignUp
+                                routing="path"
+                                path="/sign-up"
+                                signInUrl="/sign-in"
                                 afterSignUpUrl="/"
                                 appearance={{
                                     elements: {
@@ -256,6 +259,9 @@ const Auth = () => {
                             />
                         ) : (
                             <ClerkSignIn
+                                routing="path"
+                                path="/sign-in"
+                                signUpUrl="/sign-up"
                                 afterSignInUrl="/"
                                 appearance={{
                                     elements: {

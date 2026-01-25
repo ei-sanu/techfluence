@@ -6,7 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import FooterPremium from "./components/FooterPremium";
 import CustomCursor from "./components/ui/CustomCursor";
 import Activity from "./pages/Activity";
@@ -30,37 +30,48 @@ if (!CLERK_PUBLISHABLE_KEY) {
   console.warn("VITE_CLERK_PUBLISHABLE_KEY is not set. Authentication will not work.");
 }
 
-const App = () => (
-  <ThemeProvider>
-    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
+function ClerkProviderWithRoutes() {
+  const navigate = useNavigate();
+
+  return (
+    <ClerkProvider
+      publishableKey={CLERK_PUBLISHABLE_KEY}
+      navigate={(to) => navigate(to)}
+    >
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <Toaster />
           <Sonner />
           <CustomCursor />
-          <BrowserRouter>
-            <ScrollToTop />
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/sign-in" element={<Auth />} />
-              <Route path="/sign-up" element={<Auth />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/activity" element={<Activity />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/gallery" element={<Gallery />} />
-              <Route path="/story" element={<Story />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            <ScrollToTopButton />
-            <FooterPremium />
-          </BrowserRouter>
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/sign-in" element={<Auth />} />
+            <Route path="/sign-up" element={<Auth />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/activity" element={<Activity />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/gallery" element={<Gallery />} />
+            <Route path="/story" element={<Story />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <ScrollToTopButton />
+          <FooterPremium />
         </TooltipProvider>
       </QueryClientProvider>
     </ClerkProvider>
+  );
+}
+
+const App = () => (
+  <ThemeProvider>
+    <BrowserRouter>
+      <ClerkProviderWithRoutes />
+    </BrowserRouter>
   </ThemeProvider>
 );
 
