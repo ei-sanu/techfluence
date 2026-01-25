@@ -1,3 +1,4 @@
+import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
 import { Users } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -212,30 +213,30 @@ const CommunityVoicesSection = () => {
                     </p>
                 </div>
 
-                {/* Cards Display - 3 Cards Per Row */}
+                {/* Infinite Moving Cards */}
                 <div
                     className={`transition-all duration-700 delay-200 ${isVisible ? "opacity-100" : "opacity-0"
                         }`}
                 >
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                        {membersWithAvatars.map((member, index) => (
-                            <div
-                                key={index}
-                                className="parchment-bg tech-border rounded-xl p-6 hover:tech-glow transition-all duration-300 group"
-                            >
-                                <div className="flex flex-col items-center text-center">
-                                    <img
-                                        src={member.avatar}
-                                        alt={member.name}
-                                        className="w-20 h-20 rounded-full mb-4 ring-4 ring-primary/20 group-hover:ring-primary/40 transition-all"
-                                    />
-                                    <h3 className="font-cinzel font-semibold text-lg mb-1">{member.name}</h3>
-                                    <p className="text-sm text-primary mb-3">{member.title}</p>
-                                    <p className="text-sm text-muted-foreground italic">"{member.quote}"</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    <InfiniteMovingCards
+                        items={membersWithAvatars.slice(0, 14)}
+                        direction="left"
+                        speed="slow"
+                        pauseOnHover={true}
+                    />
+                </div>
+
+                {/* Second row moving in opposite direction */}
+                <div
+                    className={`mt-4 transition-all duration-700 delay-400 ${isVisible ? "opacity-100" : "opacity-0"
+                        }`}
+                >
+                    <InfiniteMovingCards
+                        items={membersWithAvatars.slice(14)}
+                        direction="right"
+                        speed="slow"
+                        pauseOnHover={true}
+                    />
                 </div>
 
                 {/* Decorative accent line */}
