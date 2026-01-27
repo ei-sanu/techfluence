@@ -201,7 +201,7 @@ const UpcomingGuestsSection = () => {
 
                                         {/* Company Logos - Only show if logos exist */}
                                         {guest.companies && guest.companies.length > 0 && guest.companies.some(c => c.logo) && (
-                                            <div className="flex items-center justify-center gap-2 mb-4">
+                                            <div className="flex items-center justify-center gap-2 mb-3">
                                                 {guest.companies.filter(c => c.logo).map((company, idx) => (
                                                     <img
                                                         key={company.name + idx}
@@ -215,7 +215,7 @@ const UpcomingGuestsSection = () => {
 
                                         {/* Social Stats with Icons */}
                                         {guest.stats && (
-                                            <div className="flex flex-col items-center gap-2 mb-4 bg-secondary/30 rounded-lg p-3">
+                                            <div className="flex flex-col items-center gap-2 mb-3 bg-secondary/30 rounded-lg p-3">
                                                 {guest.stats.map((stat, idx) => (
                                                     <div key={stat.label + idx} className="flex items-center gap-3 w-full justify-center">
                                                         {getSocialIcon(stat.platform)}
@@ -225,12 +225,12 @@ const UpcomingGuestsSection = () => {
                                             </div>
                                         )}
 
-                                        {/* Highlights */}
+                                        {/* Highlights - Now directly below social stats/company logos */}
                                         {guest.highlights && (
-                                            <ul className="text-xs text-muted-foreground space-y-1 text-left mt-auto">
+                                            <ul className="text-xs text-muted-foreground space-y-1.5 text-left bg-secondary/20 rounded-lg p-3">
                                                 {guest.highlights.slice(0, 2).map((hl, idx) => (
                                                     <li key={hl + idx} className="line-clamp-2 flex items-start gap-2">
-                                                        <span className="text-primary mt-1 flex-shrink-0">•</span>
+                                                        <span className="text-primary mt-0.5 flex-shrink-0">•</span>
                                                         <span>{hl}</span>
                                                     </li>
                                                 ))}
