@@ -587,11 +587,11 @@ const SpeakerCard = ({ speaker, index, isVisible }: { speaker: any; index: numbe
               <p className="text-sm text-primary font-semibold mb-3">{speaker.founder}</p>
             )}
 
-            {/* Company Logos */}
-            {speaker.companies && (
+            {/* Company Logos - Only show if logos exist */}
+            {speaker.companies && speaker.companies.length > 0 && speaker.companies.some((c: any) => c.logo) && (
               <div className="flex items-center justify-center gap-2 mb-4">
-                {speaker.companies.map((company: any, idx: number) => (
-                  <img key={company.name + idx} src={company.logo} alt={company.name} className="w-8 h-8 rounded-full border border-border" />
+                {speaker.companies.filter((c: any) => c.logo).map((company: any, idx: number) => (
+                  <img key={company.name + idx} src={company.logo} alt={company.name} className="w-8 h-8 rounded-full border border-border object-contain" />
                 ))}
               </div>
             )}

@@ -8,6 +8,7 @@ import HeroSection from "@/components/home/HeroSection";
 import LiveImpactSection from "@/components/home/LiveImpactSection";
 import SocialActivitySection from "@/components/home/SocialActivitySection";
 import SpeakersSection from "@/components/home/SpeakersSection";
+import UpcomingGuestsSection from "@/components/home/UpcomingGuestsSection";
 import Navbar from "@/components/Navbar";
 import StoryIntro from "@/components/StoryIntro";
 import { useEffect, useState } from "react";
@@ -81,6 +82,7 @@ const Index = () => {
         <main>
           <HeroSection onTriggerStory={handleTriggerStory} />
           <AboutSection />
+          <UpcomingGuestsSection />
           <SpeakersSection />
           <GlimpseSection />
           <LiveImpactSection />
