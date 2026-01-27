@@ -1,6 +1,7 @@
 import { Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
+//details of the guests
 const upcomingGuests = [
     {
         name: "Mahima Hans",
