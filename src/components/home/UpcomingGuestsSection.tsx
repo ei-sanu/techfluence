@@ -162,7 +162,7 @@ const UpcomingGuestsSection = () => {
                         <Sparkles className="w-6 h-6 text-primary" />
                     </div>
                     <p className="font-cinzel text-muted-foreground tracking-wider">
-                        Meet the Industry Leaders Joining TECH FLUENCE 6
+                        Meet the Industry Leaders Joining TECHFLUENCE 6
                     </p>
                 </div>
 

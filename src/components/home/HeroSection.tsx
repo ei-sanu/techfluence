@@ -98,8 +98,8 @@ const HeroSection = ({ onTriggerStory, handGesture, scrollProgress }: HeroSectio
           {/* crown removed - moved to navbar per request */}
 
           {/* Main Title */}
-          <h1 className={`font-decorative text-4xl md:text-6xl lg:text-8xl mb-4 transition-all duration-1000 tech-text-gradient ${elementsVisible.title ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"}`}>
-            TECH FLUENCE 6
+          <h1 className={`font-decorative text-4xl md:text-6xl lg:text-8xl mb-4 transition-all duration-1000 tech-text-gradient tracking-tight ${elementsVisible.title ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"}`}>
+            TECHFLUENCE 6
           </h1>
 
           <p className={`font-cinzel text-lg md:text-xl mb-2 tracking-widest text-muted-foreground transition-all duration-700 ${elementsVisible.subtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
@@ -137,22 +137,24 @@ const HeroSection = ({ onTriggerStory, handGesture, scrollProgress }: HeroSectio
           </div>
 
           {/* CTA Buttons */}
-          <div className={`relative z-20 flex flex-col sm:flex-row gap-4 justify-center mt-10 transition-all duration-700 ${elementsVisible.buttons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-            <Link to="/register">
+          <div className={`relative z-[100] flex flex-col sm:flex-row gap-4 justify-center mt-10 transition-all duration-700 ${elementsVisible.buttons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+            <Link to="/register" className="inline-block">
               <Button
                 size="lg"
-                className={`font-cinzel text-lg px-8 py-6 transition-all duration-500 hover:scale-105 bg-primary text-primary-foreground hover:bg-primary/90 tech-glow animate-pulse-glow shadow-lg`}
+                className={`font-cinzel text-lg px-8 py-6 transition-all duration-500 hover:scale-110 bg-gradient-to-r from-primary via-amber-500 to-primary text-white hover:shadow-2xl hover:shadow-primary/50 tech-glow animate-pulse-glow shadow-xl border-2 border-primary/30 backdrop-blur-sm relative overflow-hidden group`}
               >
-                Register for the Event
+                <span className="relative z-10 font-bold">Register for the Event</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </Button>
             </Link>
-            <a href="#about">
+            <a href="#about" className="inline-block">
               <Button
                 size="lg"
                 variant="outline"
-                className={`font-cinzel text-lg px-8 py-6 transition-all duration-500 hover:scale-105 border-primary text-primary hover:bg-primary/10 shadow-lg`}
+                className={`font-cinzel text-lg px-8 py-6 transition-all duration-500 hover:scale-110 border-2 border-primary bg-background/95 backdrop-blur-md text-primary hover:bg-primary hover:text-white hover:shadow-2xl hover:shadow-primary/40 shadow-xl relative overflow-hidden group`}
               >
-                Learn More
+                <span className="relative z-10 font-bold">Learn More</span>
+                <div className="absolute inset-0 bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </Button>
             </a>
           </div>

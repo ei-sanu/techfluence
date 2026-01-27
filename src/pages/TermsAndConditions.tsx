@@ -19,7 +19,7 @@ const TermsAndConditions = () => {
                         <section>
                             <h2 className="font-decorative text-2xl text-primary mb-4">1. Acceptance of Terms</h2>
                             <p className="font-sans text-foreground leading-relaxed">
-                                By registering for TECH FLUENCE 6, you agree to be bound by these Terms and Conditions.
+                                By registering for TECHFLUENCE 6, you agree to be bound by these Terms and Conditions.
                                 If you do not agree to these terms, please do not register for the event.
                             </p>
                         </section>

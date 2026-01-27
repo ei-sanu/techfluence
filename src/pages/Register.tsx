@@ -132,7 +132,7 @@ const Register = () => {
       <SignedOut>
         <NotAuthenticated
           title="Sign In to Register"
-          description="You need to be authenticated to register for TECH FLUENCE 6 events. Sign in or create an account to continue your tech journey!"
+          description="You need to be authenticated to register for TECHFLUENCE 6 events. Sign in or create an account to continue your tech journey!"
         />
       </SignedOut>
       <SignedIn>
@@ -148,7 +148,7 @@ const Register = () => {
                   Event Registration
                 </h1>
                 <p className="text-muted-foreground font-cinzel max-w-xl mx-auto">
-                  Complete your registration to join TECH FLUENCE 6.
+                  Complete your registration to join TECHFLUENCE 6.
                   Your journey to innovation begins here.
                 </p>
               </div>
@@ -241,7 +241,7 @@ const Register = () => {
                           </div>
                           <h3 className="font-cinzel text-xl font-semibold mb-3">Event Registration</h3>
                           <p className="text-muted-foreground text-sm">
-                            Register for TECH FLUENCE 6. Join keynote sessions, panels, and networking opportunities with industry leaders.
+                            Register for TECHFLUENCE 6. Join keynote sessions, panels, and networking opportunities with industry leaders.
                           </p>
                           <div className="mt-6 py-2 px-4 rounded-full bg-primary/10 text-primary text-sm font-medium inline-block">
                             Register Now

@@ -93,9 +93,9 @@ const Contact = () => {
                     access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
                     name: formData.name,
                     email: formData.email,
-                    subject: `TECH FLUENCE 6: ${formData.subject}`,
+                    subject: `TECHFLUENCE 6: ${formData.subject}`,
                     message: formData.message,
-                    from_name: "TECH FLUENCE 6 Contact Form",
+                    from_name: "TECHFLUENCE 6 Contact Form",
                 }),
             });
 
@@ -126,9 +126,9 @@ const Contact = () => {
 
     const addToGoogleCalendar = () => {
         const event = {
-            text: "TECH FLUENCE 6 - Premier Tech Event",
+            text: "TECHFLUENCE 6 - Premier Tech Event",
             dates: "20260130T090000/20260202T180000",
-            details: "Join us for TECH FLUENCE 6 - The Hub of Innovation! Experience hackathons, tech events, and more.",
+            details: "Join us for TECHFLUENCE 6 - The Hub of Innovation! Experience hackathons, tech events, and more.",
             location: "Lovely Professional University, Jalandhar - Delhi G.T. Road, Phagwara, Punjab",
         };
         const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.text)}&dates=${event.dates}&details=${encodeURIComponent(event.details)}&location=${encodeURIComponent(event.location)}`;
@@ -138,12 +138,12 @@ const Contact = () => {
     const downloadICS = () => {
         const icsContent = `BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//TECH FLUENCE 6//EN
+PRODID:-//TECHFLUENCE 6//EN
 BEGIN:VEVENT
 DTSTART:20260130T090000
 DTEND:20260202T180000
-SUMMARY:TECH FLUENCE 6 - Premier Tech Event
-DESCRIPTION:Join us for TECH FLUENCE 6 - The Hub of Innovation! Experience hackathons, tech events, and more.
+SUMMARY:TECHFLUENCE 6 - Premier Tech Event
+DESCRIPTION:Join us for TECHFLUENCE 6 - The Hub of Innovation! Experience hackathons, tech events, and more.
 LOCATION:GIET University, Gunupur, Odisha
 END:VEVENT
 END:VCALENDAR`;
@@ -169,7 +169,7 @@ END:VCALENDAR`;
                             Contact Us
                         </h1>
                         <p className="text-muted-foreground font-sans max-w-2xl mx-auto text-lg">
-                            Have questions about TECH FLUENCE 6? We're here to help! Reach out to our team and we'll respond promptly.
+                            Have questions about TECHFLUENCE 6? We're here to help! Reach out to our team and we'll respond promptly.
                         </p>
                     </div>
 

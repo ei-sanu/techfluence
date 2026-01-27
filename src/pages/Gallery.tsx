@@ -14,7 +14,7 @@ const Gallery: React.FC = () => {
                 <div className="container mx-auto px-4">
                     <h1 className="text-3xl md:text-4xl font-display tech-text-gradient text-center mb-2">Event Gallery</h1>
                     <p className="text-center text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                        Relive the vibrant moments of TECH FLUENCE through our curated gallery. Each photo captures the energy, innovation, and community spirit that define our event. Dive in and experience the highlights!
+                        Relive the vibrant moments of TECHFLUENCE through our curated gallery. Each photo captures the energy, innovation, and community spirit that define our event. Dive in and experience the highlights!
                     </p>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
                         {eventImages.map((src, i) => (

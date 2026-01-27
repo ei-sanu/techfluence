@@ -135,7 +135,7 @@ const TicketModal = ({
                 <div className="bg-gradient-to-r from-primary/30 via-primary/20 to-primary/30 px-6 py-4 border-b border-primary/30">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="font-decorative text-xl text-white dark:text-primary tracking-wide">TECH FLUENCE</h3>
+                      <h3 className="font-decorative text-xl text-white dark:text-primary tracking-tight">TECHFLUENCE</h3>
                       <p className="text-xs text-white/70 dark:text-white/70 font-sans tracking-widest">6.0 • EVENT PASS</p>
                     </div>
                     <div className="text-right">
@@ -901,7 +901,7 @@ const Activity = () => {
               ) : registrations.length === 0 && joinedTeamRegistrations.length === 0 && myJoinRequests.filter(r => r.status === "pending").length === 0 ? (
                 <div className="parchment-bg tech-border rounded-xl p-8 text-center">
                   <p className="text-muted-foreground mb-6">
-                    You have not registered for any TECH FLUENCE 6 events yet.
+                    You have not registered for any TECHFLUENCE 6 events yet.
                   </p>
                   <Link to="/register">
                     <Button className="font-cinzel">Register Now</Button>

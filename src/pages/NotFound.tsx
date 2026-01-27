@@ -136,7 +136,7 @@ const NotFound = () => {
           <p className="text-sm text-muted-foreground italic">
             "The only thing we have to fear is a broken link... and 404 errors."
           </p>
-          <p className="text-xs text-muted-foreground/70 mt-2">- TECH FLUENCE 6.0</p>
+          <p className="text-xs text-muted-foreground/70 mt-2">- TECHFLUENCE 6.0</p>
         </div>
       </div>
     </div>

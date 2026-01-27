@@ -23,7 +23,7 @@ const accessFeatures = [
     {
         icon: Calendar,
         title: "Exclusive Event Access",
-        description: "Get priority access to all TECH FLUENCE sessions and workshops",
+        description: "Get priority access to all TECHFLUENCE sessions and workshops",
     },
     {
         icon: Code,
@@ -112,8 +112,8 @@ const Auth = () => {
                             <Sparkles className="absolute -top-1 -right-1 w-5 h-5 text-primary animate-pulse" />
                         </div>
                         <div>
-                            <span className="font-decorative text-4xl xl:text-5xl tech-text-gradient block">
-                                TECH FLUENCE
+                            <span className="font-decorative text-4xl xl:text-5xl tech-text-gradient block tracking-tight">
+                                TECHFLUENCE
                             </span>
                             <span className="text-primary font-bold text-2xl">6.0</span>
                         </div>
@@ -168,8 +168,8 @@ const Auth = () => {
                         <Link to="/" className="inline-flex flex-col items-center gap-1 mb-2">
                             <Code className="w-12 h-12 text-primary" />
                             <div className="text-center">
-                                <span className="font-decorative text-2xl sm:text-3xl tech-text-gradient block">
-                                    TECH FLUENCE
+                                <span className="font-decorative text-2xl sm:text-3xl tech-text-gradient block tracking-tight">
+                                    TECHFLUENCE
                                 </span>
                                 <span className="text-primary font-bold text-lg">6.0</span>
                             </div>

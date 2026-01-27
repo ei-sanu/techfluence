@@ -22,16 +22,16 @@ const faqs = [
   },
   {
     question: "How do I register for TECH FLUENCE 6?",
-    answer: "Registration is simple! Click the 'Register Now' button, create an account or sign in, and fill out the registration form. Team registrations for the hackathon require all team member details.",
+    answer: "Registration is simple! Click the 'Register Now' button, create an account or sign in, and fill out the registration form.",
   },
-  {
-    question: "Is there a registration fee?",
-    answer: "Please check our registration page for the most current pricing information. Early bird discounts and student rates may be available.",
-  },
-  {
-    question: "Can I participate in both the event and hackathon?",
-    answer: "Absolutely! When registering, you can select 'Both' as your participation option to gain access to both the main event and the hackathon.",
-  },
+  // {
+  //   question: "Is there a registration fee?",
+  //   answer: "Please check our registration page for the most current pricing information. Early bird discounts and student rates may be available.",
+  // },
+  // {
+  //   question: "Can I participate in both the event and hackathon?",
+  //   answer: "Absolutely! When registering, you can select 'Both' as your participation option to gain access to both the main event and the hackathon.",
+  // },
 ];
 
 const FAQSection = () => {
